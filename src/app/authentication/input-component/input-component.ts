@@ -8,7 +8,10 @@ import {FormControl,ReactiveFormsModule} from '@angular/forms'
   styleUrl: './input-component.scss',
 })
 export class InputComponent {
-  @Input() formControlName:FormControl= new FormControl('')
-  @Input() label:string=''
+  @Input() controlName = new FormControl('');
+  @Input() label:string='';
+  @Input() type:string=''
+
+  
 
 }
