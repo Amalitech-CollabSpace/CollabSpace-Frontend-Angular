@@ -4,6 +4,7 @@ import { ProjectFormComponent } from './projects/components/project-form/project
 import { ProjectDetailComponent } from './projects/components/project-detail/project-detail.component';
 
 export const routes: Routes = [
+  // Project Management routes
   {
     path: 'projects',
     component: ProjectListComponent
@@ -19,5 +20,12 @@ export const routes: Routes = [
   {
     path: 'projects/:id',
     component: ProjectDetailComponent
-  }
+  },
+  {
+    path: 'dashboard',
+    loadChildren: () =>
+      import('../app/features/dashboard/dashboard.routes').then(
+        (m) => m.routes
+      ),
+  },
 ];
