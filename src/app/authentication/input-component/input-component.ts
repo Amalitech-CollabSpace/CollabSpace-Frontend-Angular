@@ -13,6 +13,14 @@ export class InputComponent {
   @Input() label:string='';
   @Input() type:string=''
 
+
+  public errorMessages:Record<string, string>={
+    required: 'This field is required',
+    pattern:'Please enter a valid email',
+    
+  
+  }
+  
   
 
 }
