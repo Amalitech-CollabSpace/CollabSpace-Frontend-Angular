@@ -1,7 +1,9 @@
 import { Component,OnInit} from '@angular/core';
-import {FormGroup,ReactiveFormsModule,FormControl} from '@angular/forms'
+import {FormGroup,ReactiveFormsModule,FormControl,Validators} from '@angular/forms'
 import SignedUpUserInterface from '../user-interface';
 import {InputComponent} from '../input-component/input-component'
+import {confirmPasswordValidator} from '../validators/confirmPassword';
+
 
 @Component({
   selector: 'app-signup',
@@ -17,13 +19,12 @@ export class Signup implements OnInit{
   ngOnInit(){
 
     this.signUpForm=new FormGroup({
-      fullName:new FormControl(''),
-      lastName:new FormControl(''),
-      email:new FormControl(''),
-      password:new FormControl(''),
-      confirmPassword:new FormControl(''),
-    })
-
+      fullName:new FormControl('',[Validators.required]),
+      lastName:new FormControl('',[Validators.required]),
+      email:new FormControl('',[Validators.required]),
+      password:new FormControl('',[Validators.required]),
+      confirmPassword:new FormControl('',[Validators.required]),
+    },{validators:confirmPasswordValidator});
   }
 
 
