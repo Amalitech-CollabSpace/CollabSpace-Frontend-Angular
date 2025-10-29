@@ -11,13 +11,13 @@ import {InputComponent} from '../input-component/input-component'
 })
 export class Signup implements OnInit{
 
-    signUpForm!:FormGroup<{firstName:FormControl<string|null>,lastName:FormControl<string|null>,email:FormControl<string|null>,password:FormControl<string|null>,confirmPassword:FormControl<string|null>}>;
+    signUpForm!:FormGroup<{fullName:FormControl<string|null>,lastName:FormControl<string|null>,email:FormControl<string|null>,password:FormControl<string|null>,confirmPassword:FormControl<string|null>}>;
 
 
   ngOnInit(){
 
     this.signUpForm=new FormGroup({
-      firstName:new FormControl(''),
+      fullName:new FormControl(''),
       lastName:new FormControl(''),
       email:new FormControl(''),
       password:new FormControl(''),

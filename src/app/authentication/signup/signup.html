@@ -17,8 +17,7 @@
                 <p class="text-3xl font-semibold ">Sign up to CollabSpace</p>
             </div>
             <form class="grid gap-1">
-                <app-input-component [controlName]="signUpForm.controls.firstName" [label]="'First Name'" [type]="'text'"></app-input-component>
-                <app-input-component [controlName]="signUpForm.controls.lastName" [label]="'Last Name'" [type]="'text'"></app-input-component>
+                <app-input-component [controlName]="signUpForm.controls.fullName" [label]="'Full Name'" [type]="'text'"></app-input-component>
                 <app-input-component [controlName]="signUpForm.controls.email" [label]="'Email'" [type]="'email'"></app-input-component>
                 <app-input-component [controlName]="signUpForm.controls.password" [label]="'Password'" [type]="'password'"></app-input-component>
                 <app-input-component [controlName]="signUpForm.controls.confirmPassword" [label]="'Confirm Password'" [type]="'password'"></app-input-component>
