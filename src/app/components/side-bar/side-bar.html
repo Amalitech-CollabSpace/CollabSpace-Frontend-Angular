@@ -38,7 +38,7 @@
     @for(item of sidebarLinks; track $index){
 
     <li
-    routerLinkActive="bg-slate-100"
+    routerLinkActive="bg-blue-500 text-white hover:text-slate-600"
       [ngClass]="{ 'justify-center': !isSidebarOpen }"
       [routerLink]="item.path"
       class="text-slate-600 flex items-center gap-2 transition-all hover:bg-slate-100 rounded-md p-2 cursor-pointer"
@@ -51,7 +51,7 @@
     }
 
     <li
-    routerLinkActive="bg-slate-100"
+    routerLinkActive="bg-blue-500 text-white hover:text-slate-600"
       [ngClass]="{ 'justify-center': !isSidebarOpen }"
       routerLink="settings"
       class="text-slate-600 flex items-center gap-2 transition-all hover:bg-slate-100 rounded-md p-2 mt-auto cursor-pointer"
