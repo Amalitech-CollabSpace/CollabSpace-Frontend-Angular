@@ -1,9 +1,10 @@
 import { Component,Input} from '@angular/core';
 import {FormControl,ReactiveFormsModule} from '@angular/forms'
+import {KeyValuePipe} from '@angular/common';
 
 @Component({
   selector: 'app-input-component',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule,KeyValuePipe],
   templateUrl: './input-component.html',
   styleUrl: './input-component.scss',
 })
