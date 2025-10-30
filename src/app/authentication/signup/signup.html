@@ -10,8 +10,8 @@
             </div>
         </div>
     
-    <div class=" h-screen grid justify-center items-center w-full ">
-        <div class=" h-full grid rounded-md shadow-lg shadow-gray-300  sm:p-5 sm:mb-5 md:pl-10 md:pr-10  md:pb-5 md:pt-5 justify-center items-center ">
+    <div class=" h-screen  grid justify-center items-center w-full ">
+        <div class=" m-2 grid rounded-md shadow-lg shadow-gray-400  sm:p-10 sm:mb-5 md:pl-10 md:pr-10  md:pb-5 md:pt-5 justify-center items-center ">
             <div class="grid">
                 <p class="text-lg font-semibold text-gray-500 sm:text-center ">Start your journey</p>
                 <p class="text-3xl font-semibold sm:text-center ">Sign up to CollabSpace</p>
@@ -21,8 +21,11 @@
                 <app-input-component [controlName]="signUpForm.controls.email" [label]="'Email'" [type]="'email'"></app-input-component>
                 <app-input-component [controlName]="signUpForm.controls.password" [label]="'Password'" [type]="'password'"></app-input-component>
                 <app-input-component [controlName]="signUpForm.controls.confirmPassword" [label]="'Confirm Password'" [type]="'password'"></app-input-component>
+                 @if((signUpForm.errors?.['passwordMismatch']==true)){
+                    <p class=" text-red-700 text-sm italic">Passwords do not match</p>
+                }
 
-                <button type="submit" class="active:ring-2  active:ring-blue-700 mt-5 p-2 rounded-md bg-blue-600/[60%]  text-white text-lg">
+                <button type="submit" [disabled]="signUpForm.invalid" [class]="signUpForm.invalid ? 'w-full bg-blue-600/[40%] rounded-md p-2 mt-0 mt-2 text-black/[30%]': 'active:border-1 active:border-blue-800 text-white  font-semibold bg-blue-600/[85%] rounded-md p-2 mt-0 w-full mt-2'">
                     Sign up
                 </button>
                 <p class="text-center text-lg font-semibold">Already have an account?{{" "}}<span class="text-blue-700/[50%]">Login</span></p>
