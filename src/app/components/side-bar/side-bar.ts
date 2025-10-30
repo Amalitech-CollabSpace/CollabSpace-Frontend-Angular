@@ -48,11 +48,22 @@ export class SideBar {
   isProjectsOpen: boolean = false;
 
   toggleProjects() {
+    if(!this.isSidebarOpen){
+      this.toggleSidebar()
+      if(this.isProjectsOpen){
+        return
+      }
+    }
     this.isProjectsOpen = !this.isProjectsOpen;
   }
 
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  createProject() {
+    this.toggleProjects()
+    prompt("Create Project")
   }
 
   sidebarLinks = [
