@@ -11,6 +11,8 @@ import {
   bootstrapGear,
   bootstrapGrid1x2,
   bootstrapLayoutSidebarInset,
+  bootstrapPlus,
+  bootstrapCalendar2Check,
 } from '@ng-icons/bootstrap-icons';
 import {
   RouterLink,
@@ -36,6 +38,8 @@ import { TreeNode } from '../../models/tree';
       bootstrapFolder2Open,
       bootstrapCheck2Circle,
       bootstrapChatLeftDots,
+      bootstrapPlus,
+      bootstrapCalendar2Check
     }),
   ],
 })
@@ -61,6 +65,11 @@ export class SideBar {
       name: 'Projects',
       icon: 'bootstrapFolder2Open',
       path: 'projects',
+    },
+    {
+      name: 'Tasks',
+      icon: 'bootstrapCalendar2Check',
+      path: 'tasks',
     },
     {
       name: 'Chat',
