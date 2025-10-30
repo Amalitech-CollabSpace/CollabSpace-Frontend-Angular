@@ -18,12 +18,11 @@ import {
 } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { Tree } from '../tree/tree';
 import { TreeNode } from '../../models/tree';
 
 @Component({
   selector: 'app-side-bar',
-  imports: [NgIcon, RouterLink, NgClass, RouterLinkActive, Tree, MatIconModule],
+  imports: [NgIcon, RouterLink, NgClass, RouterLinkActive, MatIconModule],
   templateUrl: './side-bar.html',
   styleUrl: './side-bar.scss',
   viewProviders: [
@@ -76,12 +75,7 @@ export class SideBar {
   ];
 
   projectTreeData: TreeNode[] = [
-    {
-      name: 'Projects',
-      children: [
-        { name: 'Website Redesign', route: '/projects/website' },
-        { name: 'Mobile App', route: '/projects/app' },
-      ],
-    },
+        { name: 'Website Redesign', route: 'projects/website' },
+        { name: 'Mobile App', route: 'projects/app' },
   ];
 }
