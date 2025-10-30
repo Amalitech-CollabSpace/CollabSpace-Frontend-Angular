@@ -1,31 +1,34 @@
 import { Routes } from '@angular/router';
-import { ProjectListComponent } from './projects/components/project-list/project-list.component';
-import { ProjectFormComponent } from './projects/components/project-form/project-form.component';
-import { ProjectDetailComponent } from './projects/components/project-detail/project-detail.component';
 
 export const routes: Routes = [
-  // Project Management routes
+  // Default route - redirect to dashboard
   {
-    path: 'projects',
-    component: ProjectListComponent
+    path: '',
+    redirectTo: '/dashboard',
+    pathMatch: 'full'
   },
-  {
-    path: 'projects/create',
-    component: ProjectFormComponent
-  },
-  {
-    path: 'projects/edit/:id',
-    component: ProjectFormComponent
-  },
-  {
-    path: 'projects/:id',
-    component: ProjectDetailComponent
-  },
+  
+  // Lazy load dashboard module
   {
     path: 'dashboard',
     loadChildren: () =>
-      import('../app/features/dashboard/dashboard.routes').then(
+      import('./features/dashboard/dashboard.routes').then(
         (m) => m.routes
       ),
   },
+  
+  // Lazy load projects module
+  {
+    path: 'projects',
+    loadChildren: () =>
+      import('./projects/projects.routes').then(
+        (m) => m.routes
+      ),
+  },
+  
+  // Wildcard route - must be last
+  {
+    path: '**',
+    redirectTo: '/dashboard'
+  }
 ];
