@@ -2,7 +2,7 @@
     <label class="text-md font-semibold text-black">{{label}}<span class="text-red-400">*</span></label>
     <div>
         <div class="flex text-sm placeholder:text-gray-400 placeholder:font-semibold w-full border-1 border-gray-600/[15%] rounded-sm text-justify focus-within:ring-2 focus-within:ring-blue-400">
-            <input [formControl]="controlName" required [type]="type=='password' && showPassword? 'password':'text'" [placeholder]="label" class="text-sm placeholder:text-gray-400 placeholder:font-semibold w-full  outline-none p-3 m-0 rounded-sm text-justify" />
+            <input [formControl]="controlName" autocomplete="new-password" required [type]="type=='password' && showPassword? 'password':'text'" [placeholder]="label" class="text-sm placeholder:text-gray-400 placeholder:font-semibold w-full  outline-none p-3 m-0 rounded-sm text-justify" />
             @if(type=='password' && !showPassword){
                 <span class="m-3" (click)="togglePasswordVisibility()"><ng-icon name="heroEye"></ng-icon></span>
             }@else if(type=='password' && showPassword){
