@@ -34,32 +34,61 @@
     </div>
   </div>
 
-  <ul class="flex flex-col py-3 h-[98%] gap-1 pt-5">
-    @for(item of sidebarLinks; track $index){
-
-    <li
-    routerLinkActive="bg-blue-500 text-white hover:text-slate-600"
-      [ngClass]="{ 'justify-center': !isSidebarOpen }"
-      [routerLink]="item.path"
-      class="text-slate-600 flex items-center gap-2 transition-all hover:bg-slate-100 rounded-md p-2 cursor-pointer"
-    >
-      <ng-icon [name]="item.icon" />
-      @if (isSidebarOpen) {
-      <p>{{ item.name }}</p>
-      }
-    </li>
+ <ul class="flex flex-col py-3 h-[98%] gap-1 pt-5">
+  @for (item of sidebarLinks; track $index) {
+    @if (item.name !== 'Projects') {
+      <li
+        routerLinkActive="bg-blue-500 text-white hover:text-slate-600"
+        [routerLink]="item.path"
+        [ngClass]="{ 'justify-center': !isSidebarOpen }"
+        class="text-slate-600 flex items-center gap-2 transition-all hover:bg-slate-100 rounded-md p-2 cursor-pointer"
+      >
+        <ng-icon [name]="item.icon" />
+        @if (isSidebarOpen) {
+          <p>{{ item.name }}</p>
+        }
+      </li>
     }
 
-    <li
+    <!-- Projects Tree Section -->
+    @if (item.name === 'Projects') {
+      <li class="flex flex-col transition-all rounded-md p-2 cursor-pointer">
+        <div
+          class="flex items-center gap-2 hover:bg-slate-100 rounded-md p-2"
+          (click)="toggleProjects()"
+        >
+          <ng-icon [name]="item.icon" />
+          @if (isSidebarOpen) {
+            <p>Projects</p>
+          }
+          @if (isSidebarOpen) {
+            <mat-icon>
+              {{ isProjectsOpen ? 'expand_more' : 'chevron_right' }}
+            </mat-icon>
+          }
+        </div>
+
+        @if (isProjectsOpen && isSidebarOpen) {
+          <div class="pl-6 mt-1">
+            <app-tree [dataSource]="projectTreeData"></app-tree>
+          </div>
+        }
+      </li>
+    }
+  }
+
+  <!-- Settings -->
+  <li
     routerLinkActive="bg-blue-500 text-white hover:text-slate-600"
-      [ngClass]="{ 'justify-center': !isSidebarOpen }"
-      routerLink="settings"
-      class="text-slate-600 flex items-center gap-2 transition-all hover:bg-slate-100 rounded-md p-2 mt-auto cursor-pointer"
-    >
-      <ng-icon name="bootstrapGear" />
-      @if (isSidebarOpen) {
+    routerLink="settings"
+    [ngClass]="{ 'justify-center': !isSidebarOpen }"
+    class="text-slate-600 flex items-center gap-2 transition-all hover:bg-slate-100 rounded-md p-2 mt-auto cursor-pointer"
+  >
+    <ng-icon name="bootstrapGear" />
+    @if (isSidebarOpen) {
       <p>Settings</p>
-      }
-    </li>
-  </ul>
+    }
+  </li>
+</ul>
+
 </aside>
