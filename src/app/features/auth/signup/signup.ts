@@ -49,14 +49,14 @@ export class Signup implements OnInit,OnDestroy {
       }
       this.authService.signup(newUser)
       .subscribe({
-        next:(response)=> {
-          // this.router.navigate(['/auth/login'])
-          console.log("The user was registered: ",response)
+        next:()=> {
+          this.router.navigate(['/dashboard'])
+          
           takeUntil(this._destroy$)
         },
         error:(err)=>{
           this.errorMessage=err?.error?.error||err?.message||'Unknown error'
-          console.log("The user was not registered: ",err)
+          
         },
 })
       
