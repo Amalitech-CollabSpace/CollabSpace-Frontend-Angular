@@ -1,4 +1,7 @@
-<app-side-bar></app-side-bar>
-<main>
-  <router-outlet></router-outlet>
-</main>
+<div class="h-screen flex">
+  <app-side-bar></app-side-bar>
+  <main class="bg-slate-100 w-full">
+    <app-search-bar></app-search-bar>
+    <router-outlet></router-outlet>
+  </main>
+</div>

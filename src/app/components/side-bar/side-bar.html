@@ -1,1 +1,65 @@
-<p>side-bar works!</p>
+<aside
+  [ngClass]="{
+    'w-64 p-5': isSidebarOpen,
+    'w-16 py-5 px-2': !isSidebarOpen
+  }"
+  class="h-full bg-white border-r w-12 transition-all border-slate-200"
+>
+  <div
+    [ngClass]="{ 'justify-center h-5': !isSidebarOpen }"
+    class="flex items-center justify-between group "
+  >
+    <div
+      [ngClass]="{ 'group-hover:hidden': !isSidebarOpen }"
+      class="flex items-center gap-2 text-blue-500 text-lg"
+    >
+      <ng-icon name="bootstrapAmd" />
+      @if (isSidebarOpen) {
+      <h1 class="font-bold text-slate-700 whitespace-nowrap">CollabSpace</h1>
+      }
+    </div>
+    <div
+    [ngClass]="{ 'hidden group-hover:flex': !isSidebarOpen }"
+      class="cursor-pointer text-slate-600"
+      (click)="toggleSidebar()"
+       [title]="isSidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'"
+    >
+      <ng-icon
+        [name]="
+          isSidebarOpen
+            ? 'bootstrapLayoutSidebarInset'
+            : 'bootstrapLayoutSidebarInsetReverse'
+        "
+      />
+    </div>
+  </div>
+
+  <ul class="flex flex-col py-3 h-[98%] gap-1 pt-5">
+    @for(item of sidebarLinks; track $index){
+
+    <li
+    routerLinkActive="bg-blue-500 text-white hover:text-slate-600"
+      [ngClass]="{ 'justify-center': !isSidebarOpen }"
+      [routerLink]="item.path"
+      class="text-slate-600 flex items-center gap-2 transition-all hover:bg-slate-100 rounded-md p-2 cursor-pointer"
+    >
+      <ng-icon [name]="item.icon" />
+      @if (isSidebarOpen) {
+      <p>{{ item.name }}</p>
+      }
+    </li>
+    }
+
+    <li
+    routerLinkActive="bg-blue-500 text-white hover:text-slate-600"
+      [ngClass]="{ 'justify-center': !isSidebarOpen }"
+      routerLink="settings"
+      class="text-slate-600 flex items-center gap-2 transition-all hover:bg-slate-100 rounded-md p-2 mt-auto cursor-pointer"
+    >
+      <ng-icon name="bootstrapGear" />
+      @if (isSidebarOpen) {
+      <p>Settings</p>
+      }
+    </li>
+  </ul>
+</aside>
