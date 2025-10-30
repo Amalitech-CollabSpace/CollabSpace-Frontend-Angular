@@ -10,6 +10,5 @@ import { RouterModule } from '@angular/router';
   styleUrl: './project-list.component.scss'
 })
 export class ProjectListComponent {
-  // Component logic will be implemented here
 }
 
