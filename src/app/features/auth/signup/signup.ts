@@ -6,7 +6,7 @@ import {InputComponent} from '../input-component/input-component';
 import {AuthServices} from '../../../core/services/authService/auth-service';
 import {Subject, takeUntil} from 'rxjs'
 
-
+import {StrongPasswordValidator} from '../validators/passwordRegex';
 
 @Component({
   selector: 'app-signup',
@@ -31,7 +31,8 @@ export class Signup implements OnInit,OnDestroy {
     this.signUpForm=new FormGroup({
       fullName:new FormControl('',[Validators.required]),
       email:new FormControl('',[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
-      password:new FormControl('',[Validators.required]),
+      password:new FormControl('',[Validators.required,Validators.minLength(8),StrongPasswordValidator()
+]),
       confirmPassword:new FormControl('',[Validators.required]),
 
     },{validators:confirmPasswordValidator});

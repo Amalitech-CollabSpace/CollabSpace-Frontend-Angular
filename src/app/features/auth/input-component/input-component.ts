@@ -22,6 +22,8 @@ export class InputComponent {
   public errorMessages:Record<string, string>={
     required: 'This field is required',
     pattern:'Please enter a valid email',
+    passwordNotStrong:'Please enter a password that contains uppercase, lowercase, a number and a special character',
+    minlength:'Please enter a password of length 8 or more'
     
   
   }
