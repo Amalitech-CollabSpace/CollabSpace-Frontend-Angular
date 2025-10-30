@@ -9,11 +9,15 @@
                 <span class="m-3"  (click)="togglePasswordVisibility()"><ng-icon name="heroEyeSlash"></ng-icon></span>
             }
         </div>
-        @if(controlName.invalid && (controlName.touched || controlName.dirty)
-        ){
-            @for(err of controlName.errors|keyvalue; track err.key){
-                <p class=" text-red-700 text-sm italic mb-0">{{errorMessages[err.key]}}</p>
+        <div>
+            @if(controlName.invalid && (controlName.touched || controlName.dirty)
+            ){
+                @for(err of controlName.errors|keyvalue; track $index;let count=$index){
+                    @if(count<1){
+                            <p class=" text-red-700 text-sm italic mb-0">{{errorMessages[err.key]}}</p>
+                    }
+                }
             }
-        }
+        </div>
     </div>
 </div>
