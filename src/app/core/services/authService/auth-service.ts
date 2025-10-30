@@ -19,8 +19,8 @@ export class AuthServices {
   
   
 
-  public login(email:string,password:string):Observable<User>{
-    return this.http.post<User>(`${this.baseUrl}api/authentication/signin`,{email,password})
+  public login(user:LoggedInUser):Observable<User>{
+    return this.http.post<User>(`${this.baseUrl}api/authentication/signin`,user)
     .pipe(
       tap((response)=>this.setLoggedInUser(response), 
 
