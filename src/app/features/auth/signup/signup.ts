@@ -2,7 +2,7 @@ import { Component,OnInit, inject,ViewChild,OnDestroy} from '@angular/core';
 import {RouterLink,Router} from "@angular/router";
 import {ReactiveFormsModule,FormControl,FormGroup,Validators} from "@angular/forms";
 import {confirmPasswordValidator} from '../validators/confirmPassword';
-import {InputComponent} from '../input-component/input-component';
+import {InputComponent} from '../../../components/input-component/input-component';
 import {AuthServices} from '../../../core/services/authService/auth-service';
 import {Subject, takeUntil} from 'rxjs'
 

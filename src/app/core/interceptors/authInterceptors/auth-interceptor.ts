@@ -5,10 +5,6 @@ import { HttpInterceptorFn,HttpRequest,HttpHandlerFn} from '@angular/common/http
 export const AuthInterceptor: HttpInterceptorFn = (req:HttpRequest<unknown>, next:HttpHandlerFn) => {
   const token=localStorage.getItem('user_token')
 
-  if(req.url.includes('/signup') || req.url.includes('/login')){
-    return next(req)
-  }
-
   const newRequest=req.clone({
     setHeaders:{
       Authorization:`Bearer ${token}`
