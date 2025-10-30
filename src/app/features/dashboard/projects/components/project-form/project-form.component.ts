@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Project } from '../../models/project.model';
+import { Project } from '../../../../../models/project.model';
 
 @Component({
   selector: 'app-project-form',

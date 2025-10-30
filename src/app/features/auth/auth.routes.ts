@@ -1,7 +1,7 @@
 import {Routes} from '@angular/router';
 
 
-export const authRoutes:Routes=[
+export const routes:Routes=[
     {path:'',redirectTo:'/auth/register',pathMatch:'full'},
     {path:'auth',children:
         [
