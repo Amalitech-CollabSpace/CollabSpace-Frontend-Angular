@@ -1,8 +1,5 @@
 import { Routes } from '@angular/router';
 import { authRoutes } from './features/auth/auth.routes';
-import { ProjectListComponent } from './projects/components/project-list/project-list.component';
-import { ProjectFormComponent } from './projects/components/project-form/project-form.component';
-import { ProjectDetailComponent } from './projects/components/project-detail/project-detail.component';
 
 export const routes: Routes = [
   // Default route - redirect to dashboard
@@ -18,7 +15,7 @@ export const routes: Routes = [
     children: authRoutes
   },
 
-  // Dashboard route (from dev)
+  // Lazy load dashboard module
   {
     path: 'dashboard',
     loadChildren: () =>
@@ -27,22 +24,13 @@ export const routes: Routes = [
       ),
   },
 
-  // Project Management routes
+  // Lazy load projects module
   {
     path: 'projects',
-    component: ProjectListComponent
-  },
-  {
-    path: 'projects/create',
-    component: ProjectFormComponent
-  },
-  {
-    path: 'projects/edit/:id',
-    component: ProjectFormComponent
-  },
-  {
-    path: 'projects/:id',
-    component: ProjectDetailComponent
+    loadChildren: () =>
+      import('./projects/projects.routes').then(
+        (m) => m.routes
+      ),
   },
 
   // Wildcard route - must be last
