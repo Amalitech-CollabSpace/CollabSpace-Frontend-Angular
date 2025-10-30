@@ -7,7 +7,7 @@ export const authRoutes:Routes=[
         [
             {   
                 path:'register',
-                loadComponent:()=>import('../authentication/signup/signup').then(m=>m.Signup)
+                loadComponent:()=>import('../auth/signup/signup').then(m=>m.Signup)
             }    
     ]
     }
