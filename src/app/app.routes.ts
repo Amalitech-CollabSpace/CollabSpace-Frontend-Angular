@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { authRoutes } from './features/auth/auth.routes';
 
 export const routes: Routes = [
   // Default route - redirect to dashboard
@@ -11,8 +10,13 @@ export const routes: Routes = [
 
   // Auth routes (from dev)
   {
-    path: '',
-    children: authRoutes
+    path: 'auth',
+    children: [
+      {
+        path: 'register',
+        loadComponent: () => import('./features/auth/signup/signup').then(m => m.Signup)
+      }
+    ]
   },
 
   // Lazy load dashboard module
