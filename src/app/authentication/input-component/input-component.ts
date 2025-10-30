@@ -6,7 +6,7 @@ import { heroUsers,heroEye,heroEyeSlash } from '@ng-icons/heroicons/outline';
 
 @Component({
   selector: 'app-input-component',
-  imports: [ReactiveFormsModule, KeyValuePipe, NgClass,NgIcon],
+  imports: [ReactiveFormsModule, KeyValuePipe,NgIcon],
   templateUrl: './input-component.html',
   styleUrl: './input-component.scss',
   viewProviders: [provideIcons({  heroUsers,heroEye,heroEyeSlash })]
