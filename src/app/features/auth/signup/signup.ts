@@ -10,7 +10,7 @@ import {StrongPasswordValidator} from '../validators/passwordRegex';
 
 @Component({
   selector: 'app-signup',
-  imports: [ReactiveFormsModule, InputComponent],
+  imports: [ReactiveFormsModule, InputComponent, RouterLink],
   templateUrl: './signup.html',
   // styleUrl: '',
 })

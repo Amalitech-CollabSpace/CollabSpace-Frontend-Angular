@@ -10,7 +10,7 @@ import {StrongPasswordValidator} from '../validators/passwordRegex';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, InputComponent],
+  imports: [ReactiveFormsModule, InputComponent, RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
@@ -36,7 +36,7 @@ export class Login {
   
     
   
-    public submitSignup(){
+    public submitLogin(){
       
       if(this.loginForm.valid){
         const newUser={
