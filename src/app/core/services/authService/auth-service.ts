@@ -9,7 +9,8 @@ import {environment} from '../../../../environments/environment';
   providedIn: 'root'
 })
 export class AuthServices {
-  private baseUrl=environment.nodeApiURL;
+  private baseUrl='https://qtzbtx6k-3000.uks1.devtunnels.ms/'
+  // environment.nodeApiURL;
   
  
 
@@ -19,7 +20,7 @@ export class AuthServices {
   
 
   public login(email:string,password:string):Observable<User>{
-    return this.http.post<User>(`${this.baseUrl}signin`,{email,password})
+    return this.http.post<User>(`${this.baseUrl}api/authentication/signin`,{email,password})
     .pipe(
       tap((response)=>this.setLoggedInUser(response), 
 
@@ -31,7 +32,7 @@ export class AuthServices {
 
 
   public signup(newUser:User):Observable<LoggedInUser>{
-    return this.http.post<LoggedInUser>(`${this.baseUrl}signup`,newUser)
+    return this.http.post<LoggedInUser>(`${this.baseUrl}api/authentication/signup`,newUser)
     .pipe(
       tap((response)=>this.setLoggedInUser(response)),
     )
