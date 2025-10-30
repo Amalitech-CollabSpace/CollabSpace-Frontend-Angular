@@ -13,16 +13,17 @@ import {
   bootstrapLayoutSidebarInset,
 } from '@ng-icons/bootstrap-icons';
 import {
-  ActivatedRoute,
-  Router,
   RouterLink,
   RouterLinkActive,
 } from '@angular/router';
 import { NgClass } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { Tree } from '../tree/tree';
+import { TreeNode } from '../../models/tree';
 
 @Component({
   selector: 'app-side-bar',
-  imports: [NgIcon, RouterLink, NgClass, RouterLinkActive],
+  imports: [NgIcon, RouterLink, NgClass, RouterLinkActive, Tree, MatIconModule],
   templateUrl: './side-bar.html',
   styleUrl: './side-bar.scss',
   viewProviders: [
@@ -41,6 +42,15 @@ import { NgClass } from '@angular/common';
 })
 export class SideBar {
   isSidebarOpen: boolean = true;
+  isProjectsOpen: boolean = false;
+
+  toggleProjects() {
+    this.isProjectsOpen = !this.isProjectsOpen;
+  }
+
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
 
   sidebarLinks = [
     {
@@ -65,7 +75,13 @@ export class SideBar {
     },
   ];
 
-  toggleSidebar() {
-    this.isSidebarOpen = !this.isSidebarOpen;
-  }
+  projectTreeData: TreeNode[] = [
+    {
+      name: 'Projects',
+      children: [
+        { name: 'Website Redesign', route: '/projects/website' },
+        { name: 'Mobile App', route: '/projects/app' },
+      ],
+    },
+  ];
 }

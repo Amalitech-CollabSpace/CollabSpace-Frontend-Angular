@@ -2,13 +2,9 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { TreeNode } from '../../models/tree';
 
 
-interface TreeNode {
-  name: string;
-  children?: TreeNode[];
-  route?: string;
-}
 
 @Component({
   selector: 'app-tree',
