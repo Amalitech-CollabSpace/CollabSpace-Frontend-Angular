@@ -59,17 +59,26 @@
         class="flex items-center gap-2 hover:bg-slate-100 rounded-md p-2 group"
         (click)="toggleProjects()"
       >
-      
-        <ng-icon [name]="item.icon" />
+        <div class="">
+          <span class="hidden group-hover:flex -m-1 -mr-1.5">
+            <mat-icon>
+              {{ isProjectsOpen ? "expand_more" : "chevron_right" }}
+            </mat-icon>
+          </span>
+          <span class="flex group-hover:hidden">
+            <ng-icon [name]="item.icon" />
+          </span>
+        </div>
         @if (isSidebarOpen) {
         <p>Projects</p>
-        <!-- <mat-icon>
-          {{ isProjectsOpen ? "expand_more" : "chevron_right" }}
-        </mat-icon> -->
-      }
-      <div title="create project" class=" ml-auto h-full hidden items-center justify-center text-lg border rounded-full border-dotted border-transparent hover:border-slate-600 group-hover:flex">
+        <div
+          (click)="createProject()"
+          title="create project"
+          class="ml-auto h-full hidden items-center justify-center text-lg border rounded-full border-dotted border-transparent hover:border-slate-600 group-hover:flex"
+        >
           <ng-icon name="bootstrapPlus" />
         </div>
+        }
       </div>
 
       @if (isProjectsOpen && isSidebarOpen) {
