@@ -1,3 +1,185 @@
-<section class="p-7">
-  <h1 class="font-bold text-4xl">Welcome Ishaque</h1>
-</section>
+<div class="h-[90vh] px-8 py-6 overflow-y-auto">
+  <div class="flex justify-between items-center">
+    <div>
+      <h1 class="text-2xl font-semibold text-gray-800">
+        Good Morning, Ishaque!
+      </h1>
+      <p class="text-gray-500">You have 3 tasks due today and 2 upcoming.</p>
+    </div>
+    <button
+      routerLink="/dashboard/projects/create"
+      class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 cursor-pointer transition-all"
+    >
+      + Create New Project
+    </button>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+    <div class="md:col-span-2 bg-white rounded-xl shadow-sm p-5">
+      <h2 class="text-lg font-semibold mb-3">My Tasks</h2>
+
+      <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+        <mat-tab label="Today">
+          <div class="space-y-4">
+            <div
+              class="flex items-center justify-between border-b border-slate-200 p-3"
+            >
+              <div class="flex items-center">
+                <div>
+                  <p class="font-medium text-gray-700">
+                    Finalize Q3 Marketing Report
+                  </p>
+                  <p class="text-sm text-gray-500">Project: Alpha</p>
+                </div>
+              </div>
+              <span
+                class="text-red-500 text-sm font-medium flex items-center gap-2"
+              >
+                <ng-icon name="bootstrapCalendar" />
+                <p class="flex items-center">Due Today</p>
+              </span>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Upcoming">
+          <div class="space-y-4">
+            <p class="text-slate-600 text-center p-3">
+              Nothing to show here yet
+            </p>
+          </div>
+        </mat-tab>
+        <mat-tab label="Overdue">
+          <div class="space-y-4">
+            <p class="text-slate-600 text-center p-3">
+              Nothing to show here yet
+            </p>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm p-5">
+      <h2 class="text-lg font-semibold mb-4">Recent Activity</h2>
+
+      <div class="space-y-4">
+        <div class="flex items-start gap-2">
+          <img
+            src="https://i.pravatar.cc/30?img=21"
+            class="w-8 h-8 rounded-full"
+          />
+          <div class="">
+            <p class="text-gray-800 font-medium">Jane Doe completed task</p>
+            <p class="text-sm text-gray-500">"Design new hero section"</p>
+            <p class="text-xs text-gray-400 mt-1">2 hours ago</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-2">
+          <img
+            src="https://i.pravatar.cc/30?img=22"
+            class="w-8 h-8 rounded-full"
+          />
+          <div class="">
+            <p class="text-gray-800 font-medium">Jane Doe completed task</p>
+            <p class="text-sm text-gray-500">"Design new hero section"</p>
+            <p class="text-xs text-gray-400 mt-1">2 hours ago</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-2">
+          <img
+            src="https://i.pravatar.cc/30?img=14"
+            class="w-8 h-8 rounded-full"
+          />
+          <div class="">
+            <p class="text-gray-800 font-medium">Jane Doe completed task</p>
+            <p class="text-sm text-gray-500">"Design new hero section"</p>
+            <p class="text-xs text-gray-400 mt-1">2 hours ago</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-8">
+    <h2 class="text-lg font-semibold my-3">Active Projects</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <app-project-card
+          title="Website Redesign"
+          company="Personal"
+          [progress]="85"
+          [tasksLeft]="12"
+          [overdue]="2"
+          dueIn="5 days"
+          [members]="[
+            'https://i.pravatar.cc/30?img=1',
+            'https://i.pravatar.cc/30?img=2',
+            'https://i.pravatar.cc/30?img=3'
+          ]"
+          link="/dashboard/projects"
+        ></app-project-card>
+        <app-project-card
+          title="Mobile App"
+          company="Amalitech"
+          [progress]="14"
+          [tasksLeft]="124"
+          [overdue]="7"
+          dueIn="65 days"
+          [members]="[
+            'https://i.pravatar.cc/30?img=1',
+            'https://i.pravatar.cc/30?img=2',
+            'https://i.pravatar.cc/30?img=3'
+          ]"
+          link="/dashboard/projects"
+        ></app-project-card>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm p-5">
+        <h2 class="text-lg font-semibold mb-4">Team Online</h2>
+
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <img
+                src="https://i.pravatar.cc/30?img=7"
+                class="w-8 h-8 rounded-full"
+              />
+              <div>
+                <p class="text-gray-800 font-medium">John Smith</p>
+                <p class="text-sm text-gray-500">Developer</p>
+              </div>
+            </div>
+            <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <img
+                src="https://i.pravatar.cc/30?img=8"
+                class="w-8 h-8 rounded-full"
+              />
+              <div>
+                <p class="text-gray-800 font-medium">Emily White</p>
+                <p class="text-sm text-gray-500">Designer</p>
+              </div>
+            </div>
+            <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <img
+                src="https://i.pravatar.cc/30?img=9"
+                class="w-8 h-8 rounded-full"
+              />
+              <div>
+                <p class="text-gray-800 font-medium">Jane Doe</p>
+                <p class="text-sm text-gray-500">Project Manager</p>
+              </div>
+            </div>
+            <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
