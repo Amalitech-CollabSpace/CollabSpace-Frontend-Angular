@@ -43,7 +43,17 @@ export class AuthServices {
     const expiresAt=moment().add(authResponse.expiresIn,'second')
 
     localStorage.setItem('user_token',authResponse.token)
+    localStorage.setItem('refresh_token',authResponse.refreshToken)
     localStorage.setItem('token_expiration',JSON.stringify(expiresAt.valueOf()))
+    console.log("Access tokens ",localStorage.getItem('user_token'))
+    console.log("Refresh tokens ",localStorage.getItem('refresh_token'))
+  }
+
+  public getRefreshToken():Observable<any>{
+    return this.http.get(`${this.baseUrl}/api/refresh`,{
+      headers:{'Authorization':`Bearer ${localStorage.getItem('refresh_token')}`}
+    }
+     )
   }
 
   public logout(){
