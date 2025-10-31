@@ -1,5 +1,8 @@
 import { Routes } from '@angular/router';
 import { Dashboard } from './dashboard';
+import { ProjectListComponent } from './projects/components/project-list/project-list.component';
+import { ProjectFormComponent } from './projects/components/project-form/project-form.component';
+import { ProjectDetailComponent } from './projects/components/project-detail/project-detail.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -21,8 +24,19 @@ export const routes: Routes = [
       },
       {
         path: 'projects',
-        loadChildren: () =>
-          import('./projects/projects.routes').then((m) => m.routes),
+        component: ProjectListComponent
+      },
+      {
+        path: 'projects/create',
+        component: ProjectFormComponent
+      },
+      {
+        path: 'projects/edit/:id',
+        component: ProjectFormComponent
+      },
+      {
+        path: 'projects/:id',
+        component: ProjectDetailComponent
       },
       {
         path: 'analytics',
