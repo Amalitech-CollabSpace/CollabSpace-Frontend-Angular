@@ -25,11 +25,6 @@ export const routes: Routes = [
           import('./projects/projects').then((m) => m.Projects),
       },
       {
-        path: 'tasks',
-        loadComponent: () =>
-          import('./tasks/tasks').then((m) => m.Tasks),
-      },
-      {
         path: 'analytics',
         loadComponent: () =>
           import('./analytics/analytics').then((m) => m.Analytics),
