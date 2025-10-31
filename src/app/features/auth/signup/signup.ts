@@ -8,11 +8,13 @@ import {Subject, takeUntil} from 'rxjs'
 
 import {StrongPasswordValidator} from '../validators/passwordRegex';
 
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
 import {toast,NgxSonnerToaster} from 'ngx-sonner';
 
 @Component({
   selector: 'app-signup',
-  imports: [ReactiveFormsModule, InputComponent, RouterLink,NgxSonnerToaster],
+  imports: [ReactiveFormsModule, InputComponent, RouterLink,NgxSonnerToaster,MatProgressSpinnerModule],
   templateUrl: './signup.html',
   // styleUrl: '',
 })
@@ -20,7 +22,7 @@ export class Signup implements OnInit,OnDestroy {
   private router=inject(Router);
   private authService=inject(AuthServices)
   private _destroy$=new Subject<void>();
-
+  public isLoading=false;
   
 
   
@@ -42,6 +44,7 @@ export class Signup implements OnInit,OnDestroy {
   
 
   public submitSignup(){
+    this.isLoading=true
     
     if(this.signUpForm.valid){
       const newUser={
@@ -52,13 +55,15 @@ export class Signup implements OnInit,OnDestroy {
       this.authService.signup(newUser)
       .subscribe({
         next:()=> {
+          this.isLoading=false
           this.router.navigate(['/dashboard'])
           toast.success("Registered successfully")
           
           takeUntil(this._destroy$)
         },
         error:(err)=>{
-            toast.error(err?.error?.error||err?.message||'Unknown error')
+          this.isLoading=false
+          toast.error(err?.error?.error||err?.message||'Unknown error')
           
         },
 })
