@@ -78,11 +78,6 @@ export class SideBar {
       path: 'projects',
     },
     {
-      name: 'Tasks',
-      icon: 'bootstrapCalendar2Check',
-      path: 'tasks',
-    },
-    {
       name: 'Chat',
       icon: 'bootstrapChatLeftDots',
       path: 'chat',

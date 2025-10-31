@@ -95,6 +95,17 @@
           }
         </li>
         }
+
+         <li
+          routerLink=""
+          [ngClass]="{ 'justify-center': !isSidebarOpen }"
+          class="text-blue-500 flex items-right gap-2 transition-all hover:underline rounded-md cursor-pointer"
+        >
+          @if (isSidebarOpen) {
+          <p>...view all</p>
+          }
+        </li>
+        
       </div>
       }
     </li>
