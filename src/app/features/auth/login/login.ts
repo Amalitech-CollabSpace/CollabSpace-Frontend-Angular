@@ -8,9 +8,11 @@ import {Subject, takeUntil} from 'rxjs'
 
 import {StrongPasswordValidator} from '../validators/passwordRegex';
 
+import {toast,NgxSonnerToaster} from 'ngx-sonner';
+
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, InputComponent, RouterLink],
+  imports: [ReactiveFormsModule, InputComponent, RouterLink,NgxSonnerToaster],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
@@ -20,6 +22,7 @@ export class Login {
     private _destroy$=new Subject<void>();
   
     public errorMessage='';
+    protected readonly toast=toast;
     
   
     
@@ -37,7 +40,6 @@ export class Login {
     
   
     public submitLogin(){
-      
       if(this.loginForm.valid){
         const newUser={
           password:this.loginForm.controls.password.value || '',
@@ -47,11 +49,13 @@ export class Login {
         .subscribe({
           next:()=> {
             this.router.navigate(['/dashboard'])
+            toast.success("Logged in successfully")
             
             takeUntil(this._destroy$)
           },
           error:(err)=>{
-            this.errorMessage=err?.error?.error||err?.message||'Unknown error'
+            toast.error(err?.error?.error||err?.message||'Unknown error')
+            console.log("THIS IS THE ERROR:", err.error.message)
             
           },
   })

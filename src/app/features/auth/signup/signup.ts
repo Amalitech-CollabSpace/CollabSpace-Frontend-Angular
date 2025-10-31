@@ -8,9 +8,11 @@ import {Subject, takeUntil} from 'rxjs'
 
 import {StrongPasswordValidator} from '../validators/passwordRegex';
 
+import {toast,NgxSonnerToaster} from 'ngx-sonner';
+
 @Component({
   selector: 'app-signup',
-  imports: [ReactiveFormsModule, InputComponent, RouterLink],
+  imports: [ReactiveFormsModule, InputComponent, RouterLink,NgxSonnerToaster],
   templateUrl: './signup.html',
   // styleUrl: '',
 })
@@ -19,7 +21,6 @@ export class Signup implements OnInit,OnDestroy {
   private authService=inject(AuthServices)
   private _destroy$=new Subject<void>();
 
-  public errorMessage='';
   
 
   
@@ -52,11 +53,12 @@ export class Signup implements OnInit,OnDestroy {
       .subscribe({
         next:()=> {
           this.router.navigate(['/dashboard'])
+          toast.success("Registered successfully")
           
           takeUntil(this._destroy$)
         },
         error:(err)=>{
-          this.errorMessage=err?.error?.error||err?.message||'Unknown error'
+            toast.error(err?.error?.error||err?.message||'Unknown error')
           
         },
 })
