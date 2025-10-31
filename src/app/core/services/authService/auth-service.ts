@@ -62,7 +62,7 @@ export class AuthServices {
   }
 
   public isLoggedIn(){
-    return moment().isBefore(this.getExpiration());
+    return moment().isBefore(this.getExpiration())|| !!localStorage.getItem('user_token');
   }
 
   public getExpiration(){
