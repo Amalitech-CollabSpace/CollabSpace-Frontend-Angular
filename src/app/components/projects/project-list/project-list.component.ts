@@ -12,11 +12,17 @@ import { Project } from '../../../models/project.model';
   styleUrl: './project-list.component.scss'
 })
 export class ProjectListComponent implements OnInit {
-  projects: Project[] = [];
+  allProjects: Project[] = [];
+  filteredProjects: Project[] = [];
   isLoading = false;
   error: string | null = null;
+  activeFilter: 'all' | 'owned' = 'all';
+  userId: string;
 
-  constructor(private projectService: ProjectService) {}
+  constructor(private projectService: ProjectService) {
+    // Stub the logged-in user ID temporarily
+    this.userId = localStorage.getItem('user_id') || 'mock-user-id';
+  }
 
   ngOnInit(): void {
     this.loadProjects();
@@ -28,7 +34,8 @@ export class ProjectListComponent implements OnInit {
 
     this.projectService.getProjects().subscribe({
       next: (data) => {
-        this.projects = data;
+        this.allProjects = data;
+        this.filterProjects(this.activeFilter);
         this.isLoading = false;
       },
       error: (err) => {
@@ -38,6 +45,18 @@ export class ProjectListComponent implements OnInit {
         // TODO: Implement toast notification here
       }
     });
+  }
+
+  filterProjects(filter: 'all' | 'owned'): void {
+    this.activeFilter = filter;
+    
+    if (filter === 'all') {
+      this.filteredProjects = [...this.allProjects];
+    } else if (filter === 'owned') {
+      this.filteredProjects = this.allProjects.filter(
+        project => project.createdBy === this.userId
+      );
+    }
   }
 }
 
