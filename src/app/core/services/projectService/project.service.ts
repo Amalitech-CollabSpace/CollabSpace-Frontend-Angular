@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Project, ProjectRequest } from '../models/project.model';
-import { ProjectMember, ProjectMemberRequest } from '../models/project-member.model';
-import { Team, TeamRequest } from '../models/team.model';
-import { environment } from '../../environments/environment.development';
+import { Project, ProjectRequest } from '../../../models/project.model';
+import { ProjectMember, ProjectMemberRequest } from '../../../models/project-member.model';
+import { Team, TeamRequest } from '../../../models/team.model';
+import { environment } from '../../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
