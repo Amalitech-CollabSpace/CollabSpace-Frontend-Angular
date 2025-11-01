@@ -63,7 +63,7 @@
 
         <button
           type="submit"
-          [disabled]="signUpForm.invalid"
+          [disabled]="signUpForm.invalid || isLoading()"
           [class]="
             signUpForm.invalid
               ? 'w-full bg-blue-600/[40%] rounded-md p-2 mt-0 mt-2 text-black/[30%]'

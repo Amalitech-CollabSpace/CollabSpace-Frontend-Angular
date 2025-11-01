@@ -80,6 +80,7 @@ export class Signup implements OnInit, OnDestroy {
       this.authService.signup(newUser).subscribe({
         next: () => {
           this.isLoading.set(false);
+
           this.router.navigate(['/dashboard']);
           toast.success('Registered successfully');
 
