@@ -1,4 +1,11 @@
-import { Component, OnInit, inject, ViewChild, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  ViewChild,
+  OnDestroy,
+  signal,
+} from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import {
   ReactiveFormsModule,
@@ -34,7 +41,7 @@ export class Login {
 
   public errorMessage = '';
   protected readonly toast = toast;
-  public isLoading = false;
+  public isLoading = signal(false);
 
   loginForm!: FormGroup<{
     email: FormControl<string | null>;
@@ -56,7 +63,7 @@ export class Login {
   }
 
   public submitLogin() {
-    this.isLoading = true;
+    this.isLoading.set(true);
 
     if (this.loginForm.valid) {
       const newUser = {
@@ -65,7 +72,7 @@ export class Login {
       };
       this.authService.login(newUser).subscribe({
         next: () => {
-          this.isLoading = false;
+          this.isLoading.set(false);
 
           this.router.navigate(['/dashboard']);
           toast.success('Logged in successfully');
@@ -73,7 +80,7 @@ export class Login {
           takeUntil(this._destroy$);
         },
         error: (err) => {
-          this.isLoading = false;
+          this.isLoading.set(false);
           toast.error(err?.error?.error || err?.message || 'Unknown error');
         },
       });

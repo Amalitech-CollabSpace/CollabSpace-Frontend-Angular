@@ -52,12 +52,12 @@
           type="submit"
           [disabled]="loginForm.invalid || isLoading"
           [class]="
-            loginForm.invalid || isLoading
+            loginForm.invalid || isLoading()
               ? 'w-full bg-blue-600/[40%] rounded-md p-2 mt-0 mt-2 text-black/[30%]'
               : 'active:border-1 active:border-blue-800 text-white  font-semibold bg-blue-600/[85%] rounded-md p-2 mt-0 w-full mt-2'
           "
         >
-          @if(isLoading){
+          @if(isLoading()){
           <div class="flex items-center justify-center">
             <mat-spinner [diameter]="20"></mat-spinner>
             Logging you in...

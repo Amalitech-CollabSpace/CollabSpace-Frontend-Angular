@@ -1,4 +1,11 @@
-import { Component, OnInit, inject, ViewChild, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  ViewChild,
+  OnDestroy,
+  signal,
+} from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import {
   ReactiveFormsModule,
@@ -33,7 +40,7 @@ export class Signup implements OnInit, OnDestroy {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthServices);
   private readonly _destroy$ = new Subject<void>();
-  public isLoading = false;
+  public isLoading = signal(false);
 
   signUpForm!: FormGroup<{
     fullName: FormControl<string | null>;
@@ -62,7 +69,7 @@ export class Signup implements OnInit, OnDestroy {
   }
 
   public submitSignup() {
-    this.isLoading = true;
+    this.isLoading.set(true);
 
     if (this.signUpForm.valid) {
       const newUser = {
@@ -72,14 +79,14 @@ export class Signup implements OnInit, OnDestroy {
       };
       this.authService.signup(newUser).subscribe({
         next: () => {
-          this.isLoading = false;
+          this.isLoading.set(false);
           this.router.navigate(['/dashboard']);
           toast.success('Registered successfully');
 
           takeUntil(this._destroy$);
         },
         error: (err) => {
-          this.isLoading = false;
+          this.isLoading.set(false);
           toast.error(err?.error?.error || err?.message || 'Unknown error');
         },
       });
