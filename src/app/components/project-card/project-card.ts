@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { bootstrapAlarm, bootstrapCheck2Circle } from '@ng-icons/bootstrap-icons';
 import { provideIcons, NgIcon } from '@ng-icons/core';
 import { RouterLink } from "@angular/router";
@@ -8,22 +8,22 @@ import { RouterLink } from "@angular/router";
   imports: [NgIcon, RouterLink],
   templateUrl: './project-card.html',
   styleUrl: './project-card.scss',
-  
   viewProviders: [provideIcons({ bootstrapCheck2Circle,bootstrapAlarm })],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProjectCard {
-  @Input() title = 'Untitled Project';
-  @Input() company = '';
-  @Input() progress = 0;
-  @Input() tasksLeft = 0;
-  @Input() overdue = 0;
-  @Input() dueIn = '';
-  @Input() members: string[] = [];
-  @Input() link = '#';
+  title = input<string>('Untitled Project');
+  company = input<string>('');
+  progress = input<number>(0);
+  tasksLeft = input<number>(0);
+  overdue = input<number>(0);
+  dueIn = input<string>('');
+  members = input<string[]>([]);
+  link = input<string>('#');
   pi = Math.PI
 
   get progressOffset(): number {
     const circumference = 2 * this.pi * 18; 
-    return circumference - (this.progress / 100) * circumference;
+    return circumference - (this.progress() / 100) * circumference;
   }
 }
