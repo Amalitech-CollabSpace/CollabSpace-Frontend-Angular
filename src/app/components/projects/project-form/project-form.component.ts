@@ -5,11 +5,13 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { ProjectService } from '../../../core/services/projectService/project.service';
 import { ProjectRequest } from '../../../models/project.model';
 import { InputComponent } from '../../input-component/input-component';
+import { ButtonComponent } from '../../button/button.component';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-project-form',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, InputComponent],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, InputComponent, ButtonComponent],
   templateUrl: './project-form.component.html',
   styleUrl: './project-form.component.scss'
 })
@@ -62,7 +64,9 @@ export class ProjectFormComponent implements OnInit {
       },
       error: (err) => {
         this.error = 'Failed to load project. Please try again.';
-        console.error('Error loading project:', err);
+        toast.error('Failed to load project', {
+          description: err?.error?.message || 'An error occurred while loading the project.'
+        });
         this.isLoading = false;
       }
     });
@@ -94,11 +98,14 @@ export class ProjectFormComponent implements OnInit {
       this.projectService.updateProject(this.projectId, projectData, userId).subscribe({
         next: () => {
           this.isSubmitting = false;
+          toast.success('Project updated successfully');
           this.router.navigate(['/dashboard/projects']);
         },
         error: (err) => {
           this.error = 'Failed to update project. Please try again.';
-          console.error('Error updating project:', err);
+          toast.error('Failed to update project', {
+            description: err?.error?.message || 'An error occurred while updating the project.'
+          });
           this.isSubmitting = false;
         }
       });
@@ -106,11 +113,14 @@ export class ProjectFormComponent implements OnInit {
       this.projectService.createProject(projectData, userId).subscribe({
         next: () => {
           this.isSubmitting = false;
+          toast.success('Project created successfully');
           this.router.navigate(['/dashboard/projects']);
         },
         error: (err) => {
           this.error = 'Failed to create project. Please try again.';
-          console.error('Error creating project:', err);
+          toast.error('Failed to create project', {
+            description: err?.error?.message || 'An error occurred while creating the project.'
+          });
           this.isSubmitting = false;
         }
       });

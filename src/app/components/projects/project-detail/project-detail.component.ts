@@ -3,11 +3,13 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from '../../../core/services/projectService/project.service';
 import { Project } from '../../../models/project.model';
+import { ButtonComponent } from '../../button/button.component';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-project-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, DatePipe],
+  imports: [CommonModule, RouterModule, DatePipe, ButtonComponent],
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.scss'
 })
@@ -45,7 +47,9 @@ export class ProjectDetailComponent implements OnInit {
       },
       error: (err) => {
         this.error = 'Failed to load project. Please try again.';
-        console.error('Error loading project:', err);
+        toast.error('Failed to load project', {
+          description: err?.error?.message || 'An error occurred while loading the project.'
+        });
         this.isLoading = false;
       }
     });
