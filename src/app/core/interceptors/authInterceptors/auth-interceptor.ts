@@ -1,62 +1,78 @@
-import { HttpInterceptorFn,HttpRequest,HttpHandlerFn,HttpErrorResponse} from '@angular/common/http';
-import {catchError,Observable,of,throwError,switchMap} from 'rxjs';
-import {runInInjectionContext,inject} from '@angular/core'
-import {AuthServices} from '../../services/authService/auth-service'
-import {Router} from '@angular/router'
+import { HttpInterceptorFn,HttpRequest,HttpHandlerFn,HttpErrorResponse } from "@angular/common/http";
+import { inject } from "@angular/core";
+import { Router } from "@angular/router";
+import { AuthServices } from "../../services/authService/auth-service";
+import { BehaviorSubject,throwError,Observable,of } from "rxjs";
+import { catchError,filter,switchMap,take,shareReplay,finalize } from "rxjs/operators";
 
-let errCount=0
+
+let refreshTokenInProgress=false;
+const refreshTokenSubject=new BehaviorSubject<string|null>(null)
 
 
-function handleError(req:HttpRequest<any>,next:HttpHandlerFn,err:HttpErrorResponse,authService:AuthServices,router:Router):Observable<any>{
-
-  if(err&&err.status===401 && errCount !=1){
-    errCount++
-    return authService.getRefreshToken().pipe(
-      switchMap((x:any)=>{
-        localStorage.setItem('user_token',x.token)
-        const retryRequest=req.clone(
-          {
-            setHeaders:{Authorization:`Bearer ${x.token}`}
-          })
-
-          return next(retryRequest);
-      }),
-      catchError((errs)=>{
-        authService.logout();
-        router.navigate(['/auth/login'])
-        return throwError(()=>new Error(errs.message ||'Refresh Token failed'))
-
-      }))
-  }else{
-    errCount=0
-      const retryRequest=req.clone(
-          {
-            setHeaders:{Authorization:`Bearer ${localStorage.getItem('user_token')}`}
-          })
-          return next(retryRequest);
-    // return throwError(()=>new Error("Non Authentication Error"))
-  }
-  
-  }
-
-export const AuthInterceptor: HttpInterceptorFn = (req:HttpRequest<unknown>, next:HttpHandlerFn) => {
-  const token=localStorage.getItem('user_token')
-  const router=inject(Router)
+export const AuthInterceptor:HttpInterceptorFn=(req:HttpRequest<unknown>,next:HttpHandlerFn)=>{
   const authService=inject(AuthServices)
+  const router=inject(Router)
 
 
+  const token=localStorage.getItem('user_token');
+  const authReq=token? req.clone({ setHeaders:{Authorization:`Bearer ${token} `}}):req;
 
-
-  const newRequest=req.clone({
-    setHeaders:{
-      Authorization:`Bearer ${token}`
-    }
-  })
-  return next(newRequest).pipe(
-    catchError(err=>handleError(req,next,err as HttpErrorResponse,authService,router))
+  return next(authReq).pipe(
+    catchError((error:HttpErrorResponse)=>{
+      if(error.status===401){
+        return handle401Error(authReq,next,authService,router)
+      }
+      return throwError(()=>error);
+    })
   )
-
-  
 };
 
+function handle401Error( req:HttpRequest<any>,next:HttpHandlerFn,authService:AuthServices,router:Router):Observable<any>{
+    if(!refreshTokenInProgress){
+      refreshTokenInProgress=true;
+      refreshTokenSubject.next(null)
+    
 
+    const refresh$=authService.getRefreshToken().pipe(
+      shareReplay(1),
+      switchMap((res:any)=>{
+        const newToken=res.token;
+        if(!newToken){
+          throw new Error('No token returned from refresh endpoint')
+        }
+        localStorage.setItem('user_token',newToken)
+        refreshTokenSubject.next(newToken);
+
+        const retryReq=req.clone({
+          setHeaders:{ Authorization:`Bearer ${newToken}`}
+        })
+        return next(retryReq)
+      }),
+
+      catchError((err)=>{
+        authService.logout();
+        router.navigateByUrl('/auth/login');
+        return throwError(()=>err);
+      }),
+      finalize(()=>{
+        refreshTokenInProgress=false;
+      })
+    )
+    return refresh$
+}else{
+  return refreshTokenSubject.pipe(
+    filter((token)=>token!=null),
+    take(1),
+    switchMap((token)=>{
+      const retryReq=req.clone({
+        setHeaders:{Authorization:`Bearer ${token}`}
+      });
+      return next(retryReq);
+    }),
+    catchError((err)=>throwError(()=>err))
+  )
+
+
+  }
+}
