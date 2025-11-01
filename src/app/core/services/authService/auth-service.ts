@@ -34,8 +34,6 @@ export class AuthServices {
       'token_expiration',
       JSON.stringify(expiresAt.valueOf())
     );
-    console.log('Access tokens ', localStorage.getItem('user_token'));
-    console.log('Refresh tokens ', localStorage.getItem('refresh_token'));
   }
 
   public getRefreshToken(): Observable<any> {
