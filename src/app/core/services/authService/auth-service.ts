@@ -1,67 +1,67 @@
-import { Injectable } from '@angular/core';
-import moment from "moment";
-import {HttpClient} from '@angular/common/http';
-import {Observable,tap } from 'rxjs';
-import {User,LoggedInUser} from '../../../models/auth-models/user.model';
-import {environment} from '../../../../environments/environment.development';
+import { inject, Injectable } from '@angular/core';
+import moment from 'moment';
+import { HttpClient } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
+import { User, LoggedInUser } from '../../../models/auth-models/user.model';
+import { environment } from '../../../../environments/environment.development';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthServices {
-  private baseUrl=environment.nodeApiURL
+  private baseUrl = environment.nodeApiURL;
+  private http = inject(HttpClient);
 
-  
- 
-
-  constructor(private http:HttpClient){}
-
-  
-  
-
-  public login(email:string,password:string):Observable<User>{
-    return this.http.post<User>(`${this.baseUrl}api/authentication/signin`,{email,password})
-    .pipe(
-      tap((response)=>this.setLoggedInUser(response), 
-
-      )
-      
-    )
-      
+  public login(user: LoggedInUser): Observable<User> {
+    return this.http
+      .post<User>(`${this.baseUrl}api/authentication/signin`, user)
+      .pipe(tap((response) => this.setLoggedInUser(response)));
   }
 
-
-  public signup(newUser:User):Observable<LoggedInUser>{
-    return this.http.post<LoggedInUser>(`${this.baseUrl}api/authentication/signup`,newUser)
-    .pipe(
-      tap((response)=>this.setLoggedInUser(response)),
-    )
-
+  public signup(newUser: User): Observable<LoggedInUser> {
+    return this.http
+      .post<LoggedInUser>(`${this.baseUrl}api/authentication/signup`, newUser)
+      .pipe(tap((response) => this.setLoggedInUser(response)));
   }
 
-  private setLoggedInUser(authResponse:any){
-    const expiresAt=moment().add(authResponse.expiresIn,'second')
+  private setLoggedInUser(authResponse: any) {
+    const expiresAt = moment().add(authResponse.expiresIn, 'second');
 
-    localStorage.setItem('user_token',authResponse.token)
-    localStorage.setItem('token_expiration',JSON.stringify(expiresAt.valueOf()))
+    localStorage.setItem('user_token', authResponse.token);
+    localStorage.setItem('refresh_token', authResponse.refreshToken);
+    localStorage.setItem(
+      'token_expiration',
+      JSON.stringify(expiresAt.valueOf())
+    );
   }
 
-  public logout(){
-    localStorage.removeItem('user_token')
-    localStorage.removeItem('token_expiration')
+  public getRefreshToken(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/api/refresh`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('refresh_token')}`,
+      },
+    });
   }
 
-  public isLoggedIn(){
-    return moment().isBefore(this.getExpiration());
+  public logout() {
+    localStorage.removeItem('user_token');
+    localStorage.removeItem('token_expiration');
   }
 
-  public getExpiration(){
-    const expiration=localStorage.getItem('token_expiration') || '0'
-    const expiresAt=JSON.parse(expiration);
-    return moment(expiresAt)
+  public isLoggedIn() {
+    return (
+      moment().isBefore(this.getExpiration()) ||
+      !!localStorage.getItem('user_token')
+    );
   }
 
-  public isLoggedOut(){
+  public getExpiration() {
+    const expiration = localStorage.getItem('token_expiration') || '0';
+    const expiresAt = JSON.parse(expiration);
+    return moment(expiresAt);
+  }
+
+  public isLoggedOut() {
     return !this.isLoggedIn();
   }
 }
