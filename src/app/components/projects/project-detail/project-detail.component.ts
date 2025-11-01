@@ -47,7 +47,6 @@ export class ProjectDetailComponent implements OnInit {
         this.error = 'Failed to load project. Please try again.';
         console.error('Error loading project:', err);
         this.isLoading = false;
-        // TODO: Implement toast notification here
       }
     });
   }

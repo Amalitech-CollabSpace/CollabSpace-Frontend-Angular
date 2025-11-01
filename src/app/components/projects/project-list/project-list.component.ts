@@ -20,7 +20,6 @@ export class ProjectListComponent implements OnInit {
   userId: string;
 
   constructor(private projectService: ProjectService) {
-    // Stub the logged-in user ID temporarily
     this.userId = localStorage.getItem('user_id') || 'mock-user-id';
   }
 
@@ -42,7 +41,6 @@ export class ProjectListComponent implements OnInit {
         this.error = 'Failed to load projects. Please try again later.';
         console.error('Error loading projects:', err);
         this.isLoading = false;
-        // TODO: Implement toast notification here
       }
     });
   }

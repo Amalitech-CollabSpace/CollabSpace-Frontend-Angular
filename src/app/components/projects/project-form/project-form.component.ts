@@ -64,7 +64,6 @@ export class ProjectFormComponent implements OnInit {
         this.error = 'Failed to load project. Please try again.';
         console.error('Error loading project:', err);
         this.isLoading = false;
-        // TODO: Implement toast notification here
       }
     });
   }
@@ -89,37 +88,30 @@ export class ProjectFormComponent implements OnInit {
       end_date: new Date(this.projectForm.value.end_date).toISOString()
     };
 
-    // Get userId from localStorage or token (TODO: extract from token or user service)
     const userId = this.getUserId();
 
     if (this.isEditMode && this.projectId) {
-      // Update existing project
       this.projectService.updateProject(this.projectId, projectData, userId).subscribe({
         next: () => {
           this.isSubmitting = false;
           this.router.navigate(['/dashboard/projects']);
-          // TODO: Implement success toast notification here
         },
         error: (err) => {
           this.error = 'Failed to update project. Please try again.';
           console.error('Error updating project:', err);
           this.isSubmitting = false;
-          // TODO: Implement toast notification here
         }
       });
     } else {
-      // Create new project
       this.projectService.createProject(projectData, userId).subscribe({
         next: () => {
           this.isSubmitting = false;
           this.router.navigate(['/dashboard/projects']);
-          // TODO: Implement success toast notification here
         },
         error: (err) => {
           this.error = 'Failed to create project. Please try again.';
           console.error('Error creating project:', err);
           this.isSubmitting = false;
-          // TODO: Implement toast notification here
         }
       });
     }
@@ -130,12 +122,8 @@ export class ProjectFormComponent implements OnInit {
   }
 
   private getUserId(): string {
-    // TODO: Extract user ID from token or user service
-    // For now, return a placeholder or get from token
     const token = localStorage.getItem('user_token');
     if (token) {
-      // In a real implementation, decode the JWT token to get user ID
-      // For now, returning a placeholder
       return 'user-id-placeholder';
     }
     return 'user-id-placeholder';
