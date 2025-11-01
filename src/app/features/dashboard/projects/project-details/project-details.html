@@ -1,0 +1,65 @@
+<div class="h-[90vh] px-8 py-6 overflow-y-auto">
+  <div class="flex justify-between items-center">
+    <div>
+      <h1 class="text-2xl font-semibold text-gray-800 capitalize">
+        Project {{ projectId }}
+      </h1>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="flex -space-x-3">
+        @for (member of members | slice:0:3; track member) {
+        <img
+          class="w-8 h-8 rounded-full border-2 border-white"
+          [src]="member"
+          alt="member"
+        />
+        }
+        <div
+          class="w-8 h-8 rounded-full border-1 border-white text-white text-xs flex items-center justify-center bg-slate-400"
+        >
+          +{{ members.length - 3 }}
+        </div>
+      </div>
+      <button
+        routerLink="/dashboard/projects/create"
+        class="flex items-center gap-1 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 cursor-pointer transition-all"
+      >
+        <span class="text-xl">
+          <ng-icon name="bootstrapPersonAdd" />
+        </span>
+        Invite
+      </button>
+    </div>
+  </div>
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+    <mat-tab label="Backlog">
+      <div class="space-y-4">
+        <app-dad-table
+          [data]="tasks"
+          [displayedColumns]="[
+            'id',
+            'title',
+            'status',
+            'dueDate',
+            'assignee',
+            'actions'
+          ]"
+          [showSearch]="true"
+        />
+
+        <div
+          routerLink="/dashboard/projects/create/task"
+          routerLinkActive="router-link-active"
+          class="w-full bg-slate-100 p-4 hover:bg-slate-200 transtion-all cursor-pointer"
+        >
+          + Create Task
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Board">
+      <div class="space-y-4">
+        <p class="text-slate-600 text-center p-3">Nothing to show here yet</p>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
