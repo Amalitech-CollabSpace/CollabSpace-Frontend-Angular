@@ -13,19 +13,17 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { confirmPasswordValidator } from '../validators/confirmPassword';
+
 import { InputComponent } from '../../../components/input-component/input-component';
 import { AuthServices } from '../../../core/services/authService/auth-service';
 import { Subject, takeUntil } from 'rxjs';
 
 import { StrongPasswordValidator } from '../validators/passwordRegex';
-
+import { toast, NgxSonnerToaster } from 'ngx-sonner';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { toast, NgxSonnerToaster } from 'ngx-sonner';
-
 @Component({
-  selector: 'app-signup',
+  selector: 'app-login',
   imports: [
     ReactiveFormsModule,
     InputComponent,
@@ -33,56 +31,51 @@ import { toast, NgxSonnerToaster } from 'ngx-sonner';
     NgxSonnerToaster,
     MatProgressSpinnerModule,
   ],
-  templateUrl: './signup.html',
-  // styleUrl: '',
+  templateUrl: './login.html',
+  styleUrl: './login.scss',
 })
-export class Signup implements OnInit, OnDestroy {
+export class Login {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthServices);
   private readonly _destroy$ = new Subject<void>();
+
+  public errorMessage = '';
+  protected readonly toast = toast;
   public isLoading = signal(false);
 
-  signUpForm!: FormGroup<{
-    fullName: FormControl<string | null>;
+  loginForm!: FormGroup<{
     email: FormControl<string | null>;
     password: FormControl<string | null>;
-    confirmPassword: FormControl<string | null>;
   }>;
 
   ngOnInit() {
-    this.signUpForm = new FormGroup(
-      {
-        fullName: new FormControl('', [Validators.required]),
-        email: new FormControl('', [
-          Validators.required,
-          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
-        ]),
-        password: new FormControl('', [
-          Validators.required,
-          Validators.minLength(8),
-          StrongPasswordValidator(),
-        ]),
-        confirmPassword: new FormControl('', [Validators.required]),
-      },
-      { validators: confirmPasswordValidator }
-    );
+    this.loginForm = new FormGroup({
+      email: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+      ]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(8),
+        StrongPasswordValidator(),
+      ]),
+    });
   }
 
-  public submitSignup() {
+  public submitLogin() {
     this.isLoading.set(true);
 
-    if (this.signUpForm.valid) {
+    if (this.loginForm.valid) {
       const newUser = {
-        fullName: this.signUpForm.controls.fullName.value || '',
-        password: this.signUpForm.controls.password.value || '',
-        email: this.signUpForm.controls.email.value || '',
+        password: this.loginForm.controls.password.value || '',
+        email: this.loginForm.controls.email.value || '',
       };
-      this.authService.signup(newUser).subscribe({
+      this.authService.login(newUser).subscribe({
         next: () => {
           this.isLoading.set(false);
 
           this.router.navigate(['/dashboard']);
-          toast.success('Registered successfully');
+          toast.success('Logged in successfully');
 
           takeUntil(this._destroy$);
         },
@@ -92,7 +85,7 @@ export class Signup implements OnInit, OnDestroy {
         },
       });
     } else {
-      this.signUpForm.markAllAsTouched();
+      this.loginForm.markAllAsTouched();
     }
   }
 
