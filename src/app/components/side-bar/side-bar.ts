@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {} from '@ng-icons/ionicons';
 import {
@@ -11,18 +11,26 @@ import {
   bootstrapGear,
   bootstrapGrid1x2,
   bootstrapLayoutSidebarInset,
+  bootstrapPlus,
+  bootstrapCalendar2Check,
 } from '@ng-icons/bootstrap-icons';
-import {
-  ActivatedRoute,
-  Router,
-  RouterLink,
-  RouterLinkActive,
-} from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NgClass } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { TreeNode } from '../../models/tree';
 
 @Component({
   selector: 'app-side-bar',
-  imports: [NgIcon, RouterLink, NgClass, RouterLinkActive],
+  imports: [
+    NgIcon,
+    RouterLink,
+    NgClass,
+    RouterLinkActive,
+    MatIconModule,
+    MatTooltipModule,
+  ],
   templateUrl: './side-bar.html',
   styleUrl: './side-bar.scss',
   viewProviders: [
@@ -36,11 +44,33 @@ import { NgClass } from '@angular/common';
       bootstrapFolder2Open,
       bootstrapCheck2Circle,
       bootstrapChatLeftDots,
+      bootstrapPlus,
+      bootstrapCalendar2Check,
     }),
   ],
 })
 export class SideBar {
-  isSidebarOpen: boolean = true;
+  isSidebarOpen = signal<boolean>(true);
+  isProjectsOpen = signal<boolean>(true);
+
+  toggleProjects() {
+    if (!this.isSidebarOpen()) {
+      this.toggleSidebar();
+      if (this.isProjectsOpen()) {
+        return;
+      }
+    }
+    this.isProjectsOpen.set(!this.isProjectsOpen());
+  }
+
+  toggleSidebar() {
+    this.isSidebarOpen.set(!this.isSidebarOpen());
+  }
+
+  createProject() {
+    this.toggleProjects();
+    prompt('Create Project');
+  }
 
   sidebarLinks = [
     {
@@ -65,7 +95,8 @@ export class SideBar {
     },
   ];
 
-  toggleSidebar() {
-    this.isSidebarOpen = !this.isSidebarOpen;
-  }
+  projectTreeData: TreeNode[] = [
+    { name: 'Website Redesign', route: 'projects/web' },
+    { name: 'Mobile App', route: 'projects/mobile' },
+  ];
 }
