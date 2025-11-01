@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import moment from 'moment';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
@@ -10,8 +10,7 @@ import { environment } from '../../../../environments/environment.development';
 })
 export class AuthServices {
   private baseUrl = environment.nodeApiURL;
-
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   public login(user: LoggedInUser): Observable<User> {
     return this.http
@@ -34,8 +33,6 @@ export class AuthServices {
       'token_expiration',
       JSON.stringify(expiresAt.valueOf())
     );
-    console.log('Access tokens ', localStorage.getItem('user_token'));
-    console.log('Refresh tokens ', localStorage.getItem('refresh_token'));
   }
 
   public getRefreshToken(): Observable<any> {
