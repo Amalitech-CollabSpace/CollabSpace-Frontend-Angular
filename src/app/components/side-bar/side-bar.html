@@ -1,32 +1,32 @@
 <aside
   [ngClass]="{
-    'w-64 p-5': isSidebarOpen,
-    'w-16 py-5 px-2': !isSidebarOpen
+    'w-64 p-5': isSidebarOpen(),
+    'w-16 py-5 px-2': !isSidebarOpen()
   }"
   class="h-full bg-white border-r w-12 transition-all border-slate-200"
 >
   <div
-    [ngClass]="{ 'justify-center h-5': !isSidebarOpen }"
+    [ngClass]="{ 'justify-center h-5': !isSidebarOpen() }"
     class="flex items-center justify-between group"
   >
     <div
-      [ngClass]="{ 'group-hover:hidden': !isSidebarOpen }"
+      [ngClass]="{ 'group-hover:hidden': !isSidebarOpen() }"
       class="flex items-center gap-2 text-blue-500 text-lg"
     >
       <ng-icon name="bootstrapAmd" />
-      @if (isSidebarOpen) {
+      @if (isSidebarOpen()) {
       <h1 class="font-bold text-slate-700 whitespace-nowrap">CollabSpace</h1>
       }
     </div>
     <div
-      [ngClass]="{ 'hidden group-hover:flex': !isSidebarOpen }"
+      [ngClass]="{ 'hidden group-hover:flex': !isSidebarOpen() }"
       class="cursor-pointer text-slate-600"
       (click)="toggleSidebar()"
-      [title]="isSidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'"
+      [title]="isSidebarOpen() ? 'Collapse sidebar' : 'Expand sidebar'"
     >
       <ng-icon
         [name]="
-          isSidebarOpen
+          isSidebarOpen()
             ? 'bootstrapLayoutSidebarInset'
             : 'bootstrapLayoutSidebarInsetReverse'
         "
@@ -37,13 +37,15 @@
   <ul class="flex flex-col py-3 h-[98%] gap-1 pt-5">
     @for (item of sidebarLinks; track $index) { @if (item.name !== 'Projects') {
     <li
+      [matTooltip]="!isSidebarOpen() ? item.name : ''"
+      aria-label="Button that displays a tooltip when focused or hovered over"
       routerLinkActive="bg-blue-500 text-white hover:text-slate-600"
       [routerLink]="item.path"
-      [ngClass]="{ 'justify-center': !isSidebarOpen }"
+      [ngClass]="{ 'justify-center': !isSidebarOpen() }"
       class="text-slate-600 flex items-center gap-2 transition-all hover:bg-slate-100 rounded-md p-2 cursor-pointer"
     >
       <ng-icon [name]="item.icon" />
-      @if (isSidebarOpen) {
+      @if (isSidebarOpen()) {
       <p>{{ item.name }}</p>
       }
     </li>
@@ -55,21 +57,21 @@
       class="flex flex-col transition-all rounded-md cursor-pointer text-slate-600"
     >
       <div
-        [ngClass]="{ 'justify-center': !isSidebarOpen }"
+        [ngClass]="{ 'justify-center': !isSidebarOpen() }"
         class="flex items-center gap-2 hover:bg-slate-100 rounded-md p-2 group"
         (click)="toggleProjects()"
       >
         <div class="">
           <span class="hidden group-hover:flex -m-1 -mr-1.5">
             <mat-icon>
-              {{ isProjectsOpen ? "expand_more" : "chevron_right" }}
+              {{ isProjectsOpen() ? "expand_more" : "chevron_right" }}
             </mat-icon>
           </span>
           <span class="flex group-hover:hidden">
             <ng-icon [name]="item.icon" />
           </span>
         </div>
-        @if (isSidebarOpen) {
+        @if (isSidebarOpen()) {
         <p>Projects</p>
         <div
           (click)="createProject()"
@@ -81,45 +83,44 @@
         }
       </div>
 
-      @if (isProjectsOpen && isSidebarOpen) {
+      @if (isProjectsOpen() && isSidebarOpen()) {
       <div class="pl-6">
         @for (item of projectTreeData; track $index) {
         <li
           routerLinkActive="bg-blue-500 text-white hover:text-slate-600"
           [routerLink]="item.route"
-          [ngClass]="{ 'justify-center': !isSidebarOpen }"
+          [ngClass]="{ 'justify-center': !isSidebarOpen() }"
           class="text-slate-600 flex items-center gap-2 transition-all hover:bg-slate-100 rounded-md p-2 cursor-pointer"
         >
-          @if (isSidebarOpen) {
+          @if (isSidebarOpen()) {
           <p>{{ item.name }}</p>
           }
         </li>
         }
 
-         <li
-          routerLink=""
-          [ngClass]="{ 'justify-center': !isSidebarOpen }"
+        <li
+          routerLink="projects"
+          [ngClass]="{ 'justify-center': !isSidebarOpen() }"
           class="text-blue-500 flex items-right gap-2 transition-all hover:underline rounded-md cursor-pointer"
         >
-          @if (isSidebarOpen) {
+          @if (isSidebarOpen()) {
           <p>...view all</p>
           }
         </li>
-        
       </div>
       }
     </li>
     } }
 
-    <!-- Settings -->
     <li
+      [matTooltip]="!isSidebarOpen() ? 'Settings' : ''"
       routerLinkActive="bg-blue-500 text-white hover:text-slate-600"
       routerLink="settings"
-      [ngClass]="{ 'justify-center': !isSidebarOpen }"
+      [ngClass]="{ 'justify-center': !isSidebarOpen() }"
       class="text-slate-600 flex items-center gap-2 transition-all hover:bg-slate-100 rounded-md p-2 mt-auto cursor-pointer"
     >
       <ng-icon name="bootstrapGear" />
-      @if (isSidebarOpen) {
+      @if (isSidebarOpen()) {
       <p>Settings</p>
       }
     </li>

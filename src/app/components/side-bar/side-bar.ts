@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {} from '@ng-icons/ionicons';
 import {
@@ -14,17 +14,23 @@ import {
   bootstrapPlus,
   bootstrapCalendar2Check,
 } from '@ng-icons/bootstrap-icons';
-import {
-  RouterLink,
-  RouterLinkActive,
-} from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TreeNode } from '../../models/tree';
 
 @Component({
   selector: 'app-side-bar',
-  imports: [NgIcon, RouterLink, NgClass, RouterLinkActive, MatIconModule],
+  imports: [
+    NgIcon,
+    RouterLink,
+    NgClass,
+    RouterLinkActive,
+    MatIconModule,
+    MatTooltipModule,
+  ],
   templateUrl: './side-bar.html',
   styleUrl: './side-bar.scss',
   viewProviders: [
@@ -39,31 +45,31 @@ import { TreeNode } from '../../models/tree';
       bootstrapCheck2Circle,
       bootstrapChatLeftDots,
       bootstrapPlus,
-      bootstrapCalendar2Check
+      bootstrapCalendar2Check,
     }),
   ],
 })
 export class SideBar {
-  isSidebarOpen: boolean = true;
-  isProjectsOpen: boolean = false;
+  isSidebarOpen = signal<boolean>(true);
+  isProjectsOpen = signal<boolean>(true);
 
   toggleProjects() {
-    if(!this.isSidebarOpen){
-      this.toggleSidebar()
-      if(this.isProjectsOpen){
-        return
+    if (!this.isSidebarOpen()) {
+      this.toggleSidebar();
+      if (this.isProjectsOpen()) {
+        return;
       }
     }
-    this.isProjectsOpen = !this.isProjectsOpen;
+    this.isProjectsOpen.set(!this.isProjectsOpen());
   }
 
   toggleSidebar() {
-    this.isSidebarOpen = !this.isSidebarOpen;
+    this.isSidebarOpen.set(!this.isSidebarOpen());
   }
 
   createProject() {
-    this.toggleProjects()
-    prompt("Create Project")
+    this.toggleProjects();
+    prompt('Create Project');
   }
 
   sidebarLinks = [
@@ -90,7 +96,7 @@ export class SideBar {
   ];
 
   projectTreeData: TreeNode[] = [
-        { name: 'Website Redesign', route: 'projects/website' },
-        { name: 'Mobile App', route: 'projects/app' },
+    { name: 'Website Redesign', route: 'projects/web' },
+    { name: 'Mobile App', route: 'projects/mobile' },
   ];
 }
