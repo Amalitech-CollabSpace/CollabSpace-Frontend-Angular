@@ -28,9 +28,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './login.scss',
 })
 export class Login {
-  private router = inject(Router);
-  private authService = inject(AuthServices);
-  private _destroy$ = new Subject<void>();
+  private readonly router = inject(Router);
+  private readonly authService = inject(AuthServices);
+  private readonly _destroy$ = new Subject<void>();
 
   public errorMessage = '';
   protected readonly toast = toast;

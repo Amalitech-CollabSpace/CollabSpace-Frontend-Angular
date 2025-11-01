@@ -30,9 +30,9 @@ import { toast, NgxSonnerToaster } from 'ngx-sonner';
   // styleUrl: '',
 })
 export class Signup implements OnInit, OnDestroy {
-  private router = inject(Router);
-  private authService = inject(AuthServices);
-  private _destroy$ = new Subject<void>();
+  private readonly router = inject(Router);
+  private readonly authService = inject(AuthServices);
+  private readonly _destroy$ = new Subject<void>();
   public isLoading = false;
 
   signUpForm!: FormGroup<{
