@@ -1,0 +1,10 @@
+<div>
+  <h1>Comments section?</h1>
+  <div>
+    @for(cmt of comments; track $index){
+    <div>{{ cmt }}</div>
+    }
+  </div>
+  <input [(ngModel)]="comment" placeholder="Type comment here..." />
+  <button (click)="sendComment()"></button>
+</div>
