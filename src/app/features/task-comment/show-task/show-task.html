@@ -1,3 +1,10 @@
-<p>show-task works!</p>
 <app-task-comment></app-task-comment>
-<app-display-comments></app-display-comments>
+<div class="grid gap-5">
+  @for(comment of dummyComments;track $index){
+  <app-display-comments
+    [comment]="comment.comment"
+    [name]="comment.name"
+  ></app-display-comments>
+
+  }
+</div>

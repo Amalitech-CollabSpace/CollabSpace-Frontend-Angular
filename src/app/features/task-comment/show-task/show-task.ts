@@ -1,22 +1,34 @@
 import { Component } from '@angular/core';
 import { TaskComment } from '../task-comment';
 import { DisplayComments } from '../task-show-comments/display-comments/display-comments';
-import { NgIcon, provideIcons } from '@ng-icons/core';
-import {
-  bootstrapPersonCircle,
-  bootstrapPencilSquare,
-} from '@ng-icons/bootstrap-icons';
 
 @Component({
   selector: 'app-show-task',
-  imports: [TaskComment, DisplayComments, NgIcon],
-  viewProviders: [
-    provideIcons({
-      bootstrapPersonCircle,
-      bootstrapPencilSquare,
-    }),
-  ],
+  imports: [TaskComment, DisplayComments],
   templateUrl: './show-task.html',
   styleUrl: './show-task.scss',
 })
-export class ShowTask {}
+export class ShowTask {
+  public dummyComments = [
+    {
+      name: 'Fynn Addo',
+      comment: 'Hello there, mum',
+    },
+    {
+      name: 'Noah Aqua',
+      comment: 'Good job Michael',
+    },
+    {
+      name: 'Angus Brown',
+      comment: 'This is totally not acceptable or company policy',
+    },
+    {
+      name: 'Mr Crabs',
+      comment: 'Aye ayeeee',
+    },
+    {
+      name: 'Michael Jackson Down',
+      comment: 'Yee-hooo',
+    },
+  ];
+}

@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, Input } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
   bootstrapPersonCircle,
@@ -17,4 +17,7 @@ import {
   templateUrl: './display-comments.html',
   styleUrl: './display-comments.scss',
 })
-export class DisplayComments {}
+export class DisplayComments {
+  @Input() public comment = '';
+  @Input() public name = '';
+}
