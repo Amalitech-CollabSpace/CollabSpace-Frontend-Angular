@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {} from '@ng-icons/ionicons';
 import {
@@ -20,7 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TreeNode } from '../../models/tree';
-
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 @Component({
   selector: 'app-side-bar',
   imports: [
@@ -49,9 +49,22 @@ import { TreeNode } from '../../models/tree';
     }),
   ],
 })
-export class SideBar {
+export class SideBar implements OnInit {
+  private breakpointObserver = inject(BreakpointObserver);
   isSidebarOpen = signal<boolean>(true);
   isProjectsOpen = signal<boolean>(true);
+
+  ngOnInit() {
+    this.breakpointObserver
+      .observe([Breakpoints.Handset])
+      .subscribe((result) => {
+        this.isSidebarOpen.set(!result.matches);
+      });
+  }
+
+  toggleSidebar() {
+    this.isSidebarOpen.update((open) => !open);
+  }
 
   toggleProjects() {
     if (!this.isSidebarOpen()) {
@@ -61,10 +74,6 @@ export class SideBar {
       }
     }
     this.isProjectsOpen.set(!this.isProjectsOpen());
-  }
-
-  toggleSidebar() {
-    this.isSidebarOpen.set(!this.isSidebarOpen());
   }
 
   createProject() {
