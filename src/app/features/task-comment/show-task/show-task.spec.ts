@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Comments } from './comments';
+import { ShowTask } from './show-task';
 
-describe('Comments', () => {
-  let component: Comments;
-  let fixture: ComponentFixture<Comments>;
+describe('ShowTask', () => {
+  let component: ShowTask;
+  let fixture: ComponentFixture<ShowTask>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Comments]
+      imports: [ShowTask]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Comments);
+    fixture = TestBed.createComponent(ShowTask);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

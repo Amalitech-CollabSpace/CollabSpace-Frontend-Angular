@@ -19,9 +19,9 @@ export class TaskComment implements OnInit {
   private readonly socketService = inject(SocketService);
 
   ngOnInit(): void {
-    this.socketService.onComment((cmt: string) => {
-      this.comments.push(cmt);
-    });
+    // this.socketService.onComment((cmt: string) => {
+    //   this.comments.push(cmt);
+    // });
   }
 
   sendComment(): void {

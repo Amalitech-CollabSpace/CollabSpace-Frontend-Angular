@@ -17,8 +17,8 @@ export const routes: Routes = [
   {
     path: 'comment',
     loadComponent: () =>
-      import(
-        '../app/features/task-comment/comment-section/comments/comments'
-      ).then((m) => m.Comments),
+      import('../app/features/task-comment/show-task/show-task').then(
+        (m) => m.ShowTask
+      ),
   },
 ];

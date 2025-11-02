@@ -10,11 +10,4 @@
   </div>
 
   <p class="pl-6 pt-4 text-lg">comment</p>
-  <div class="flex pl-6 gap-10 text-lg">
-    <div (click)="reply.set(true)"><ng-icon name="bootstrapReply" /></div>
-    <div><ng-icon name="bootstrapPencilSquare" /></div>
-  </div>
-  @if(reply()){
-  <app-task-comment></app-task-comment>
-  }
 </div>
