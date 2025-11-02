@@ -50,18 +50,18 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     this.projectService.getProjectById(this.projectId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (data) => {
-          this.project = data;
-          this.isLoading = false;
-        },
-        error: (err) => {
-          this.error = 'Failed to load project. Please try again.';
-          toast.error('Failed to load project', {
-            description: err?.error?.message || 'An error occurred while loading the project.'
-          });
-          this.isLoading = false;
-        }
-      });
+      next: (data) => {
+        this.project = data;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.error = 'Failed to load project. Please try again.';
+        toast.error('Failed to load project', {
+          description: err?.error?.message || 'An error occurred while loading the project.'
+        });
+        this.isLoading = false;
+      }
+    });
   }
 
   onEdit(): void {

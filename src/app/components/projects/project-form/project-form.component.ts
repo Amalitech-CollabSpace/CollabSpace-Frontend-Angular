@@ -61,23 +61,23 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     this.projectService.getProjectById(this.projectId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (project) => {
-          this.projectForm.patchValue({
-            name: project.name,
-            description: project.description,
-            start_date: this.formatDateForInput(project.startDate),
-            end_date: this.formatDateForInput(project.endDate)
-          });
-          this.isLoading = false;
-        },
-        error: (err) => {
-          this.error = 'Failed to load project. Please try again.';
-          toast.error('Failed to load project', {
-            description: err?.error?.message || 'An error occurred while loading the project.'
-          });
-          this.isLoading = false;
-        }
-      });
+      next: (project) => {
+        this.projectForm.patchValue({
+          name: project.name,
+          description: project.description,
+          start_date: this.formatDateForInput(project.startDate),
+          end_date: this.formatDateForInput(project.endDate)
+        });
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.error = 'Failed to load project. Please try again.';
+        toast.error('Failed to load project', {
+          description: err?.error?.message || 'An error occurred while loading the project.'
+        });
+        this.isLoading = false;
+      }
+    });
   }
 
   formatDateForInput(dateString: string): string {
