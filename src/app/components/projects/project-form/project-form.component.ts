@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
 import { ProjectService } from '../../../core/services/projectService/project.service';
 import { ProjectRequest } from '../../../models/project.model';
 import { InputComponent } from '../../input-component/input-component';
@@ -15,13 +16,14 @@ import { toast } from 'ngx-sonner';
   templateUrl: './project-form.component.html',
   styleUrl: './project-form.component.scss'
 })
-export class ProjectFormComponent implements OnInit {
+export class ProjectFormComponent implements OnInit, OnDestroy {
   projectForm!: FormGroup;
   isEditMode = false;
   projectId: string | null = null;
   isLoading = false;
   error: string | null = null;
   isSubmitting = false;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
@@ -38,12 +40,16 @@ export class ProjectFormComponent implements OnInit {
       end_date: ['', [Validators.required]]
     });
 
-    // Check if we're in edit mode
     this.projectId = this.route.snapshot.paramMap.get('id');
     if (this.projectId) {
       this.isEditMode = true;
       this.loadProject();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   loadProject(): void {
@@ -52,24 +58,26 @@ export class ProjectFormComponent implements OnInit {
     this.isLoading = true;
     this.error = null;
 
-    this.projectService.getProjectById(this.projectId).subscribe({
-      next: (project) => {
-        this.projectForm.patchValue({
-          name: project.name,
-          description: project.description,
-          start_date: this.formatDateForInput(project.startDate),
-          end_date: this.formatDateForInput(project.endDate)
-        });
-        this.isLoading = false;
-      },
-      error: (err) => {
-        this.error = 'Failed to load project. Please try again.';
-        toast.error('Failed to load project', {
-          description: err?.error?.message || 'An error occurred while loading the project.'
-        });
-        this.isLoading = false;
-      }
-    });
+    this.projectService.getProjectById(this.projectId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (project) => {
+          this.projectForm.patchValue({
+            name: project.name,
+            description: project.description,
+            start_date: this.formatDateForInput(project.startDate),
+            end_date: this.formatDateForInput(project.endDate)
+          });
+          this.isLoading = false;
+        },
+        error: (err) => {
+          this.error = 'Failed to load project. Please try again.';
+          toast.error('Failed to load project', {
+            description: err?.error?.message || 'An error occurred while loading the project.'
+          });
+          this.isLoading = false;
+        }
+      });
   }
 
   formatDateForInput(dateString: string): string {
@@ -95,35 +103,39 @@ export class ProjectFormComponent implements OnInit {
     const userId = this.getUserId();
 
     if (this.isEditMode && this.projectId) {
-      this.projectService.updateProject(this.projectId, projectData, userId).subscribe({
-        next: () => {
-          this.isSubmitting = false;
-          toast.success('Project updated successfully');
-          this.router.navigate(['/dashboard/projects']);
-        },
-        error: (err) => {
-          this.error = 'Failed to update project. Please try again.';
-          toast.error('Failed to update project', {
-            description: err?.error?.message || 'An error occurred while updating the project.'
-          });
-          this.isSubmitting = false;
-        }
-      });
+      this.projectService.updateProject(this.projectId, projectData, userId)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.isSubmitting = false;
+            toast.success('Project updated successfully');
+            this.router.navigate(['/dashboard/projects']);
+          },
+          error: (err) => {
+            this.error = 'Failed to update project. Please try again.';
+            toast.error('Failed to update project', {
+              description: err?.error?.message || 'An error occurred while updating the project.'
+            });
+            this.isSubmitting = false;
+          }
+        });
     } else {
-      this.projectService.createProject(projectData, userId).subscribe({
-        next: () => {
-          this.isSubmitting = false;
-          toast.success('Project created successfully');
-          this.router.navigate(['/dashboard/projects']);
-        },
-        error: (err) => {
-          this.error = 'Failed to create project. Please try again.';
-          toast.error('Failed to create project', {
-            description: err?.error?.message || 'An error occurred while creating the project.'
-          });
-          this.isSubmitting = false;
-        }
-      });
+      this.projectService.createProject(projectData, userId)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.isSubmitting = false;
+            toast.success('Project created successfully');
+            this.router.navigate(['/dashboard/projects']);
+          },
+          error: (err) => {
+            this.error = 'Failed to create project. Please try again.';
+            toast.error('Failed to create project', {
+              description: err?.error?.message || 'An error occurred while creating the project.'
+            });
+            this.isSubmitting = false;
+          }
+        });
     }
   }
 
