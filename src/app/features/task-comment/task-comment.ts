@@ -3,9 +3,10 @@ import { SocketService } from '../../core/services/socketService/socket-service'
 import { FormsModule } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { bootstrapPersonCircle } from '@ng-icons/bootstrap-icons';
+import { DisplayComments } from './task-show-comments/display-comments/display-comments';
 @Component({
   selector: 'app-task-comment',
-  imports: [FormsModule, NgIcon],
+  imports: [FormsModule, NgIcon, DisplayComments],
   templateUrl: './task-comment.html',
   viewProviders: [provideIcons({ bootstrapPersonCircle })],
   styleUrl: './task-comment.scss',
