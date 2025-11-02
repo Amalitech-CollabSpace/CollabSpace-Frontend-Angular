@@ -21,7 +21,7 @@
         </div>
       </div>
       <button
-        routerLink="/dashboard/projects/create"
+        (click)="invitePopup.open()"
         class="flex items-center gap-1 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 cursor-pointer transition-all"
       >
         <span class="text-xl">
@@ -29,6 +29,11 @@
         </span>
         Invite
       </button>
+
+      <app-invite-popup
+        #invitePopup
+        [workspaceName]="'Project Web'"
+      ></app-invite-popup>
     </div>
   </div>
   <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
@@ -45,10 +50,13 @@
             'actions'
           ]"
           [showSearch]="true"
+          (viewItem)="handleView($event)"
+          (editItem)="handleEdit($event)"
+          (deleteItem)="handleDelete($event)"
         />
 
         <div
-          routerLink="/dashboard/projects/create/task"
+          routerLink="/dashboard/projects/task/create"
           routerLinkActive="router-link-active"
           class="w-full bg-slate-100 p-4 hover:bg-slate-200 transtion-all cursor-pointer"
         >

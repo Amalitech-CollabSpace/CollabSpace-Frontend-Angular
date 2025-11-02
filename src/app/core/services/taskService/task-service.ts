@@ -13,23 +13,31 @@ export class TaskService {
 
 
   public createTask(task: Task) {
-    return this.http.post(`${this.baseUrl}`, task)
+    return this.http.post(`${this.baseUrl}/tasks`, task)
   }
 
   public getTask(id: number) {
-    return this.http.get(`${this.baseUrl}`)
+    return this.http.get(`${this.baseUrl}/tasks/${id}`)
   }
 
-  public getAllTask() {
-    return this.http.get(`${this.baseUrl}`)
+  public getAllTasksByProject(id: any) {
+    return this.http.get(`${this.baseUrl}/tasks/project/${id}`)
+  }
+
+  public getAllTasksByAssignee(id: any) {
+    return this.http.get(`${this.baseUrl}/tasks/assignee/${id}`)
   }
 
   public deleteTask(id: number) {
-    return this.http.delete(`${this.baseUrl}`)
+    return this.http.delete(`${this.baseUrl}/tasks/${id}`)
   }
 
-  public editTask(task: Task) {
-    return this.http.put(`${this.baseUrl}`, task)
+  public editTask(task: Task, id: any) {
+    return this.http.put(`${this.baseUrl}/tasks/${id}`, task)
+  }
+
+  public updateTaskStatus(status: string, id: any) {
+    return this.http.patch(`${this.baseUrl}/tasks/${id}/status?status=${status}`, "")
   }
 
 }

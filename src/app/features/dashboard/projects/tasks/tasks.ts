@@ -30,21 +30,26 @@ import { ionSave } from '@ng-icons/ionicons';
 })
 export class Tasks {
   taskForm = new FormGroup({
-    id: new FormControl('', [Validators.required]),
     title: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    descritption: new FormControl(''),
+    description: new FormControl(''),
     status: new FormControl('TODO', [Validators.required]),
-    dueDate: new FormControl('', [Validators.required]),
+    dueDate: new FormControl(''),
     overdue: new FormControl(false),
-    assignee_id: new FormControl('', [Validators.required]),
-    project_id: new FormControl('', [Validators.required]),
-    priority: new FormControl('Medium', [Validators.required]),
+    assigneeId: new FormControl(''),
+    projectId: new FormControl('', [Validators.required]),
+    priority: new FormControl('', [Validators.required]),
+    attachments: new FormControl<string[]>([]),
   });
 
   attachments = signal<{ name: string; size: string }[]>([]);
 
   removeAttachment(index: number) {
     this.attachments().splice(index, 1);
+    this.taskForm.value.attachments!.splice(index, 1);
+    const mewList = this.taskForm.value.attachments || [];
+    this.taskForm.patchValue({
+      attachments: [...mewList],
+    });
   }
 
   onSubmit() {
@@ -53,11 +58,19 @@ export class Tasks {
 
   onFileSelected(event: any) {
     const files = Array.from(event.target.files);
-    files.forEach((file: any) =>
-      this.attachments().push({
+
+    files.forEach((file: any) => {
+    
+
+      const attachment = {
         name: file.name,
-        size: `${(file.size  / 1024).toFixed(2)}`,
-      })
-    );
+        size: `${(file.size / 1024).toFixed(2)}`,
+      };
+      this.attachments().push(attachment);
+      const current = this.taskForm.value.attachments || [];
+      this.taskForm.patchValue({
+        attachments: [...current, file],
+      });
+    });
   }
 }
