@@ -1,7 +1,7 @@
 export interface Task {
   id: string;
   title: string;
-  descritption?: string;
+  description?: string;
   status: string;
   dueDate: string;
   overdue: boolean;

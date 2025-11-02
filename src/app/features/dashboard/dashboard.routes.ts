@@ -35,9 +35,19 @@ export const routes: Routes = [
               ),
           },
           {
-            path: 'create/task',
+            path: 'task/create',
             loadComponent: () =>
               import('./projects/tasks/tasks').then((m) => m.Tasks),
+          },
+          {
+            path: 'task/edit/:id',
+            loadComponent: () =>
+              import('./projects/tasks/tasks').then((m) => m.Tasks),
+          },
+          {
+            path: 'task/:id',
+            loadComponent: () =>
+              import('./projects/tasks/task-details/task-details').then((m) => m.TaskDetails),
           },
         ],
       },

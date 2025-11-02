@@ -58,14 +58,24 @@
     border-radius: 4px;
     text-transform: uppercase;
 
+    &.todo {
+      background: #e7e5e58a;
+      color: #292929;
+    }
+
     &.done {
       background: #e3fcef;
       color: #006644;
     }
 
-    &.in {
+    &.in-progress {
       background: #deebff;
       color: #0747a6;
+    }
+
+    &.in-review {
+      background: #fcffde;
+      color: #8ea607;
     }
   }
 

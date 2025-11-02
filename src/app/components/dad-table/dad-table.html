@@ -1,19 +1,19 @@
 <div class="table-container">
   @if (showSearch()) {
-    <div
-      class="flex items-center gap-2 w-32 focus-within:border-blue-500 focus-within:w-48 transition-all duration-300 ease-in-out rounded-md p-2 px-4 bg-white border border-slate-300 mb-4"
-    >
-      <span class="text-slate-600">
-        <ng-icon name="bootstrapSearch" />
-      </span>
-      <input
-        type="search"
-        [ngModel]="searchTerm()"
-        (ngModelChange)="updateSearchTerm($event)"
-        class="w-full placeholder:text-slate-400 placeholder:text-[14px] placeholder:italic outline-none ring-none bg-transparent"
-        placeholder="Search backlog..."
-      />
-    </div>
+  <div
+    class="flex items-center gap-2 w-32 focus-within:border-blue-500 focus-within:w-48 transition-all duration-300 ease-in-out rounded-md p-2 px-4 bg-white border border-slate-300 mb-4"
+  >
+    <span class="text-slate-600">
+      <ng-icon name="bootstrapSearch" />
+    </span>
+    <input
+      type="search"
+      [ngModel]="searchTerm()"
+      (ngModelChange)="updateSearchTerm($event)"
+      class="w-full placeholder:text-slate-400 placeholder:text-[14px] placeholder:italic outline-none ring-none bg-transparent"
+      placeholder="Search backlog..."
+    />
+  </div>
   }
 
   <div
@@ -22,15 +22,17 @@
     (cdkDropListDropped)="drop($event)"
   >
     <mat-table #table [dataSource]="dataSource" matSort class="jira-table">
-     
       <ng-container matColumnDef="id">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          ID
+        </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{ element.id }} </mat-cell>
       </ng-container>
 
-     
       <ng-container matColumnDef="title">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Task </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          Task
+        </mat-header-cell>
         <mat-cell *matCellDef="let element">
           <div class="task-title">
             <span class="task-name">{{ element.title }}</span>
@@ -38,9 +40,10 @@
         </mat-cell>
       </ng-container>
 
-  
       <ng-container matColumnDef="status">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          Status
+        </mat-header-cell>
         <mat-cell *matCellDef="let element">
           <span
             class="status-badge"
@@ -51,9 +54,10 @@
         </mat-cell>
       </ng-container>
 
-  
       <ng-container matColumnDef="dueDate">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Due Date </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          Due Date
+        </mat-header-cell>
         <mat-cell *matCellDef="let element">
           <span class="due-date" [class.overdue]="element.overdue">{{
             element.dueDate
@@ -61,14 +65,12 @@
         </mat-cell>
       </ng-container>
 
-
       <ng-container matColumnDef="assignee">
         <mat-header-cell *matHeaderCellDef> Assignee </mat-header-cell>
         <mat-cell *matCellDef="let element">
           <div class="assignee-circle">{{ element.assignee_id }}</div>
         </mat-cell>
       </ng-container>
-
 
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
@@ -84,20 +86,25 @@
       </ng-container>
 
       <mat-menu #menu="matMenu">
-        <button mat-menu-item>
-          <mat-icon>visibility</mat-icon>
-          <span>View</span>
-        </button>
-        <button mat-menu-item>
-          <mat-icon>edit</mat-icon>
-          <span>Edit</span>
-        </button>
-        <button mat-menu-item>
-          <mat-icon>delete</mat-icon>
-          <span>Delete</span>
-        </button>
+        <ng-template matMenuContent let-element="element">
+          <button mat-menu-item (click)="onView(element)">
+            <mat-icon>visibility</mat-icon>
+            <span>View</span>
+          </button>
+
+          <button mat-menu-item (click)="onEdit(element)">
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+          </button>
+
+          <button mat-menu-item (click)="onDelete(element)">
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+          </button>
+        </ng-template>
       </mat-menu>
 
+      
       <mat-header-row *matHeaderRowDef="displayedColumns()"></mat-header-row>
       <mat-row
         *matRowDef="let row; columns: displayedColumns()"

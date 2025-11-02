@@ -1,5 +1,4 @@
-import { Component, signal, Input, input } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { Component, signal, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 

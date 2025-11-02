@@ -5,6 +5,7 @@ import {
   input,
   signal,
   effect,
+  output,
 } from '@angular/core';
 import { CommonModule, NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -27,7 +28,6 @@ import { bootstrapSearch } from '@ng-icons/bootstrap-icons';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { Task } from '../../models/task';
-
 
 @Component({
   selector: 'app-dad-table',
@@ -53,7 +53,9 @@ import { Task } from '../../models/task';
 export class DadTable implements AfterViewInit {
   @ViewChild(MatTable, { static: true }) table!: MatTable<Task>;
   @ViewChild(MatSort) sort!: MatSort;
-
+  viewItem = output<any>();
+  editItem = output<any>();
+  deleteItem = output<any>();
 
   data = input<Task[]>([]);
   displayedColumns = input<string[]>([
@@ -65,11 +67,10 @@ export class DadTable implements AfterViewInit {
     'actions',
   ]);
   showSearch = input<boolean>(true);
+  showStatusMenu = signal<boolean>(false);
 
- 
   searchTerm = signal('');
   dataSource = new MatTableDataSource<Task>([]);
-
 
   constructor() {
     effect(() => {
@@ -82,12 +83,10 @@ export class DadTable implements AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-
   applyFilter() {
     const filterValue = this.searchTerm().trim().toLowerCase();
     this.dataSource.filter = filterValue;
   }
-
 
   drop(event: CdkDragDrop<Task[]>) {
     const previousData = [...this.dataSource.data];
@@ -95,9 +94,20 @@ export class DadTable implements AfterViewInit {
     this.dataSource.data = previousData;
   }
 
-
   updateSearchTerm(value: string) {
     this.searchTerm.set(value);
     this.applyFilter();
+  }
+
+  onView(item: any) {
+    this.viewItem.emit(item);
+  }
+
+  onEdit(item: any) {
+    this.editItem.emit(item);
+  }
+
+  onDelete(item: any) {
+    this.deleteItem.emit(item);
   }
 }
