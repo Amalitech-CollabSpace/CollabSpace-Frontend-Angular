@@ -1,0 +1,78 @@
+@if(isOpen()){
+<div
+  class="fixed inset-0 bg-black/30 flex items-center justify-center z-50 backdrop-blur-sm"
+  (click)="close()"
+>
+  <div
+    class="bg-white rounded-xl shadow-xl w-[90%] max-w-lg p-6 relative"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-lg font-semibold text-gray-800">
+        Invite to {{ workspaceName() }}
+      </h2>
+      <button
+        (click)="close()"
+        class="text-gray-400 hover:text-gray-600 transition"
+      >
+        ✕
+      </button>
+    </div>
+
+    <div class="flex gap-2 mb-6">
+      <input
+        type="text"
+        placeholder="Enter email..."
+        (input)="newInvite.set($any($event.target).value)"
+        class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+
+      <select
+        class="border border-gray-300 rounded-lg px-2 py-2 focus:ring-2 focus:ring-blue-500"
+        (change)="newRole.set($any($event.target).value)"
+      >
+        <option>Manager</option>
+        <option>Member</option>
+      </select>
+
+      <button
+        (click)="invite()"
+        class="bg-blue-500 hover:bg-blue-600 text-white px-4 rounded-lg"
+      >
+        Invite
+      </button>
+    </div>
+
+    <div>
+      <h3 class="text-sm text-gray-500 mb-2">Current Members</h3>
+      <ul class="space-y-2 max-h-64 overflow-y-auto">
+        @for(member of members(); track $index) {
+        <li
+          class="flex justify-between items-center border border-gray-100 rounded-lg p-2 hover:bg-gray-50"
+        >
+          <div class="flex items-center gap-2">
+            <img
+              [src]="
+                member.avatar || 'https://i.pravatar.cc/40?u=' + member.name
+              "
+              alt="avatar"
+              class="w-8 h-8 rounded-full"
+            />
+            <div>
+              <p class="text-gray-800 font-medium">{{ member.name }}</p>
+              <p class="text-xs text-gray-500">{{ member.role }}</p>
+            </div>
+          </div>
+          <button
+            (click)="removeMember($index)"
+            class="text-red-500 hover:text-red-600 text-sm font-medium"
+          >
+            Remove
+          </button>
+        </li>
+        }
+      </ul>
+    </div>
+  </div>
+</div>
+}
