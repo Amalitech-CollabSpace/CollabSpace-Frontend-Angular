@@ -19,7 +19,7 @@ import { AuthServices } from '../../../core/services/authService/auth-service';
 import { Subject, takeUntil } from 'rxjs';
 
 import { StrongPasswordValidator } from '../validators/passwordRegex';
-import { toast, NgxSonnerToaster } from 'ngx-sonner';
+import { toast } from 'ngx-sonner';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
@@ -28,7 +28,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     ReactiveFormsModule,
     InputComponent,
     RouterLink,
-    NgxSonnerToaster,
     MatProgressSpinnerModule,
   ],
   templateUrl: './login.html',
