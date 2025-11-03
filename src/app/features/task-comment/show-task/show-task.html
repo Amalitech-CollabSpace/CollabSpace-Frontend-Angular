@@ -1,4 +1,6 @@
-<app-task-comment></app-task-comment>
+<app-task-comment
+  (commentEvent)="handleCommentFromChild($event)"
+></app-task-comment>
 <div class="grid gap-5">
   @for(comment of dummyComments;track $index){
   <app-display-comments

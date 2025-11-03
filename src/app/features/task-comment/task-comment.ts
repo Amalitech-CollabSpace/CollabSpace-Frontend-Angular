@@ -1,4 +1,12 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  signal,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { SocketService } from '../../core/services/socketService/socket-service';
 import { FormsModule } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -14,7 +22,8 @@ export class TaskComment implements OnInit {
   public rows = signal(2);
   public columns = signal(30);
   public showButtons = signal(false);
-  public comment = '';
+  @Input() public comment = '';
+  @Output() public commentEvent = new EventEmitter<string>();
   public comments: string[] = [];
   private readonly socketService = inject(SocketService);
 
@@ -24,7 +33,11 @@ export class TaskComment implements OnInit {
     // });
   }
 
-  sendComment(): void {
+  public sendCommentToParent(): void {
+    this.commentEvent.emit(this.comment);
+  }
+
+  public sendComment(): void {
     if (this.comment.trim()) {
       this.socketService.sendComment(this.comment);
       this.comment = '';
@@ -35,5 +48,6 @@ export class TaskComment implements OnInit {
     this.showButtons.set(!this.showButtons());
     this.rows.set(row);
     this.columns.set(col);
+    this.sendCommentToParent();
   }
 }

@@ -9,6 +9,15 @@ import { DisplayComments } from '../task-show-comments/display-comments/display-
   styleUrl: './show-task.scss',
 })
 export class ShowTask {
+  public receivedComment: string = '';
+  public handleCommentFromChild(comment: string) {
+    this.receivedComment = comment;
+    this.dummyComments.push({
+      name: 'new person',
+      comment: comment,
+    });
+  }
+
   public dummyComments = [
     {
       name: 'Fynn Addo',
