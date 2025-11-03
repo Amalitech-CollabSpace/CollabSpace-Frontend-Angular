@@ -1,4 +1,4 @@
-<div class="grid gap-2 p-3 justify-center items-center">
+<div class="grid gap-2 p-3 justify-start items-center bg-white">
   <div class="flex gap-3 focus:outline-blue-500/[50%]">
     <div class="text-blue-500/[90%] text-2xl">
       <ng-icon name="bootstrapPersonCircle" />
@@ -15,7 +15,7 @@
       <div class="flex gap-2">
         @if(showButtons()){
         <button
-          (click)="changeDimensions(2, 80)"
+          (click)="showComment(2, 80)"
           class="text-white font-normal bg-blue-500 rounded-md text-md p-3 hover:bg-blue-200 hover:text-black/[50%] focus:bg-blue-700 focus:text-white/[80%]"
         >
           Save

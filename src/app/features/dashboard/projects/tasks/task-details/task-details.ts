@@ -76,7 +76,7 @@ Acceptance Criteria
   public handleCommentFromChild(comment: string) {
     this.receivedComment = comment;
     this.dummyComments.push({
-      name: 'new person',
+      name: 'New person',
       comment: comment,
     });
   }

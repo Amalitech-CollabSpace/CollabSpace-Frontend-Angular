@@ -34,7 +34,14 @@ export class TaskComment {
     this.showButtons.set(!this.showButtons());
     this.rows.set(row);
     this.columns.set(col);
-    this.sendCommentToParent();
-    this.comment = '';
+  }
+
+  public showComment(row: number, col: number): void {
+    if (!(this.comment === '')) {
+      this.sendCommentToParent();
+      this.comment = '';
+    }
+
+    this.changeDimensions(row, col);
   }
 }
