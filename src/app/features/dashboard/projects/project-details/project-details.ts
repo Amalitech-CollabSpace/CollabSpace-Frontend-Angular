@@ -6,6 +6,7 @@ import { bootstrapPersonAdd } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { DadTable } from '../../../../components/dad-table/dad-table';
 import { InvitePopup } from '../../../../components/invite-popup/invite-popup';
+import { BoardComponent } from "../../../../components/board/board";
 
 @Component({
   selector: 'app-project-details',
@@ -16,7 +17,8 @@ import { InvitePopup } from '../../../../components/invite-popup/invite-popup';
     DadTable,
     RouterLink,
     InvitePopup,
-  ],
+    BoardComponent
+],
   templateUrl: './project-details.html',
   styleUrl: './project-details.scss',
   viewProviders: provideIcons({ bootstrapPersonAdd }),
