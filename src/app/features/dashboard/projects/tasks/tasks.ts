@@ -61,7 +61,23 @@ export class Tasks {
 
     files.forEach((file: any) => {
     
+  // const reader = new FileReader();
 
+      // reader.onload = () => {
+      //   const attachment = {
+      //     name: file.name,
+      //     size: `${(file.size / 1024).toFixed(2)}`,
+      //     data: reader.result as string,
+      //   };
+      //  this.attachments().push(attachment);
+      //   const current = this.taskForm.value.attachments || [];
+      //   this.taskForm.patchValue({
+      //     attachments: [...current, attachment.data],
+      //   });
+      // };
+
+      // reader.readAsDataURL(file);
+      
       const attachment = {
         name: file.name,
         size: `${(file.size / 1024).toFixed(2)}`,

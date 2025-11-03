@@ -36,7 +36,7 @@
       ></app-invite-popup>
     </div>
   </div>
-  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" >
     <mat-tab label="Backlog">
       <div class="space-y-4">
         <app-dad-table
@@ -65,8 +65,8 @@
       </div>
     </mat-tab>
     <mat-tab label="Board">
-      <div class="space-y-4">
-        <p class="text-slate-600 text-center p-3">Nothing to show here yet</p>
+      <div class="space-y-4 w-[1030px] overflow-x-auto">
+        <app-board></app-board>
       </div>
     </mat-tab>
   </mat-tab-group>
