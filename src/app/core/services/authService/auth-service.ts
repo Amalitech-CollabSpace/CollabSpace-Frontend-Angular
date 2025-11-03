@@ -34,11 +34,14 @@ export class AuthServices {
       'token_expiration',
       JSON.stringify(expiresAt.valueOf())
     );
-    this.userDetails = authResponse.user;
+    localStorage.setItem('userDetails', JSON.stringify(authResponse.user));
   }
   public getUserDetails() {
-    console.log('USER DETAILS: ', this.userDetails);
-    return this.userDetails;
+    console.log(
+      'USER DETAILS: ',
+      JSON.parse(localStorage.getItem('userDetails') || '')
+    );
+    return JSON.parse(localStorage.getItem('userDetails') || '');
   }
 
   public getRefreshToken(): Observable<any> {
