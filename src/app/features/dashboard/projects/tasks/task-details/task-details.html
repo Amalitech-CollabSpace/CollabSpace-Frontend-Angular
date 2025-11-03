@@ -12,7 +12,7 @@
         </div>
         <div class="bg-white rounded-xl shadow-sm p-4">
           <h2 class="text-lg font-semibold mb-2">Attachments</h2>
-          <img src="assets\images\fileupload.webp" alt="">
+          <img src="assets\images\fileupload.webp" alt="" />
         </div>
       </div>
 
@@ -33,7 +33,7 @@
         </div>
         <div class="flex flex-col border-b border-slate-200 py-2">
           <span class="text-gray-500">Priority</span>
-      
+
           <div class="relative inline-block">
             <div
               (click)="togglePrioMenu()"
@@ -59,7 +59,6 @@
             </ul>
             }
           </div>
-
         </div>
         <div class="flex flex-col py-2">
           <span class="text-gray-500">Status</span>
@@ -69,7 +68,7 @@
               class="status-badge w-fit cursor-pointer"
               [ngClass]="selectedStatus().toLowerCase().replace(' ', '-')"
             >
-              {{ selectedStatus() }} 
+              {{ selectedStatus() }}
             </div>
 
             @if(showStatusMenu()){
@@ -89,6 +88,24 @@
             }
           </div>
         </div>
+      </div>
+    </div>
+    <div>
+      <p class="text-lg font-bold">Comments</p>
+      <p class="text-gray-500 text-md">Add a comment</p>
+
+      <app-task-comment
+        (commentEvent)="handleCommentFromChild($event)"
+      ></app-task-comment>
+
+      <div class="grid gap-5 p-5">
+        @for(comment of dummyComments;track $index){
+        <app-display-comments
+          [comment]="comment.comment"
+          [name]="comment.name"
+        ></app-display-comments>
+
+        }
       </div>
     </div>
   </div>
