@@ -40,7 +40,9 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.error = null;
 
-    this.projectService.getProjects()
+    const memberId = localStorage.getItem('user_id') || undefined;
+
+    this.projectService.getProjects(memberId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => {
