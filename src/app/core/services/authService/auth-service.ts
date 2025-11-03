@@ -11,6 +11,7 @@ import { environment } from '../../../../environments/environment.development';
 export class AuthServices {
   private baseUrl = environment.nodeApiURL;
   private http = inject(HttpClient);
+  private userDetails: any;
 
   public login(user: LoggedInUser): Observable<User> {
     return this.http
@@ -33,11 +34,11 @@ export class AuthServices {
       'token_expiration',
       JSON.stringify(expiresAt.valueOf())
     );
-    this.getUserDetails(authResponse.user);
+    this.userDetails = authResponse.user;
   }
-  public getUserDetails(user: Object) {
-    console.log('USER DETAILS: ', user);
-    return user;
+  public getUserDetails() {
+    console.log('USER DETAILS: ', this.userDetails);
+    return this.userDetails;
   }
 
   public getRefreshToken(): Observable<any> {

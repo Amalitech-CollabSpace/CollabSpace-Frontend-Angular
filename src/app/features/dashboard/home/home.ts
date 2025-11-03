@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { bootstrapCalendar } from '@ng-icons/bootstrap-icons';
 import { provideIcons, NgIcon } from '@ng-icons/core';
-import {MatTabsModule} from '@angular/material/tabs';
-import { ProjectCard } from "../../../components/project-card/project-card";
-import { RouterLink } from "@angular/router";
+import { MatTabsModule } from '@angular/material/tabs';
+import { ProjectCard } from '../../../components/project-card/project-card';
+import { RouterLink } from '@angular/router';
+import { AuthServices } from '../../../core/services/authService/auth-service';
 
 @Component({
   selector: 'app-home',
@@ -12,4 +13,11 @@ import { RouterLink } from "@angular/router";
   styleUrl: './home.scss',
   viewProviders: [provideIcons({ bootstrapCalendar })],
 })
-export class Home {}
+export class Home implements OnInit {
+  private readonly userDetails = inject(AuthServices);
+  public userName: string = '';
+
+  ngOnInit() {
+    this.userName = this.userDetails.getUserDetails().fullName;
+  }
+}
