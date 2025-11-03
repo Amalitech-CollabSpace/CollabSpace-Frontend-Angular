@@ -1,11 +1,11 @@
 export interface Task {
-  id: string;
+  id?: string;
   title: string;
   description?: string;
-  status: string;
-  dueDate: string;
-  overdue: boolean;
-  assignee_id: string;
-  project_id: string;
-  priority: string;
+  status?: string;
+  dueDate?: string;
+  overdue?: boolean;
+  assignee_id?: string;
+  project_id?: string;
+  priority?: string;
 }

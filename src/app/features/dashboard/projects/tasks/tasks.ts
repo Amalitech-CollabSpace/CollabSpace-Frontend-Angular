@@ -1,5 +1,5 @@
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   ReactiveFormsModule,
   FormGroup,
@@ -11,6 +11,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { ionSave } from '@ng-icons/ionicons';
+import { TaskService } from '../../../../core/services/taskService/task-service';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-tasks',
@@ -29,39 +31,55 @@ import { ionSave } from '@ng-icons/ionicons';
   viewProviders: provideIcons({ ionSave }),
 })
 export class Tasks {
+  taskService = inject(TaskService);
   taskForm = new FormGroup({
-    title: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    description: new FormControl(''),
-    status: new FormControl('TODO', [Validators.required]),
-    dueDate: new FormControl(''),
-    overdue: new FormControl(false),
-    assigneeId: new FormControl(''),
-    projectId: new FormControl('', [Validators.required]),
-    priority: new FormControl('', [Validators.required]),
-    attachments: new FormControl<string[]>([]),
+    title: new FormControl<string>('', [
+      Validators.required,
+      Validators.minLength(3),
+    ]),
+    description: new FormControl<string>(''),
+    // status: new FormControl('TODO', [Validators.required]),
+    dueDate: new FormControl<string>(''),
+    // overdue: new FormControl(false),
+    assigneeId: new FormControl<string>(''),
+    projectId: new FormControl<string>('', [Validators.required]),
+    priority: new FormControl<string>('', [Validators.required]),
+    // attachments: new FormControl<string[]>([]),
   });
 
+  isLoading = signal(false)
   attachments = signal<{ name: string; size: string }[]>([]);
 
   removeAttachment(index: number) {
     this.attachments().splice(index, 1);
-    this.taskForm.value.attachments!.splice(index, 1);
-    const mewList = this.taskForm.value.attachments || [];
-    this.taskForm.patchValue({
-      attachments: [...mewList],
-    });
+    // this.taskForm.value.attachments!.splice(index, 1);
+    // const mewList = this.taskForm.value.attachments || [];
+    // this.taskForm.patchValue({
+    //   attachments: [...mewList],
+    // });
   }
 
   onSubmit() {
-    console.log(this.taskForm.value);
+    this.isLoading.set(true);
+    this.taskService.createTask(this.taskForm.value).subscribe({
+      next: (res) => {
+        this.isLoading.set(false);
+        console.log(res)
+        toast.success('Created successfully');
+
+      },
+      error: (err) => {
+        this.isLoading.set(false);
+        toast.error(err?.error?.error || err?.message || 'Unknown error');
+      },
+    });
   }
 
   onFileSelected(event: any) {
     const files = Array.from(event.target.files);
 
     files.forEach((file: any) => {
-    
-  // const reader = new FileReader();
+      // const reader = new FileReader();
 
       // reader.onload = () => {
       //   const attachment = {
@@ -77,16 +95,16 @@ export class Tasks {
       // };
 
       // reader.readAsDataURL(file);
-      
+
       const attachment = {
         name: file.name,
         size: `${(file.size / 1024).toFixed(2)}`,
       };
       this.attachments().push(attachment);
-      const current = this.taskForm.value.attachments || [];
-      this.taskForm.patchValue({
-        attachments: [...current, file],
-      });
+      // const current = this.taskForm.value.attachments || [];
+      // this.taskForm.patchValue({
+      //   attachments: [...current, file],
+      // });
     });
   }
 }

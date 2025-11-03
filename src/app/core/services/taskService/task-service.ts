@@ -12,7 +12,7 @@ export class TaskService {
   private http = inject(HttpClient)
 
 
-  public createTask(task: Task) {
+  public createTask(task: any) {
     return this.http.post(`${this.baseUrl}/tasks`, task)
   }
 
