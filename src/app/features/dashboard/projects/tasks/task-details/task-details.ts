@@ -2,10 +2,12 @@ import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Task } from '../../../../../models/task';
 import { NgClass } from '@angular/common';
+import { TaskComment } from '../task-comment/task-comment';
+import { DisplayComments } from '../task-comment/task-show-comments/display-comments/display-comments';
 
 @Component({
   selector: 'app-task-details',
-  imports: [NgClass],
+  imports: [NgClass, TaskComment, DisplayComments],
   templateUrl: './task-details.html',
   styleUrl: './task-details.scss',
 })
@@ -14,11 +16,11 @@ export class TaskDetails {
   private route = inject(ActivatedRoute);
   showPrioMenu = signal(false);
   selectedPrio = signal<string>('Low');
-  allPriorities = signal(['High','Medium','Low']);
+  allPriorities = signal(['High', 'Medium', 'Low']);
 
   showStatusMenu = signal(false);
   selectedStatus = signal<string>('IN REVIEW');
-  allStatus = signal(['TODO','IN PROGRESS','IN REVIEW', 'DONE']);
+  allStatus = signal(['TODO', 'IN PROGRESS', 'IN REVIEW', 'DONE']);
 
   task = signal<Task>({
     id: 'ESD-13',
@@ -60,7 +62,7 @@ Acceptance Criteria
     this.selectedPrio.set(prio);
     this.showPrioMenu.set(false);
   }
-  
+
   toggleStatusMenu() {
     this.showStatusMenu.update((open) => !open);
   }
@@ -69,5 +71,36 @@ Acceptance Criteria
     this.selectedStatus.set(stat);
     this.showStatusMenu.set(false);
   }
+
+  public receivedComment: string = '';
+  public handleCommentFromChild(comment: string) {
+    this.receivedComment = comment;
+    this.dummyComments.push({
+      name: 'new person',
+      comment: comment,
+    });
+  }
+
+  public dummyComments = [
+    {
+      name: 'Fynn Addo',
+      comment: 'Hello there, mum',
+    },
+    {
+      name: 'Noah Aqua',
+      comment: 'Good job Michael',
+    },
+    {
+      name: 'Angus Brown',
+      comment: 'This is totally not acceptable or company policy',
+    },
+    {
+      name: 'Mr Crabs',
+      comment: 'Aye ayeeee',
+    },
+    {
+      name: 'Michael Jackson Down',
+      comment: 'Yee-hooo',
+    },
+  ];
 }
- 
