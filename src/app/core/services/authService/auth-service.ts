@@ -45,7 +45,7 @@ export class AuthServices {
   }
 
   public getRefreshToken(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/api/refresh`, {
+    return this.http.get(`${this.baseUrl}/refresh`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('refresh_token')}`,
       },
