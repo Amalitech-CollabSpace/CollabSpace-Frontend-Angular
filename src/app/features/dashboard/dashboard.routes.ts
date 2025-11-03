@@ -1,8 +1,6 @@
 import { Routes } from '@angular/router';
 import { Dashboard } from './dashboard';
-import { ProjectListComponent } from '../../components/projects/project-list/project-list.component';
-import { ProjectFormComponent } from '../../components/projects/project-form/project-form.component';
-import { ProjectDetailComponent } from '../../components/projects/project-detail/project-detail.component';
+
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -32,6 +30,11 @@ export const routes: Routes = [
           },
           {
             path: 'create',
+            loadComponent: () =>
+              import('../../components/projects/project-form/project-form.component').then((m) => m.ProjectFormComponent),
+          },
+          {
+            path: 'edit/:id',
             loadComponent: () =>
               import('../../components/projects/project-form/project-form.component').then((m) => m.ProjectFormComponent),
           },

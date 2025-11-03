@@ -45,7 +45,7 @@ export class ButtonComponent {
     
     switch (this.variant) {
       case 'primary':
-        return `${baseClasses} bg-blue-600 text-white hover:bg-blue-700`;
+        return `${baseClasses} bg-blue-500 text-white hover:bg-blue-600`;
       case 'secondary':
         return `${baseClasses} bg-gray-200 text-gray-700 hover:bg-gray-300`;
       case 'danger':

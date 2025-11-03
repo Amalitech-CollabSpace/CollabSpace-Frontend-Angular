@@ -13,6 +13,9 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import { ionSave } from '@ng-icons/ionicons';
 import { TaskService } from '../../../../core/services/taskService/task-service';
 import { toast } from 'ngx-sonner';
+import { ActivatedRoute } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
+import { Task } from '../../../../models/task';
 
 @Component({
   selector: 'app-tasks',
@@ -46,9 +49,49 @@ export class Tasks {
     priority: new FormControl<string>('', [Validators.required]),
     // attachments: new FormControl<string[]>([]),
   });
-
-  isLoading = signal(false)
+  route = inject(ActivatedRoute);
+  isEditMode = false;
+  taskId: string | null = null;
+  isLoading = signal(false);
+  private destroy$ = new Subject<void>();
   attachments = signal<{ name: string; size: string }[]>([]);
+
+  ngOnInit(): void {
+    this.taskId = this.route.snapshot.paramMap.get('id');
+    if (this.taskId) {
+      this.isEditMode = true;
+      this.loadTask();
+    }
+  }
+
+  loadTask(): void {
+    if (!this.taskId) return;
+
+    this.isLoading.set(true);
+
+    this.taskService
+      .getTask(this.taskId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (task: Task) => {
+          this.taskForm.patchValue({
+            title: task.title ?? '',
+            description: task.description ?? '',
+            dueDate: task.dueDate ?? '',
+            priority: task.priority ?? '',
+          });
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          toast.error('Failed to load task', {
+            description:
+              err?.error?.message ||
+              'An error occurred while loading the task.',
+          });
+          this.isLoading.set(false);
+        },
+      });
+  }
 
   removeAttachment(index: number) {
     this.attachments().splice(index, 1);
@@ -61,18 +104,31 @@ export class Tasks {
 
   onSubmit() {
     this.isLoading.set(true);
-    this.taskService.createTask(this.taskForm.value).subscribe({
-      next: (res) => {
-        this.isLoading.set(false);
-        console.log(res)
-        toast.success('Created successfully');
-
-      },
-      error: (err) => {
-        this.isLoading.set(false);
-        toast.error(err?.error?.error || err?.message || 'Unknown error');
-      },
-    });
+    if (this.isEditMode) {
+      this.taskService.editTask(this.taskForm.value as Task, this.taskId).subscribe({
+        next: (res) => {
+          this.isLoading.set(false);
+          console.log(res);
+          toast.success('Edited successfully');
+        },
+        error: (err) => {
+          this.isLoading.set(false);
+          toast.error(err?.error?.error || err?.message || 'Unknown error');
+        },
+      });
+    } else {
+      this.taskService.createTask(this.taskForm.value as Task).subscribe({
+        next: (res) => {
+          this.isLoading.set(false);
+          console.log(res);
+          toast.success('Created successfully');
+        },
+        error: (err) => {
+          this.isLoading.set(false);
+          toast.error(err?.error?.error || err?.message || 'Unknown error');
+        },
+      });
+    }
   }
 
   onFileSelected(event: any) {
