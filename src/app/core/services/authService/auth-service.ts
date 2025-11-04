@@ -37,10 +37,6 @@ export class AuthServices {
     localStorage.setItem('userDetails', JSON.stringify(authResponse.user));
   }
   public getUserDetails() {
-    console.log(
-      'USER DETAILS: ',
-      JSON.parse(localStorage.getItem('userDetails') || '')
-    );
     return JSON.parse(localStorage.getItem('userDetails') || '');
   }
 

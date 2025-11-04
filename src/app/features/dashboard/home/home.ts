@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { bootstrapCalendar } from '@ng-icons/bootstrap-icons';
 import { provideIcons, NgIcon } from '@ng-icons/core';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -15,9 +15,9 @@ import { AuthServices } from '../../../core/services/authService/auth-service';
 })
 export class Home implements OnInit {
   private readonly userDetails = inject(AuthServices);
-  public userName: string = '';
+  public userName = signal('');
 
   ngOnInit() {
-    this.userName = this.userDetails.getUserDetails().fullName;
+    this.userName.set(this.userDetails.getUserDetails().fullName);
   }
 }
