@@ -6,7 +6,7 @@ import { bootstrapPersonAdd } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { DadTable } from '../../../../components/dad-table/dad-table';
 import { InvitePopup } from '../../../../components/invite-popup/invite-popup';
-import { BoardComponent } from '../../../../components/board/board';
+import { Board } from '../../../../components/board/board';
 import { Subject, takeUntil } from 'rxjs';
 import { Task } from '../../../../models/task';
 import { toast } from 'ngx-sonner';
@@ -24,7 +24,7 @@ import { ProjectDetailComponent } from "../../../../components/projects/project-
     DadTable,
     RouterLink,
     InvitePopup,
-    BoardComponent,
+    Board,
     CommonModule,
     ProjectDetailComponent
 ],

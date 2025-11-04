@@ -20,7 +20,7 @@ interface BoardList {
   templateUrl: './board.html',
   styleUrl: './board.scss',
 })
-export class BoardComponent {
+export class Board {
   lists = signal<BoardList[]>([
     {
       id: 1,
