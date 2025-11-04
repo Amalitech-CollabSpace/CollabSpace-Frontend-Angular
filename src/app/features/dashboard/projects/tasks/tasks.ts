@@ -13,7 +13,7 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import { ionSave } from '@ng-icons/ionicons';
 import { TaskService } from '../../../../core/services/taskService/task-service';
 import { toast } from 'ngx-sonner';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { Task } from '../../../../models/task';
 
@@ -27,13 +27,18 @@ import { Task } from '../../../../models/task';
     MatIconModule,
     DecimalPipe,
     NgIcon,
-  ],
+    RouterLink
+],
   templateUrl: './tasks.html',
   styleUrl: './tasks.scss',
 
   viewProviders: provideIcons({ ionSave }),
 })
 export class Tasks {
+   public errorMessages: Record<string, string> = {
+    required: 'This field is required',
+    minlength: 'Please enter a title of length 3 or more',
+  };
   taskService = inject(TaskService);
   taskForm = new FormGroup({
     title: new FormControl<string>('', [

@@ -14,31 +14,31 @@ export class TaskService {
 
 
   public createTask(task: Task): Observable<Task> {
-    return this.http.post<Task>(`${this.baseUrl}tasks`, task)
+    return this.http.post<Task>(`${this.baseUrl}/tasks`, task)
   }
 
   public getTask(id: any): Observable<Task> {
-    return this.http.get<Task>(`${this.baseUrl}api/tasks/${id}`)
+    return this.http.get<Task>(`${this.baseUrl}/tasks/${id}`)
   }
 
   public getAllTasksByProject(id: any): Observable<Task[]> {
-    return this.http.get<Task[]>(`${this.baseUrl}tasks/project/${id}`)
+    return this.http.get<Task[]>(`${this.baseUrl}/tasks/project/${id}`)
   }
 
   public getAllTasksByAssignee(id: any) {
-    return this.http.get(`${this.baseUrl}tasks/assignee/${id}`)
+    return this.http.get(`${this.baseUrl}/tasks/assignee/${id}`)
   }
 
   public deleteTask(id: number) {
-    return this.http.delete(`${this.baseUrl}tasks/${id}`)
+    return this.http.delete(`${this.baseUrl}/tasks/${id}`)
   }
 
   public editTask(task: Task, id: any): Observable<Task>  {
-    return this.http.put<Task>(`${this.baseUrl}tasks/${id}`, task)
+    return this.http.put<Task>(`${this.baseUrl}/tasks/${id}`, task)
   }
 
   public updateTaskStatus(status: string, id: any) {
-    return this.http.patch(`${this.baseUrl}tasks/${id}/status?status=${status}`, "")
+    return this.http.patch(`${this.baseUrl}/tasks/${id}/status?status=${status}`, "")
   }
 
 }

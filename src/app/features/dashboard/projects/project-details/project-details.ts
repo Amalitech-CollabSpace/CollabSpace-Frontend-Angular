@@ -13,7 +13,7 @@ import { toast } from 'ngx-sonner';
 import { TaskService } from '../../../../core/services/taskService/task-service';
 import { Project } from '../../../../models/project.model';
 import { ProjectService } from '../../../../core/services/projectService/project.service';
-import { ButtonComponent } from "../../../../components/button/button.component";
+import { ProjectDetailComponent } from "../../../../components/projects/project-detail/project-detail.component";
 
 @Component({
   selector: 'app-project-details',
@@ -26,7 +26,7 @@ import { ButtonComponent } from "../../../../components/button/button.component"
     InvitePopup,
     BoardComponent,
     CommonModule,
-    ButtonComponent
+    ProjectDetailComponent
 ],
   templateUrl: './project-details.html',
   styleUrl: './project-details.scss',

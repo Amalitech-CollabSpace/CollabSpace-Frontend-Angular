@@ -5,13 +5,12 @@ import { Subject, takeUntil } from 'rxjs';
 import { ProjectService } from '../../../core/services/projectService/project.service';
 import { Project } from '../../../models/project.model';
 import { ButtonComponent } from '../../button/button.component';
-import { InviteMemberModalComponent } from '../../../shared/components/invite-member-modal/invite-member-modal.component';
 import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-project-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, DatePipe, ButtonComponent, InviteMemberModalComponent],
+  imports: [CommonModule, RouterModule, DatePipe, ButtonComponent],
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.scss'
 })

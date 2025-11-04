@@ -9,7 +9,6 @@ import {
   withFetch,
   withInterceptors,
 } from '@angular/common/http';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import { AuthInterceptor } from './core/interceptors/authInterceptors/auth-interceptor';
 
 import { routes } from './app.routes';
@@ -20,6 +19,5 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(withFetch(), withInterceptors([AuthInterceptor])),
-    provideAnimations(),
   ],
 };
