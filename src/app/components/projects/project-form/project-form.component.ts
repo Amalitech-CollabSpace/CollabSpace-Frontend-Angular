@@ -103,7 +103,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     const userId = this.getUserId();
 
     if (this.isEditMode && this.projectId) {
-      this.projectService.updateProject(this.projectId, projectData, userId)
+      this.projectService.updateProject(this.projectId, projectData)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {
@@ -120,7 +120,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
           }
         });
     } else {
-      this.projectService.createProject(projectData, userId)
+      this.projectService.createProject(projectData)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {

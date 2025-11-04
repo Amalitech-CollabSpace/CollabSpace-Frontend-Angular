@@ -27,31 +27,28 @@ export class ProjectService {
 
   getProjects(): Observable<Project[]> {
     return this.http
-      .get<Project[]>(`${this.baseUrl}/projects`, { headers: this.headers })
+      .get<Project[]>(`${this.baseUrl}/projects`)
       .pipe(catchError(this.handleError));
   }
 
   getProjectById(id: string): Observable<Project> {
     return this.http
-      .get<Project>(`${this.baseUrl}/projects/${id}`, { headers: this.headers })
+      .get<Project>(`${this.baseUrl}/projects/${id}`)
       .pipe(catchError(this.handleError));
   }
 
-  createProject(project: ProjectRequest, userId: string): Observable<Project> {
-    const headers = this.headers.set('X-User-Id', userId);
+  createProject(project: ProjectRequest): Observable<Project> {
     return this.http
-      .post<Project>(`${this.baseUrl}/projects`, project, { headers })
+      .post<Project>(`${this.baseUrl}/projects`, project)
       .pipe(catchError(this.handleError));
   }
 
   updateProject(
     id: string,
     project: ProjectRequest,
-    userId: string
   ): Observable<Project> {
-    const headers = this.headers.set('X-User-Id', userId);
     return this.http
-      .put<Project>(`${this.baseUrl}/projects/${id}`, project, { headers })
+      .put<Project>(`${this.baseUrl}/projects/${id}`, project)
       .pipe(catchError(this.handleError));
   }
 

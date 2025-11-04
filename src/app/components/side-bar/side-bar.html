@@ -74,7 +74,7 @@
         @if (isSidebarOpen()) {
         <p>Projects</p>
         <div
-          (click)="createProject()"
+                routerLink="/dashboard/projects/create"
           title="create project"
           class="ml-auto h-full hidden items-center justify-center text-lg border rounded-full border-dotted border-transparent hover:border-slate-600 group-hover:flex"
         >
