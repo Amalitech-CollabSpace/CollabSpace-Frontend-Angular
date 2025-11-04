@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  nodeApiURL: 'https://qtzbtx6k-3000.uks1.devtunnels.ms',
+  nodeApiURL: 'https://collabspace-backend-node.onrender.com',
   springApiURL: '',
   appName: 'CollabSpace (Dev)',
 };
