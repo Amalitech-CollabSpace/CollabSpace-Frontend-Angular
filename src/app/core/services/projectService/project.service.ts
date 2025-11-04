@@ -12,13 +12,12 @@ import {
   ProjectMemberRequest,
 } from '../../../models/project-member.model';
 import { Team, TeamRequest } from '../../../models/team.model';
-import { environment } from '../../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProjectService {
-  private baseUrl = environment.nodeApiURL;
+   private baseUrl = import.meta.env.NG_APP_API_GATEWAY;
   private readonly headers = new HttpHeaders({
     'Content-Type': 'application/json',
   });
