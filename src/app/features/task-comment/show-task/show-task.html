@@ -1,13 +1,20 @@
-<app-task-comment
-  (commentEvent)="handleCommentFromChild($event)"
-></app-task-comment>
+<div class="p-10">
+  <div class="shadow-lg shadow-gray-400 p-5">
+    <p class="text-lg font-bold">Comments</p>
+    <p class="text-gray-500 text-md">Add a comment</p>
 
-<div class="grid gap-5 justify-center items-center">
-  @for(comment of dummyComments;track $index){
-  <app-display-comments
-    [comment]="comment.comment"
-    [name]="comment.name"
-  ></app-display-comments>
+    <app-task-comment
+      (commentEvent)="handleCommentFromChild($event)"
+    ></app-task-comment>
 
-  }
+    <div class="grid grid-cols-reverse gap-5 p-5">
+      @for(comment of dummyComments.reverse();track $index){
+      <app-display-comments
+        [comment]="comment.comment"
+        [name]="comment.name"
+      ></app-display-comments>
+
+      }
+    </div>
+  </div>
 </div>
