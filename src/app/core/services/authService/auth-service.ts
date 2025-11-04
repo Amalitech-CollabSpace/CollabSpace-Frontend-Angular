@@ -14,13 +14,13 @@ export class AuthServices {
 
   public login(user: LoggedInUser): Observable<User> {
     return this.http
-      .post<User>(`${this.baseUrl}api/authentication/signin`, user)
+      .post<User>(`${this.baseUrl}/authentication/signin`, user)
       .pipe(tap((response) => this.setLoggedInUser(response)));
   }
 
   public signup(newUser: User): Observable<LoggedInUser> {
     return this.http
-      .post<LoggedInUser>(`${this.baseUrl}api/authentication/signup`, newUser)
+      .post<LoggedInUser>(`${this.baseUrl}/authentication/signup`, newUser)
       .pipe(tap((response) => this.setLoggedInUser(response)));
   }
 
@@ -36,7 +36,7 @@ export class AuthServices {
   }
 
   public getRefreshToken(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/api/refresh`, {
+    return this.http.get(`${this.baseUrl}/refresh`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('refresh_token')}`,
       },
