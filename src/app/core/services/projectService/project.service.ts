@@ -5,7 +5,7 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Project, ProjectRequest } from '../../../models/project.model';
 import {
   ProjectMember,
@@ -85,6 +85,32 @@ export class ProjectService {
         headers: this.headers,
       })
       .pipe(catchError(this.handleError));
+  }
+
+  inviteMember(invitation: { projectId: string; userId: string; role?: string }): Observable<ProjectMember> {
+    const memberRequest: ProjectMemberRequest = {
+      projectId: invitation.projectId,
+      userId: invitation.userId,
+      role: invitation.role as any,
+    };
+    return this.http
+      .post<ProjectMember>(`${this.baseUrl}/project_members`, memberRequest, {
+        headers: this.headers,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  lookupUserByEmail(email: string): Observable<string> {
+    // This endpoint should return a user object with an id field
+    // Adjust the endpoint based on your backend API structure
+    return this.http
+      .get<{ id: string; email: string }>(`${this.baseUrl}/users/email/${encodeURIComponent(email)}`, {
+        headers: this.headers,
+      })
+      .pipe(
+        map((user) => user.id),
+        catchError(this.handleError)
+      );
   }
 
   removeMember(projectId: string, memberId: string): Observable<void> {
