@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Subject, takeUntil, Observable } from 'rxjs';
+import { switchMap, catchError, of } from 'rxjs/operators';
 import { ProjectService } from '../../../core/services/projectService/project.service';
 import { ProjectMemberRole } from '../../../models/project-member.model';
 import { toast } from 'ngx-sonner';
@@ -119,53 +120,49 @@ export class InviteMemberModalComponent implements OnInit, OnDestroy {
 
     this.isLoading = true;
 
-    // First, lookup user by email to get userId
-    this.lookupUserByEmail(email)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (userId) => {
-          if (userId) {
-            // Then invite the member
-            this.projectService.inviteMember({
-              projectId: this.projectId,
-              userId: userId,
-              role: role
-            })
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-              next: () => {
-                toast.success('Member invited successfully');
-                this.memberInvited.emit();
-                this.close();
-                this.isLoading = false;
-              },
-              error: (err) => {
-                toast.error('Failed to invite member', {
-                  description: err?.error?.message || 'Please try again.'
-                });
-                this.isLoading = false;
-              }
+    // First, lookup user by email to get userId, then invite the member
+    this.projectService.lookupUserByEmail(email)
+      .pipe(
+        takeUntil(this.destroy$),
+        switchMap((userId) => {
+          if (!userId) {
+            throw new Error('User not found');
+          }
+          return this.projectService.inviteMember({
+            projectId: this.projectId,
+            userId: userId,
+            role: role
+          });
+        }),
+        catchError((err) => {
+          // Handle errors from either lookup or invite
+          if (err?.error?.message) {
+            toast.error('Failed to invite member', {
+              description: err.error.message
             });
-          } else {
+          } else if (err?.message === 'User not found') {
             toast.error('User not found', {
               description: 'No user found with this email address.'
             });
+          } else {
+            toast.error('Failed to invite member', {
+              description: 'Please try again.'
+            });
+          }
+          this.isLoading = false;
+          return of(null);
+        })
+      )
+      .subscribe({
+        next: (result) => {
+          if (result) {
+            toast.success('Member invited successfully');
+            this.memberInvited.emit();
+            this.close();
             this.isLoading = false;
           }
-        },
-        error: (err) => {
-          toast.error('Failed to lookup user', {
-            description: err?.error?.message || 'Unable to find user by email.'
-          });
-          this.isLoading = false;
         }
       });
-  }
-
-  private lookupUserByEmail(email: string): Observable<string> {
-    // Try to get user ID from backend API
-    // This is a placeholder - adjust the endpoint based on your backend API
-    return this.projectService.lookupUserByEmail(email);
   }
 
   get emailControl() {

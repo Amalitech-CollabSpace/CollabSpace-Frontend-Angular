@@ -93,6 +93,8 @@ export class ProjectService {
       userId: invitation.userId,
       role: invitation.role as any,
     };
+    // API endpoint: POST /project_members
+    // Based on Swagger docs at https://collabspace-delopment.onrender.com/swagger-ui/index.html#/
     return this.http
       .post<ProjectMember>(`${this.baseUrl}/project_members`, memberRequest, {
         headers: this.headers,
@@ -101,8 +103,8 @@ export class ProjectService {
   }
 
   lookupUserByEmail(email: string): Observable<string> {
-    // This endpoint should return a user object with an id field
-    // Adjust the endpoint based on your backend API structure
+    // API endpoint: GET /users/email/{email}
+    // Returns user object with id field for email lookup
     return this.http
       .get<{ id: string; email: string }>(`${this.baseUrl}/users/email/${encodeURIComponent(email)}`, {
         headers: this.headers,
