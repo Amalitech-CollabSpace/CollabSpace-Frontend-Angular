@@ -1,4 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { TitleCasePipe } from '@angular/common';
 import {
   bootstrapBell,
   bootstrapPersonFill,
@@ -9,7 +10,7 @@ import { AuthServices } from '../../core/services/authService/auth-service';
 
 @Component({
   selector: 'app-search-bar',
-  imports: [NgIcon],
+  imports: [NgIcon, TitleCasePipe],
   templateUrl: './search-bar.html',
   styleUrl: './search-bar.scss',
   viewProviders: [
@@ -22,9 +23,11 @@ import { AuthServices } from '../../core/services/authService/auth-service';
 })
 export class SearchBar implements OnInit {
   private readonly authService = inject(AuthServices);
-  public userName: string = '';
+  public userName = signal('');
+  public role = signal('');
 
   ngOnInit(): void {
-    this.userName = this.authService.getUserDetails().fullName;
+    this.userName.set(this.authService.getUserDetails().fullName);
+    this.role.set(this.authService.getUserDetails().role);
   }
 }

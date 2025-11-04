@@ -8,11 +8,18 @@
     <div class="flex justify-between items-center">
       <h1 class="text-3xl font-bold text-gray-900">Project Details</h1>
       @if (project) {
-        <app-button
-          label="Edit Project"
-          variant="primary"
-          (clicked)="onEdit()">
-        </app-button>
+        <div class="flex gap-3">
+          <app-button
+            label="Invite Member"
+            variant="secondary"
+            (clicked)="inviteModal.open()">
+          </app-button>
+          <app-button
+            label="Edit Project"
+            variant="primary"
+            (clicked)="onEdit()">
+          </app-button>
+        </div>
       }
     </div>
   </div>
@@ -80,4 +87,11 @@
       </div>
     </div>
   }
+
+  <!-- Invite Member Modal -->
+  <app-invite-member-modal
+    #inviteModal
+    [projectId]="projectId || ''"
+    (memberInvited)="onMemberInvited()">
+  </app-invite-member-modal>
 </div>
