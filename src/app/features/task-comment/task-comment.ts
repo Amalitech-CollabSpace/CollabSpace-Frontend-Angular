@@ -6,6 +6,10 @@ import {
   Input,
   Output,
   EventEmitter,
+  input,
+  computed,
+  model,
+  output,
 } from '@angular/core';
 import { SocketService } from '../../core/services/socketService/socket-service';
 import { FormsModule } from '@angular/forms';
@@ -22,12 +26,12 @@ export class TaskComment {
   public rows = signal(2);
   public columns = signal(80);
   public showButtons = signal(false);
-  @Input() public comment = '';
-  @Output() public commentEvent = new EventEmitter<string>();
+  public comment = model('');
+  public commentEvent = output<any>();
   public comments: string[] = [];
 
   public sendCommentToParent(): void {
-    this.commentEvent.emit(this.comment);
+    this.commentEvent.emit(this.comment());
   }
 
   public changeDimensions(row: number, col: number) {
@@ -37,9 +41,9 @@ export class TaskComment {
   }
 
   public showComment(row: number, col: number): void {
-    if (!(this.comment === '')) {
+    if (!(this.comment() === '')) {
       this.sendCommentToParent();
-      this.comment = '';
+      this.comment.set('');
     }
 
     this.changeDimensions(row, col);

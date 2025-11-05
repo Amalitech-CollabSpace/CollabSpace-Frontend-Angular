@@ -1,4 +1,4 @@
-import { Component, signal, Input } from '@angular/core';
+import { Component, signal, input } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
   bootstrapPersonCircle,
@@ -19,7 +19,7 @@ import { DatePipe } from '@angular/common';
   styleUrl: './display-comments.scss',
 })
 export class DisplayComments {
-  @Input() public comment = '';
-  @Input() public date?: Date = new Date();
-  @Input() public fullName = '';
+  public comment = input<string>('');
+  public date = input<Date | undefined>(undefined);
+  public fullName = input<string>('');
 }

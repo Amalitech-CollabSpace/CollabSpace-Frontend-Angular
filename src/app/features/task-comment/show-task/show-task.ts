@@ -71,6 +71,7 @@ export class ShowTask implements OnInit, OnDestroy {
       authorId: this.authService.getUserDetails().id,
       content: comm,
       authorName: this.authService.getUserDetails().fullName,
+      createdAt: new Date(),
     };
     console.log('Commentttttt', comment);
 

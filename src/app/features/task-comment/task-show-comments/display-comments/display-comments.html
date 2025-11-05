@@ -4,12 +4,12 @@
       <ng-icon name="bootstrapPersonCircle" />
     </div>
     <div class="grid text-lg">
-      <p class="font-semibold">{{ fullName }}</p>
+      <p class="font-semibold">{{ fullName() }}</p>
       <p class="text-sm text-gray-400">
-        {{ date | date : "MMM d, y, h:mm a" }}
+        {{ date() | date : "MMM d, y, h:mm a" }}
       </p>
     </div>
   </div>
 
-  <p class="pl-6 text-lg">{{ comment }}</p>
+  <p class="pl-6 text-lg">{{ comment() }}</p>
 </div>
