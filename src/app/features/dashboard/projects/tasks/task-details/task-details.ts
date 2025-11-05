@@ -50,7 +50,6 @@ Acceptance Criteria
     priority: 'Medium',
   });
 
-  ngOnInit() {}
 
   togglePrioMenu() {
     this.showPrioMenu.update((open) => !open);
