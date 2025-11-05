@@ -4,40 +4,46 @@ import { CommonModule } from '@angular/common';
 
 interface Member {
   name: string;
-  role: 'Manager' | 'Member' ;
+  role: 'Manager' | 'Member';
   avatar?: string;
 }
 
 @Component({
   selector: 'app-invite-popup',
-   imports: [ FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './invite-popup.html',
   styleUrl: './invite-popup.scss',
 })
 export class InvitePopup {
- 
-  isOpen = signal<boolean>(false);
+  protected isOpen = signal<boolean>(false);
 
-
-  members = signal<Member[]>([
-    { name: 'Desmond Anane', role: 'Member', avatar: 'https://i.pravatar.cc/40?u=1' },
-    { name: 'Isaac Antwi', role: 'Member', avatar: 'https://i.pravatar.cc/40?u=2' },
+  protected members = signal<Member[]>([
+    {
+      name: 'Desmond Anane',
+      role: 'Member',
+      avatar: 'https://i.pravatar.cc/40?u=1',
+    },
+    {
+      name: 'Isaac Antwi',
+      role: 'Member',
+      avatar: 'https://i.pravatar.cc/40?u=2',
+    },
   ]);
 
- workspaceName = input('My Workspace');
+  workspaceName = input('My Workspace');
 
-  newInvite = signal<string>('');
-  newRole = signal<'Manager' | 'Member' >('Member');
+  protected newInvite = signal<string>('');
+  protected newRole = signal<'Manager' | 'Member'>('Member');
 
-  open() {
+  protected open() {
     this.isOpen.set(true);
   }
 
-  close() {
+  protected close() {
     this.isOpen.set(false);
   }
 
-  invite() {
+  protected invite() {
     if (!this.newInvite()) return;
     this.members.update((prev) => [
       ...prev,
@@ -46,7 +52,7 @@ export class InvitePopup {
     this.newInvite.set('');
   }
 
-  removeMember(index: number) {
+  protected removeMember(index: number) {
     this.members.update((list) => list.filter((_, i) => i !== index));
   }
 }
