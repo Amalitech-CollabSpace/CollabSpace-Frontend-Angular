@@ -11,15 +11,24 @@
     <div class="flex items-center justify-center">
       <mat-spinner [diameter]="20"></mat-spinner>
     </div>
-    }@else{ @for(comment of comments.slice().reverse();track $index){
-    <div class="grid grid-cols-reverse gap-5 p-5">
-      <app-display-comments
-        [comment]="comment.content"
-        [date]="comment.createdAt"
-        [fullName]="comment.authorName"
-      ></app-display-comments>
-    </div>
+    }@else{
+    <div>
+      @if(isLoadingComment()){
+      <div class="flex items-center gap-2 animate-pulse">
+        <div class="rounded-full w-10 h-10 bg-slate-100"></div>
+        <div class="w-full bg-slate-100"></div>
+      </div>
+      } @for(comment of comments.slice().reverse();track $index){
+      <div class="grid grid-cols-reverse gap-5 p-5">
+        <app-display-comments
+          [comment]="comment.content"
+          [date]="comment.createdAt"
+          [fullName]="comment.authorName"
+        ></app-display-comments>
+      </div>
 
-    }}
+      }
+    </div>
+    }
   </div>
 </div>
