@@ -25,7 +25,7 @@ import { BoardComponent } from "../../../../components/board/board";
 })
 export class ProjectDetails {
   route = inject(ActivatedRoute);
-  projectId: any = this.route.snapshot.paramMap.get('id');
+  projectId: string = this.route.snapshot.paramMap.get('id')!;
   tasks = [
     {
       id: 'ESD-1',
@@ -240,7 +240,7 @@ export class ProjectDetails {
 
   constructor(private router: Router) {
     router.events.subscribe(() => {
-      this.projectId = this.route.snapshot.paramMap.get('id');
+      this.projectId = this.route.snapshot.paramMap.get('id')!;
     });
   }
 
