@@ -21,7 +21,7 @@ interface BoardList {
   styleUrl: './board.scss',
 })
 export class BoardComponent {
-  lists = signal<BoardList[]>([
+  protected lists = signal<BoardList[]>([
     {
       id: 1,
       title: 'Todo',
@@ -47,34 +47,34 @@ export class BoardComponent {
     },
   ]);
 
-  draggedTask: Task | null = null;
-  sourceListId: number | null = null;
+  draggedTask = signal<Task | null>(null);
+  sourceListId = signal<number | null>(null);
 
-  onDragStart(task: Task, listId: number) {
-    this.draggedTask = task;
-    this.sourceListId = listId;
+  protected onDragStart(task: Task, listId: number) {
+    this.draggedTask.set(task);
+    this.sourceListId.set(listId);
   }
 
-  onDrop(targetListId: number) {
-    if (!this.draggedTask || this.sourceListId === null) return;
+  protected onDrop(targetListId: number) {
+    if (!this.draggedTask() || this.sourceListId() === null) return;
 
     const lists = [...this.lists()];
-    const sourceList = lists.find((l) => l.id === this.sourceListId);
+    const sourceList = lists.find((l) => l.id === this.sourceListId());
     const targetList = lists.find((l) => l.id === targetListId);
 
     if (sourceList && targetList) {
       sourceList.tasks = sourceList.tasks.filter(
-        (t) => t.id !== this.draggedTask!.id
+        (t) => t.id !== this.draggedTask()!.id
       );
-      targetList.tasks.push(this.draggedTask);
+      targetList.tasks.push(this.draggedTask()!);
       this.lists.set(lists);
     }
 
-    this.draggedTask = null;
-    this.sourceListId = null;
+    this.draggedTask.set(null);
+    this.sourceListId.set(null);
   }
 
-  addList() {
+  protected addList() {
     const title = prompt('Enter list name');
     if (!title) return;
 
