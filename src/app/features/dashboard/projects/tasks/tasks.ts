@@ -3,8 +3,8 @@ import { Component, signal } from '@angular/core';
 import {
   ReactiveFormsModule,
   FormGroup,
-  FormControl,
   Validators,
+  FormBuilder,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -24,54 +24,63 @@ import { ionSave } from '@ng-icons/ionicons';
     NgIcon,
   ],
   templateUrl: './tasks.html',
-  styleUrl: './tasks.scss',
-
+  styleUrls: ['./tasks.scss'],
   viewProviders: provideIcons({ ionSave }),
 })
 export class Tasks {
-  taskForm = new FormGroup({
-    title: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    description: new FormControl(''),
-    status: new FormControl('TODO', [Validators.required]),
-    dueDate: new FormControl(''),
-    overdue: new FormControl(false),
-    assigneeId: new FormControl(''),
-    projectId: new FormControl('', [Validators.required]),
-    priority: new FormControl('', [Validators.required]),
-    attachments: new FormControl<string[]>([]),
-  });
+  protected taskForm: FormGroup;
+  protected attachments = signal<{ name: string; size: string }[]>([]);
 
-  attachments = signal<{ name: string; size: string }[]>([]);
+  constructor(private fb: FormBuilder) {
+    this.taskForm = this.fb.group({
+      title: ['', [Validators.required, Validators.minLength(3)]],
+      description: [''],
+      status: ['TODO'],
+      dueDate: [''],
+      overdue: [false],
+      assigneeId: [''],
+      projectId: ['', [Validators.required]],
+      priority: [''],
+      attachments: this.fb.control<File[]>([]),
+    });
+  }
 
-  removeAttachment(index: number) {
-    this.attachments().splice(index, 1);
-    this.taskForm.value.attachments!.splice(index, 1);
-    const mewList = this.taskForm.value.attachments || [];
+  protected removeAttachment(index: number) {
+    const updatedAttachments = this.attachments().filter((_, i) => i !== index);
+    this.attachments.set(updatedAttachments);
+
+  
+    const currentFiles = this.taskForm.get('attachments')?.value || [];
+    const newFiles = currentFiles.filter((_: any, i: number) => i !== index);
+    this.taskForm.patchValue({ attachments: newFiles });
+  }
+
+  protected onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) return;
+
+    const files = Array.from(input.files);
+    const newFileData = files.map(file => ({
+      name: file.name,
+      size: `${(file.size / 1024).toFixed(2)} KB`,
+    }));
+
+    this.attachments.update(prev => [...prev, ...newFileData]);
+
+    const currentFiles = this.taskForm.get('attachments')?.value || [];
     this.taskForm.patchValue({
-      attachments: [...mewList],
+      attachments: [...currentFiles, ...files],
     });
+
+    input.value = '';
   }
 
-  onSubmit() {
-    console.log(this.taskForm.value);
-  }
-
-  onFileSelected(event: any) {
-    const files = Array.from(event.target.files);
-
-    files.forEach((file: any) => {
-    
- 
-      
-      const attachment = {
-        name: file.name,
-        size: `${(file.size / 1024).toFixed(2)}`,
-      };
-      this.attachments().push(attachment);
-      const current = this.taskForm.value.attachments || [];
-      this.taskForm.patchValue({
-        attachments: [...current, file],
-      });
-    });
+ protected  onSubmit() {
+    if (this.taskForm.valid) {
+      console.log('Form submitted:', this.taskForm.value);
+    } else {
+      console.log('Form invalid');
+      this.taskForm.markAllAsTouched();
+    }
   }
 }

@@ -10,17 +10,17 @@ import { NgClass } from '@angular/common';
   styleUrl: './task-details.scss',
 })
 export class TaskDetails {
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
-  showPrioMenu = signal(false);
-  selectedPrio = signal<string>('Low');
-  allPriorities = signal(['High','Medium','Low']);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  protected showPrioMenu = signal(false);
+  protected selectedPrio = signal<string>('Low');
+  protected allPriorities = signal(['High','Medium','Low']);
 
-  showStatusMenu = signal(false);
-  selectedStatus = signal<string>('IN REVIEW');
-  allStatus = signal(['TODO','IN PROGRESS','IN REVIEW', 'DONE']);
+  protected showStatusMenu = signal(false);
+  protected selectedStatus = signal<string>('IN REVIEW');
+  protected allStatus = signal(['TODO','IN PROGRESS','IN REVIEW', 'DONE']);
 
-  task = signal<Task>({
+  protected task = signal<Task>({
     id: 'ESD-13',
     title: 'File Upload Service',
     description: `As a user,
@@ -51,20 +51,20 @@ Acceptance Criteria
   });
 
 
-  togglePrioMenu() {
+  protected togglePrioMenu() {
     this.showPrioMenu.update((open) => !open);
   }
 
-  onSelectPrio(prio: string) {
+  protected onSelectPrio(prio: string) {
     this.selectedPrio.set(prio);
     this.showPrioMenu.set(false);
   }
   
-  toggleStatusMenu() {
+  protected toggleStatusMenu() {
     this.showStatusMenu.update((open) => !open);
   }
 
-  onSelectStatus(stat: string) {
+ protected  onSelectStatus(stat: string) {
     this.selectedStatus.set(stat);
     this.showStatusMenu.set(false);
   }

@@ -35,15 +35,15 @@ export class InvitePopup {
   protected newInvite = signal<string>('');
   protected newRole = signal<'Manager' | 'Member'>('Member');
 
-  protected open() {
+   open() {
     this.isOpen.set(true);
   }
 
-  protected close() {
+   close() {
     this.isOpen.set(false);
   }
 
-  protected invite() {
+   invite() {
     if (!this.newInvite()) return;
     this.members.update((prev) => [
       ...prev,
@@ -52,7 +52,7 @@ export class InvitePopup {
     this.newInvite.set('');
   }
 
-  protected removeMember(index: number) {
+   removeMember(index: number) {
     this.members.update((list) => list.filter((_, i) => i !== index));
   }
 }

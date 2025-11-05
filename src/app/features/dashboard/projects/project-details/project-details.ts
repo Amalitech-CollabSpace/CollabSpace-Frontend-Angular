@@ -6,7 +6,8 @@ import { bootstrapPersonAdd } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { DadTable } from '../../../../components/dad-table/dad-table';
 import { InvitePopup } from '../../../../components/invite-popup/invite-popup';
-import { BoardComponent } from "../../../../components/board/board";
+import { BoardComponent } from '../../../../components/board/board';
+import { Task } from '../../../../models/task';
 
 @Component({
   selector: 'app-project-details',
@@ -17,16 +18,16 @@ import { BoardComponent } from "../../../../components/board/board";
     DadTable,
     RouterLink,
     InvitePopup,
-    BoardComponent
-],
+    BoardComponent,
+  ],
   templateUrl: './project-details.html',
   styleUrl: './project-details.scss',
   viewProviders: provideIcons({ bootstrapPersonAdd }),
 })
 export class ProjectDetails {
-  route = inject(ActivatedRoute);
-  projectId: string = this.route.snapshot.paramMap.get('id')!;
-  tasks = [
+  protected readonly route = inject(ActivatedRoute);
+  protected projectId: string = this.route.snapshot.paramMap.get('id')!;
+  protected tasks: Task[] = [
     {
       id: 'ESD-1',
       title: 'User Authentication',
@@ -244,17 +245,15 @@ export class ProjectDetails {
     });
   }
 
-  handleView(task: any) {
+  protected handleView(task: Task) {
     this.router.navigate([`/dashboard/projects/task/${task.id}`]);
-    
   }
-  
-  handleEdit(task: any) {
+
+  protected handleEdit(task: Task) {
     this.router.navigate([`/dashboard/projects/task/edit/${task.id}`]);
-    
   }
-  
-  handleDelete(task: any) {
-    return
+
+  protected handleDelete(task: Task) {
+    return;
   }
 }
