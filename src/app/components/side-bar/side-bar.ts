@@ -15,7 +15,6 @@ import {
   bootstrapCalendar2Check,
 } from '@ng-icons/bootstrap-icons';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { NgClass } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -26,7 +25,6 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
   imports: [
     NgIcon,
     RouterLink,
-    NgClass,
     RouterLinkActive,
     MatIconModule,
     MatTooltipModule,

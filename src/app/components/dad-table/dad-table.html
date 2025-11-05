@@ -47,7 +47,7 @@
         <mat-cell *matCellDef="let element">
           <span
             class="status-badge"
-            [ngClass]="element.status.toLowerCase().replace(' ', '-')"
+            [class]="element.status.toLowerCase().replace(' ', '-')"
           >
             {{ element.status }}
           </span>
