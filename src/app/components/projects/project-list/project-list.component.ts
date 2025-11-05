@@ -6,11 +6,12 @@ import { ProjectService } from '../../../core/services/projectService/project.se
 import { Project } from '../../../models/project.model';
 import { toast } from 'ngx-sonner';
 import { ButtonComponent } from '../../button/button.component';
+import { ProjectCard } from "../../project-card/project-card";
 
 @Component({
   selector: 'app-project-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, DatePipe, ButtonComponent],
+  imports: [CommonModule, RouterModule, DatePipe, ButtonComponent, ProjectCard],
   templateUrl: './project-list.component.html',
   styleUrl: './project-list.component.scss'
 })
@@ -24,7 +25,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(private projectService: ProjectService) {
-    this.userId = localStorage.getItem('user_id') || 'mock-user-id';
+    this.userId = JSON.parse(localStorage.getItem('userDetails')!).id || 'mock-user-id';
   }
 
   ngOnInit(): void {
@@ -40,11 +41,12 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.error = null;
 
-    this.projectService.getProjects()
+    this.projectService.getProjects(this.userId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (data) => {
+        next: (data: any) => {
           this.allProjects = data;
+          console.log("All projects..", this.allProjects)
           this.filterProjects(this.activeFilter);
           this.isLoading = false;
         },
@@ -68,6 +70,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
         project => project.createdBy === this.userId
       );
     }
+    
   }
 }
 

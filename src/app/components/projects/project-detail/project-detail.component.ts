@@ -29,6 +29,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.projectId = this.route.snapshot.paramMap.get('id');
+    localStorage.setItem('projectId', JSON.stringify(this.projectId)) 
     if (this.projectId) {
       this.loadProject();
     } else {

@@ -85,7 +85,7 @@
 
       @if (isProjectsOpen() && isSidebarOpen()) {
       <div class="pl-6">
-        @for (item of projectTreeData; track $index) {
+        @for (item of projectTreeData | slice:0:3; track $index) {
         <li
           routerLinkActive="bg-blue-500 text-white hover:text-slate-600"
           [routerLink]="item.route"

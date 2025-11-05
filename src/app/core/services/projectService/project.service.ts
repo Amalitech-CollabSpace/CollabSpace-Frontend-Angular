@@ -12,21 +12,23 @@ import {
   ProjectMemberRequest,
 } from '../../../models/project-member.model';
 import { Team, TeamRequest } from '../../../models/team.model';
+// import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProjectService {
    private baseUrl = import.meta.env.NG_APP_API_GATEWAY;
+  //  private baseUrl = environment.nodeApiURL;
   private readonly headers = new HttpHeaders({
     'Content-Type': 'application/json',
   });
 
   constructor(private http: HttpClient) {}
 
-  getProjects(): Observable<Project[]> {
+  getProjects(id: string): Observable<Project[]> {
     return this.http
-      .get<Project[]>(`${this.baseUrl}/projects`)
+      .get<Project[]>(`${this.baseUrl}/projects?memberId=${id}`)
       .pipe(catchError(this.handleError));
   }
 

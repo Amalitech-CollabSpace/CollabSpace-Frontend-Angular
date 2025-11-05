@@ -22,7 +22,8 @@ export class ProjectCard {
   link = input<string>('#');
   pi = Math.PI
 
-  get progressOffset(): number {
+  get progressOffset(): number { 
+   
     const circumference = 2 * this.pi * 18; 
     return circumference - (this.progress() / 100) * circumference;
   }

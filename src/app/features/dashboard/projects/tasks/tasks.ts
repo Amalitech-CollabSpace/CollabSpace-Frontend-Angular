@@ -27,15 +27,15 @@ import { Task } from '../../../../models/task';
     MatIconModule,
     DecimalPipe,
     NgIcon,
-    RouterLink
-],
+    RouterLink,
+  ],
   templateUrl: './tasks.html',
   styleUrl: './tasks.scss',
 
   viewProviders: provideIcons({ ionSave }),
 })
 export class Tasks {
-   public errorMessages: Record<string, string> = {
+  public errorMessages: Record<string, string> = {
     required: 'This field is required',
     minlength: 'Please enter a title of length 3 or more',
   };
@@ -57,6 +57,7 @@ export class Tasks {
   route = inject(ActivatedRoute);
   isEditMode = false;
   taskId: string | null = null;
+  projectId: string | null = null;
   isLoading = signal(false);
   private destroy$ = new Subject<void>();
   attachments = signal<{ name: string; size: string }[]>([]);
@@ -110,18 +111,21 @@ export class Tasks {
   onSubmit() {
     this.isLoading.set(true);
     if (this.isEditMode) {
-      this.taskService.editTask(this.taskForm.value as Task, this.taskId).subscribe({
-        next: (res) => {
-          this.isLoading.set(false);
-          console.log(res);
-          toast.success('Edited successfully');
-        },
-        error: (err) => {
-          this.isLoading.set(false);
-          toast.error(err?.error?.error || err?.message || 'Unknown error');
-        },
-      });
+      this.taskService
+        .editTask(this.taskForm.value as Task, this.taskId)
+        .subscribe({
+          next: (res) => {
+            this.isLoading.set(false);
+            console.log(res);
+            toast.success('Edited successfully');
+          },
+          error: (err) => {
+            this.isLoading.set(false);
+            toast.error(err?.error?.error || err?.message || 'Unknown error');
+          },
+        });
     } else {
+      this.taskForm.patchValue({'projectId': this.projectId})
       this.taskService.createTask(this.taskForm.value as Task).subscribe({
         next: (res) => {
           this.isLoading.set(false);
@@ -130,6 +134,7 @@ export class Tasks {
         },
         error: (err) => {
           this.isLoading.set(false);
+          console.log(err)
           toast.error(err?.error?.error || err?.message || 'Unknown error');
         },
       });

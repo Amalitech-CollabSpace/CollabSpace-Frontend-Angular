@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Task } from '../../../models/task';
 import { Observable } from 'rxjs';
+// import { environment } from '../../../../environments/environment';
 
 
 @Injectable({
@@ -9,6 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class TaskService {
    private baseUrl = import.meta.env.NG_APP_API_GATEWAY;
+    //  private baseUrl = environment.nodeApiURL;
   private http = inject(HttpClient)
 
 

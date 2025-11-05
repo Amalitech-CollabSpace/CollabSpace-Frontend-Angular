@@ -80,7 +80,8 @@ export class Login {
         },
         error: (err) => {
           this.isLoading.set(false);
-          toast.error(err?.error?.error || err?.message || 'Unknown error');
+          console.log(err)
+          toast.error(err?.error?.message || err?.message || 'Unknown error');
         },
       });
     } else {
