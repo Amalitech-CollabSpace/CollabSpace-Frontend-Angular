@@ -7,7 +7,7 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-// import { SocketService } from '../../core/services/socketService/socket-service';
+import { SocketService } from '../../core/services/socketService/socket-service';
 import { FormsModule } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { bootstrapPersonCircle } from '@ng-icons/bootstrap-icons';
