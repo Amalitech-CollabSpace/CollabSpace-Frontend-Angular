@@ -54,7 +54,6 @@ export class ShowTask implements OnInit, OnDestroy {
         this.isLoadingComment.set(false);
       });
     } catch (err) {
-      console.log('NEW COMMENT ERROR ', err);
       this.isLoadingComment.set(false);
     }
   }
@@ -73,17 +72,14 @@ export class ShowTask implements OnInit, OnDestroy {
       authorName: this.authService.getUserDetails().fullName,
       createdAt: new Date(),
     };
-    console.log('Commentttttt', comment);
 
     this.socketService.sendComment(comment, this.taskId).subscribe({
       next: (res) => {
-        console.log('Worked', res);
         this.isLoadingComment.set(false);
         takeUntil(this._destroy$);
       },
       error: (err) => {
         toast.error(err?.error?.error || err?.error.message || 'Unknown error');
-        console.log("Didn't Work", err);
         this.isLoadingComment.set(false);
       },
     });

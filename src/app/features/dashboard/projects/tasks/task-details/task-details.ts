@@ -1,10 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Task } from '../../../../../models/task';
+import { ShowTask } from '../../../../task-comment/show-task/show-task';
 
 @Component({
   selector: 'app-task-details',
-  imports: [],
+  imports: [ShowTask],
   templateUrl: './task-details.html',
   styleUrl: './task-details.scss',
 })
@@ -13,11 +14,11 @@ export class TaskDetails {
   private readonly route = inject(ActivatedRoute);
   protected showPrioMenu = signal(false);
   protected selectedPrio = signal<string>('Low');
-  protected allPriorities = signal(['High','Medium','Low']);
+  protected allPriorities = signal(['High', 'Medium', 'Low']);
 
   protected showStatusMenu = signal(false);
   protected selectedStatus = signal<string>('IN REVIEW');
-  protected allStatus = signal(['TODO','IN PROGRESS','IN REVIEW', 'DONE']);
+  protected allStatus = signal(['TODO', 'IN PROGRESS', 'IN REVIEW', 'DONE']);
 
   protected task = signal<Task>({
     id: 'ESD-13',
@@ -49,7 +50,6 @@ Acceptance Criteria
     priority: 'Medium',
   });
 
-
   protected togglePrioMenu() {
     this.showPrioMenu.update((open) => !open);
   }
@@ -58,14 +58,13 @@ Acceptance Criteria
     this.selectedPrio.set(prio);
     this.showPrioMenu.set(false);
   }
-  
+
   protected toggleStatusMenu() {
     this.showStatusMenu.update((open) => !open);
   }
 
- protected  onSelectStatus(stat: string) {
+  protected onSelectStatus(stat: string) {
     this.selectedStatus.set(stat);
     this.showStatusMenu.set(false);
   }
 }
- 
