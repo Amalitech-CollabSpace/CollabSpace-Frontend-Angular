@@ -24,19 +24,19 @@ export class BoardListComponent {
   dragStart = output<{ task: Task; listId: number }>();
   dropTask = output<number>();
 
-  onDragStart(task: Task) {
+  protected onDragStart(task: Task) {
     this.dragStart.emit({ task, listId: this.list().id });
   }
 
-  onDrop() {
+  protected onDrop() {
     this.dropTask.emit(this.list().id);
   }
 
-  onDragOver(event: DragEvent) {
+  protected onDragOver(event: DragEvent) {
     event.preventDefault();
   }
 
-  addTask() {
+  protected addTask() {
     const title = prompt('Enter task title');
     if (!title) return;
     this.list().tasks.push({ id: Date.now(), title });
