@@ -19,5 +19,6 @@ import {
 })
 export class DisplayComments {
   @Input() public comment = '';
-  @Input() public name = '';
+  @Input() public date?: Date = new Date();
+  @Input() public fullName = '';
 }

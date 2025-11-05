@@ -4,13 +4,14 @@ import { Comment } from '../../../models/comments-model/comments.model';
 import { HttpClient } from '@angular/common/http';
 import { AuthServices } from '../authService/auth-service';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SocketService {
   private socket!: Socket;
-  private socketUrl = '';
+  private socketUrl = environment.nodeApiURL;
   private readonly httpSocket = inject(HttpClient);
   private readonly authService = inject(AuthServices);
   public connect() {
