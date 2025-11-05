@@ -21,8 +21,8 @@ interface BoardList {
 })
 export class BoardListComponent {
   list = input.required<BoardList>();
-  dragStart = output<{ task: Task; listId: number }>();
-  dropTask = output<number>();
+  protected dragStart = output<{ task: Task; listId: number }>();
+  protected dropTask = output<number>();
 
   protected onDragStart(task: Task) {
     this.dragStart.emit({ task, listId: this.list().id });

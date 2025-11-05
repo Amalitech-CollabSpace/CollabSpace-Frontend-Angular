@@ -31,7 +31,7 @@ export class Tasks {
   protected taskForm: FormGroup;
   protected attachments = signal<{ name: string; size: string }[]>([]);
 
-  constructor(private fb: FormBuilder) {
+  constructor(private readonly fb: FormBuilder) {
     this.taskForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       description: [''],

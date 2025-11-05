@@ -1,7 +1,7 @@
 @if(isOpen()){
 <div
   class="fixed inset-0 bg-black/30 flex items-center justify-center z-50 backdrop-blur-sm"
-  (click)="close()"
+  (click)="toggle()"
 >
   <div
     class="bg-white rounded-xl shadow-xl w-[90%] max-w-lg p-6 relative"
@@ -12,7 +12,7 @@
         Invite to {{ workspaceName() }}
       </h2>
       <button
-        (click)="close()"
+        (click)="toggle()"
         class="text-gray-400 hover:text-gray-600 transition"
       >
         ✕
