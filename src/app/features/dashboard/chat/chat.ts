@@ -19,7 +19,6 @@ export class Chat implements OnInit {
       text: "Mainly the new analytics widgets. Here's a quick look at the component structure:",
       time: '10:08 AM',
       type: 'received',
-      // code: `<widgetContainer>\n  <Chart data={analyticsData} />\n  <Summary />\n</widgetContainer>`,
     },
   ]);
 
