@@ -53,9 +53,9 @@ import { Task } from '../../models/task';
 export class DadTable implements AfterViewInit {
   @ViewChild(MatTable, { static: true }) table!: MatTable<Task>;
   @ViewChild(MatSort) sort!: MatSort;
-  viewItem = output<any>();
-  editItem = output<any>();
-  deleteItem = output<any>();
+  viewItem = output<Task>();
+  editItem = output<Task>();
+  deleteItem = output<Task>();
 
   data = input<Task[]>([]);
   displayedColumns = input<string[]>([
@@ -67,10 +67,10 @@ export class DadTable implements AfterViewInit {
     'actions',
   ]);
   showSearch = input<boolean>(true);
-  showStatusMenu = signal<boolean>(false);
+  protected showStatusMenu = signal<boolean>(false);
 
-  searchTerm = signal('');
-  dataSource = new MatTableDataSource<Task>([]);
+  protected searchTerm = signal('');
+ protected  dataSource = new MatTableDataSource<Task>([]);
 
   constructor() {
     effect(() => {
@@ -83,31 +83,31 @@ export class DadTable implements AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-  applyFilter() {
+  protected applyFilter() {
     const filterValue = this.searchTerm().trim().toLowerCase();
     this.dataSource.filter = filterValue;
   }
 
-  drop(event: CdkDragDrop<Task[]>) {
+  protected drop(event: CdkDragDrop<Task[]>) {
     const previousData = [...this.dataSource.data];
     moveItemInArray(previousData, event.previousIndex, event.currentIndex);
     this.dataSource.data = previousData;
   }
 
-  updateSearchTerm(value: string) {
+  protected updateSearchTerm(value: string) {
     this.searchTerm.set(value);
     this.applyFilter();
   }
 
-  onView(item: any) {
+ protected  onView(item: Task) {
     this.viewItem.emit(item);
   }
 
-  onEdit(item: any) {
+ protected  onEdit(item: Task) {
     this.editItem.emit(item);
   }
 
-  onDelete(item: any) {
+ protected  onDelete(item: Task) {
     this.deleteItem.emit(item);
   }
 }
