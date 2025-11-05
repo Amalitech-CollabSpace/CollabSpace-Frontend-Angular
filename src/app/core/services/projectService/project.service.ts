@@ -6,12 +6,12 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { Project, ProjectRequest } from '../../../models/project.model';
+import { Project, ProjectRequest } from '../../../models/project';
 import {
   ProjectMember,
   ProjectMemberRequest,
-} from '../../../models/project-member.model';
-import { Team, TeamRequest } from '../../../models/team.model';
+} from '../../../models/project-member';
+import { Team, TeamRequest } from '../../../models/team';
 
 @Injectable({
   providedIn: 'root',
@@ -90,8 +90,7 @@ export class ProjectService {
       userId: invitation.userId,
       role: invitation.role as any,
     };
-    // API endpoint: POST /project_members
-    // Based on Swagger docs at https://collabspace-delopment.onrender.com/swagger-ui/index.html#/
+
     return this.http
       .post<ProjectMember>(`${this.baseUrl}/project_members`, memberRequest, {
         headers: this.headers,
@@ -100,8 +99,7 @@ export class ProjectService {
   }
 
   lookupUserByEmail(email: string): Observable<string> {
-    // API endpoint: GET /users/email/{email}
-    // Returns user object with id field for email lookup
+  
     return this.http
       .get<{ id: string; email: string }>(
         `${this.baseUrl}/users/email/${encodeURIComponent(email)}`,
