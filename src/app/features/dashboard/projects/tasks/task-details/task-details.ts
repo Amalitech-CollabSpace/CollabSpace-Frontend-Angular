@@ -1,11 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Task } from '../../../../../models/task';
-import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-task-details',
-  imports: [NgClass],
+  imports: [],
   templateUrl: './task-details.html',
   styleUrl: './task-details.scss',
 })

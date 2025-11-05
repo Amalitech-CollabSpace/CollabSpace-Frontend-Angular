@@ -38,7 +38,7 @@
             <div
               (click)="togglePrioMenu()"
               class="priority-badge w-fit cursor-pointer"
-              [ngClass]="selectedPrio().toLowerCase()"
+              [class]="selectedPrio().toLowerCase()"
             >
               {{ selectedPrio() }}
             </div>
@@ -67,7 +67,7 @@
             <div
               (click)="toggleStatusMenu()"
               class="status-badge w-fit cursor-pointer"
-              [ngClass]="selectedStatus().toLowerCase().replace(' ', '-')"
+              [class]="selectedStatus().toLowerCase().replace(' ', '-')"
             >
               {{ selectedStatus() }} 
             </div>
