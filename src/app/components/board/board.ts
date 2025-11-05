@@ -47,8 +47,8 @@ export class BoardComponent {
     },
   ]);
 
-  draggedTask = signal<Task | null>(null);
-  sourceListId = signal<number | null>(null);
+  protected draggedTask = signal<Task | null>(null);
+  protected sourceListId = signal<number | null>(null);
 
   protected onDragStart(task: Task, listId: number) {
     this.draggedTask.set(task);
