@@ -1,16 +1,13 @@
 <aside
-  [ngClass]="{
-    'w-64 p-5': isSidebarOpen(),
-    'w-16 py-5 px-2': !isSidebarOpen()
-  }"
+  [class]="isSidebarOpen() ? 'w-64 p-5' : 'w-16 py-5 px-2'"
   class="h-full bg-white border-r w-12 transition-all border-slate-200"
 >
   <div
-    [ngClass]="{ 'justify-center h-5': !isSidebarOpen() }"
+    [class]="!isSidebarOpen() ? 'justify-center h-5' : ''"
     class="flex items-center justify-between group"
   >
     <div
-      [ngClass]="{ 'group-hover:hidden': !isSidebarOpen() }"
+     [class]="!isSidebarOpen() ? 'group-hover:hidden' : ''"
       class="flex items-center gap-2 text-blue-500 text-lg"
     >
       <ng-icon name="bootstrapAmd" />
@@ -19,7 +16,7 @@
       }
     </div>
     <div
-      [ngClass]="{ 'hidden group-hover:flex': !isSidebarOpen() }"
+    [class]="!isSidebarOpen() ? 'hidden group-hover:flex' : ''"
       class="cursor-pointer text-slate-600"
       (click)="toggleSidebar()"
       [title]="isSidebarOpen() ? 'Collapse sidebar' : 'Expand sidebar'"
@@ -41,7 +38,7 @@
       aria-label="Button that displays a tooltip when focused or hovered over"
       routerLinkActive="bg-blue-500 text-white hover:text-slate-600"
       [routerLink]="item.path"
-      [ngClass]="{ 'justify-center': !isSidebarOpen() }"
+       [class.justify-center]="!isSidebarOpen()"
       class="text-slate-600 flex items-center gap-2 transition-all hover:bg-slate-100 rounded-md p-2 cursor-pointer"
     >
       <ng-icon [name]="item.icon" />
@@ -57,7 +54,7 @@
       class="flex flex-col transition-all rounded-md cursor-pointer text-slate-600"
     >
       <div
-        [ngClass]="{ 'justify-center': !isSidebarOpen() }"
+        [class.justify-center]="!isSidebarOpen()"
         class="flex items-center gap-2 hover:bg-slate-100 rounded-md p-2 group"
         (click)="toggleProjects()"
       >
@@ -89,7 +86,7 @@
         <li
           routerLinkActive="bg-blue-500 text-white hover:text-slate-600"
           [routerLink]="item.route"
-          [ngClass]="{ 'justify-center': !isSidebarOpen() }"
+           [class.justify-center]="!isSidebarOpen()"
           class="text-slate-600 flex items-center gap-2 transition-all hover:bg-slate-100 rounded-md p-2 cursor-pointer"
         >
           @if (isSidebarOpen()) {
@@ -100,7 +97,7 @@
 
         <li
           routerLink="projects"
-          [ngClass]="{ 'justify-center': !isSidebarOpen() }"
+           [class.justify-center]="!isSidebarOpen()"
           class="text-blue-500 flex items-right gap-2 transition-all hover:underline rounded-md cursor-pointer"
         >
           @if (isSidebarOpen()) {
@@ -116,7 +113,7 @@
       [matTooltip]="!isSidebarOpen() ? 'Settings' : ''"
       routerLinkActive="bg-blue-500 text-white hover:text-slate-600"
       routerLink="settings"
-      [ngClass]="{ 'justify-center': !isSidebarOpen() }"
+      [class.justify-center]="!isSidebarOpen()"
       class="text-slate-600 flex items-center gap-2 transition-all hover:bg-slate-100 rounded-md p-2 mt-auto cursor-pointer"
     >
       <ng-icon name="bootstrapGear" />

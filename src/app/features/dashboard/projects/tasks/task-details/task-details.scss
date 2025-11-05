@@ -1,0 +1,54 @@
+textarea {
+  resize: none;
+}
+
+.status-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+
+  &.todo {
+    background: #e7e5e58a;
+    color: #292929;
+  }
+
+  &.done {
+    background: #e3fcef;
+    color: #006644;
+  }
+
+  &.in-progress {
+    background: #deebff;
+    color: #0747a6;
+  }
+
+  &.in-review {
+    background: #fcffde;
+    color: #8ea607;
+  }
+}
+
+.priority-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+
+  &.high {
+    background: #fccdcd8a;
+    color: #df0f0f;
+  }
+
+  &.medium {
+    background: #fcffde;
+    color: #8ea607;
+  }
+
+  &.low {
+    background: #deebff;
+    color: #0747a6;
+  }
+}
