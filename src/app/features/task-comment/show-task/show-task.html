@@ -6,16 +6,20 @@
     <app-task-comment
       (commentEvent)="handleCommentFromChild($event)"
     ></app-task-comment>
+    @if(isLoading()){
 
+    <div class="flex items-center justify-center">
+      <mat-spinner [diameter]="20"></mat-spinner>
+    </div>
+    }@else{ @for(comment of comments.slice().reverse();track $index){
     <div class="grid grid-cols-reverse gap-5 p-5">
-      @for(comment of comments.reverse();track $index){
       <app-display-comments
         [comment]="comment.content"
         [date]="comment.createdAt"
-        [fullName]="comment.name"
+        [fullName]="comment.authorName"
       ></app-display-comments>
-
-      }
     </div>
+
+    }}
   </div>
 </div>

@@ -9,8 +9,10 @@ import { environment } from '../../../../environments/environment.development';
   providedIn: 'root',
 })
 export class AuthServices {
+  // private baseUrl = environment.nodeApiURL;
   private baseUrl = environment.nodeApiURL;
   private http = inject(HttpClient);
+  private userDetails: any;
 
   public login(user: LoggedInUser): Observable<User> {
     return this.http
@@ -33,6 +35,10 @@ export class AuthServices {
       'token_expiration',
       JSON.stringify(expiresAt.valueOf())
     );
+    localStorage.setItem('userDetails', JSON.stringify(authResponse.user));
+  }
+  public getUserDetails() {
+    return JSON.parse(localStorage.getItem('userDetails') || '');
   }
 
   public getRefreshToken(): Observable<any> {

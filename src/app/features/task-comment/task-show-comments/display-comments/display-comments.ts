@@ -4,10 +4,11 @@ import {
   bootstrapPersonCircle,
   bootstrapPencilSquare,
 } from '@ng-icons/bootstrap-icons';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-display-comments',
-  imports: [NgIcon],
+  imports: [NgIcon, DatePipe],
   viewProviders: [
     provideIcons({
       bootstrapPersonCircle,

@@ -11,14 +11,23 @@ import { environment } from '../../../../environments/environment.development';
 })
 export class SocketService {
   private socket!: Socket;
-  private socketUrl = environment.nodeApiURL;
+  private socketUrl = environment.socketUrl;
   private readonly httpSocket = inject(HttpClient);
   private readonly authService = inject(AuthServices);
   public connect() {
-    if (!this.authService.isLoggedOut) {
-      const token = localStorage.getItem('user_token') || '';
-      this.socket = io(this.socketUrl, { auth: { accessToken: token } });
-    }
+    // if (!this.authService.isLoggedOut) {
+    const token = localStorage.getItem('user_token') || '';
+    const accesstoken =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgzZWFlNGZmLWU0MTUtNGY2My05ZWQ0LWIwNTc0NTFhMzQzNiIsInJvbGUiOiJNRU1CRVIiLCJpYXQiOjE3NjIzNTIzNzIsImV4cCI6MTc2MjM1NTk3Mn0.RlQ-hl54blgrBQt4w4EZK9unNNr9yteCJXFCCIjHe30';
+    this.socket = io(this.socketUrl);
+    this.socket.on('connect', () => {
+      console.log('Connected to socket server ✅', this.socket?.id);
+    });
+
+    this.socket.on('connect_error', (error: any) => {
+      console.error('Socket connection error ❌:', error.message);
+    });
+    // }
   }
 
   public disconnect() {
@@ -33,20 +42,23 @@ export class SocketService {
     this.socket?.emit('LeaveRoom', { room: taskId });
   }
 
-  public sendComment(comment: Comment): Observable<Comment> {
-    return this.httpSocket.post<Comment>(`${this.socketUrl}/comments`, comment);
-  }
-
-  public getAllComments(taskId: string): Observable<Comment[]> {
-    return this.httpSocket.get<Comment[]>(
-      `${this.socketUrl}/comments/${taskId}`
+  public sendComment(comment: Comment, taskId: string): Observable<Comment> {
+    return this.httpSocket.post<Comment>(
+      `${this.socketUrl}/comments/${taskId}`,
+      comment
     );
   }
 
-  public onNewComment(): Observable<Comment> {
-    return new Observable<Comment>((observer) => {
-      this.socket?.on('comment', (c: Comment) => observer.next(c));
-      return () => this.socket?.off('comment');
-    });
+  public getAllComments(taskId: string) {
+    return this.httpSocket.get(`${this.socketUrl}/comments/${taskId}`);
+  }
+
+  public onNewComment(callback: (comment: any) => void) {
+    if (!this.socket) return;
+    this.socket?.on('commentAdded', callback);
+  }
+
+  public offComment() {
+    this.socket?.off('commentAdded');
   }
 }

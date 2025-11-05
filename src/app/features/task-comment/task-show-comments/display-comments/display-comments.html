@@ -5,7 +5,9 @@
     </div>
     <div class="grid text-lg">
       <p class="font-semibold">{{ fullName }}</p>
-      <p class="text-sm text-gray-400">{{ date }}</p>
+      <p class="text-sm text-gray-400">
+        {{ date | date : "MMM d, y, h:mm a" }}
+      </p>
     </div>
   </div>
 
