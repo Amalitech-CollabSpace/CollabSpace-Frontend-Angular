@@ -21,8 +21,35 @@ export const routes: Routes = [
       },
       {
         path: 'projects',
-        loadComponent: () =>
-          import('./projects/projects').then((m) => m.Projects),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./projects/projects').then((m) => m.Projects),
+          },
+          {
+            path: ':id',
+            loadComponent: () =>
+              import('./projects/project-details/project-details').then(
+                (m) => m.ProjectDetails
+              ),
+          },
+          {
+            path: 'task/create',
+            loadComponent: () =>
+              import('./projects/tasks/tasks').then((m) => m.Tasks),
+          },
+          {
+            path: 'task/edit/:id',
+            loadComponent: () =>
+              import('./projects/tasks/tasks').then((m) => m.Tasks),
+          },
+          {
+            path: 'task/:id',
+            loadComponent: () =>
+              import('./projects/tasks/task-details/task-details').then((m) => m.TaskDetails),
+          },
+        ],
       },
       {
         path: 'analytics',

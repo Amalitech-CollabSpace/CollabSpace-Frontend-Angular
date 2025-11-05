@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {} from '@ng-icons/ionicons';
 import {
@@ -15,18 +15,16 @@ import {
   bootstrapCalendar2Check,
 } from '@ng-icons/bootstrap-icons';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { NgClass } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TreeNode } from '../../models/tree';
-
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 @Component({
   selector: 'app-side-bar',
   imports: [
     NgIcon,
     RouterLink,
-    NgClass,
     RouterLinkActive,
     MatIconModule,
     MatTooltipModule,
@@ -49,11 +47,24 @@ import { TreeNode } from '../../models/tree';
     }),
   ],
 })
-export class SideBar {
-  isSidebarOpen = signal<boolean>(true);
-  isProjectsOpen = signal<boolean>(true);
+export class SideBar implements OnInit {
+  private breakpointObserver = inject(BreakpointObserver);
+  protected isSidebarOpen = signal<boolean>(true);
+  protected isProjectsOpen = signal<boolean>(true);
 
-  toggleProjects() {
+  ngOnInit() {
+    this.breakpointObserver
+      .observe([Breakpoints.Handset])
+      .subscribe((result) => {
+        this.isSidebarOpen.set(!result.matches);
+      });
+  }
+
+  protected toggleSidebar() {
+    this.isSidebarOpen.update((open) => !open);
+  }
+
+ protected  toggleProjects() {
     if (!this.isSidebarOpen()) {
       this.toggleSidebar();
       if (this.isProjectsOpen()) {
@@ -63,16 +74,12 @@ export class SideBar {
     this.isProjectsOpen.set(!this.isProjectsOpen());
   }
 
-  toggleSidebar() {
-    this.isSidebarOpen.set(!this.isSidebarOpen());
-  }
-
-  createProject() {
+ protected  createProject() {
     this.toggleProjects();
     prompt('Create Project');
   }
 
-  sidebarLinks = [
+  protected sidebarLinks = [
     {
       name: 'Dashboard',
       icon: 'bootstrapGrid1x2',
@@ -95,7 +102,7 @@ export class SideBar {
     },
   ];
 
-  projectTreeData: TreeNode[] = [
+ protected  projectTreeData: TreeNode[] = [
     { name: 'Website Redesign', route: 'projects/web' },
     { name: 'Mobile App', route: 'projects/mobile' },
   ];
