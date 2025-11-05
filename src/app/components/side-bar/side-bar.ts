@@ -51,8 +51,8 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 })
 export class SideBar implements OnInit {
   private breakpointObserver = inject(BreakpointObserver);
-  isSidebarOpen = signal<boolean>(true);
-  isProjectsOpen = signal<boolean>(true);
+  protected isSidebarOpen = signal<boolean>(true);
+  protected isProjectsOpen = signal<boolean>(true);
 
   ngOnInit() {
     this.breakpointObserver
@@ -62,11 +62,11 @@ export class SideBar implements OnInit {
       });
   }
 
-  toggleSidebar() {
+  protected toggleSidebar() {
     this.isSidebarOpen.update((open) => !open);
   }
 
-  toggleProjects() {
+ protected  toggleProjects() {
     if (!this.isSidebarOpen()) {
       this.toggleSidebar();
       if (this.isProjectsOpen()) {
@@ -76,12 +76,12 @@ export class SideBar implements OnInit {
     this.isProjectsOpen.set(!this.isProjectsOpen());
   }
 
-  createProject() {
+ protected  createProject() {
     this.toggleProjects();
     prompt('Create Project');
   }
 
-  sidebarLinks = [
+  protected sidebarLinks = [
     {
       name: 'Dashboard',
       icon: 'bootstrapGrid1x2',
@@ -104,7 +104,7 @@ export class SideBar implements OnInit {
     },
   ];
 
-  projectTreeData: TreeNode[] = [
+ protected  projectTreeData: TreeNode[] = [
     { name: 'Website Redesign', route: 'projects/web' },
     { name: 'Mobile App', route: 'projects/mobile' },
   ];
