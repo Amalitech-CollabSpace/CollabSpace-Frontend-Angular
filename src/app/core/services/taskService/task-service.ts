@@ -8,8 +8,8 @@ import { Task } from '../../../models/task';
   providedIn: 'root'
 })
 export class TaskService {
-  private baseUrl=environment.nodeApiURL
-  private http = inject(HttpClient)
+  private readonly baseUrl=environment.nodeApiURL
+  private readonly http = inject(HttpClient)
 
 
   public createTask(task: Task) {
