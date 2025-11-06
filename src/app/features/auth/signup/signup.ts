@@ -22,7 +22,7 @@ import { StrongPasswordValidator } from '../validators/passwordRegex';
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { toast, NgxSonnerToaster } from 'ngx-sonner';
+import { toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-signup',
@@ -30,7 +30,6 @@ import { toast, NgxSonnerToaster } from 'ngx-sonner';
     ReactiveFormsModule,
     InputComponent,
     RouterLink,
-    NgxSonnerToaster,
     MatProgressSpinnerModule,
   ],
   templateUrl: './signup.html',

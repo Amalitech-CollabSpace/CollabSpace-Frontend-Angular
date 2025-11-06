@@ -6,12 +6,11 @@ import { ProjectService } from '../../../core/services/projectService/project-se
 import { Project } from '../../../models/project.d';
 import { toast } from 'ngx-sonner';
 import { ButtonComponent } from '../../../components/button/button';
-import { ProjectCard } from '../../../components/project-card/project-card';
 
 @Component({
   selector: 'app-project-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, DatePipe, ButtonComponent, ProjectCard],
+  imports: [CommonModule, RouterModule, DatePipe, ButtonComponent],
   templateUrl: './projects.html',
   styleUrl: './projects.scss',
 })
