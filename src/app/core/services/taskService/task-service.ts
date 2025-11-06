@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Task } from '../../../models/task';
 import { Observable } from 'rxjs';
 
@@ -9,9 +9,17 @@ import { Observable } from 'rxjs';
 export class TaskService {
   private readonly baseUrl = import.meta.env.NG_APP_API_GATEWAY;
   private readonly http = inject(HttpClient);
+   private readonly headers = new HttpHeaders({
+    'Content-Type': 'multipart/form-data',
+  });
 
   public createTask(task: Task) {
     return this.http.post(`${this.baseUrl}/tasks`, task);
+  }
+  public uploadFile(file: any, id: string) {
+    return this.http.post(`${this.baseUrl}/api/attachments/upload?taskId=${id}`, file, {
+        headers: this.headers
+      });
   }
 
   public getTask(id: string): Observable<Task> {
