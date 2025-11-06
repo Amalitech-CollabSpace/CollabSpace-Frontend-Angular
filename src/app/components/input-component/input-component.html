@@ -1,0 +1,39 @@
+<div
+  class="flex flex-col gap-1 focus: text-black active:cursor-blue-500 focus:outline-black w-full"
+>
+  <label class="text-md font-semibold text-black"
+    >{{ label }}<span class="text-red-400">*</span></label
+  >
+  <div class="w-full">
+    <div
+      class="flex text-sm placeholder:text-gray-400 placeholder:font-semibold w-full border-1 border-gray-600/[15%] rounded-sm text-justify focus-within:ring-2 focus-within:ring-blue-400"
+    >
+      <input
+        [formControl]="controlName"
+        autocomplete="new-password"
+        required
+        [type]="type == 'password' && showPassword ? 'password' : 'text'"
+        [placeholder]="label"
+        class="text-sm placeholder:text-gray-400 placeholder:font-semibold w-full outline-none p-3 m-0 rounded-sm text-justify"
+      />
+      @if(type=='password' && !showPassword){
+      <span class="m-3" (click)="togglePasswordVisibility()"
+        ><ng-icon name="heroEye"></ng-icon
+      ></span>
+      }@else if(type=='password' && showPassword){
+      <span class="m-3" (click)="togglePasswordVisibility()"
+        ><ng-icon name="heroEyeSlash"></ng-icon
+      ></span>
+      }
+    </div>
+    <div class="min-h-[1.25rem]">
+      @if(controlName.invalid && (controlName.touched || controlName.dirty) ){
+      @for(err of controlName.errors|keyvalue; track $index;let count=$index){
+      @if(count<1){
+      <p class="text-red-700 text-sm italic mb-0">
+        {{ errorMessages[err.key] }}
+      </p>
+      } } }
+    </div>
+  </div>
+</div>

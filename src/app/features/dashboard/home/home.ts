@@ -1,0 +1,23 @@
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { bootstrapCalendar } from '@ng-icons/bootstrap-icons';
+import { provideIcons, NgIcon } from '@ng-icons/core';
+import { MatTabsModule } from '@angular/material/tabs';
+import { ProjectCard } from '../../../components/project-card/project-card';
+import { RouterLink } from '@angular/router';
+import { AuthServices } from '../../../core/services/authService/auth-service';
+
+@Component({
+  selector: 'app-home',
+  imports: [NgIcon, MatTabsModule, ProjectCard, RouterLink],
+  templateUrl: './home.html',
+  styleUrl: './home.scss',
+  viewProviders: [provideIcons({ bootstrapCalendar })],
+})
+export class Home implements OnInit {
+  private readonly userDetails = inject(AuthServices);
+  public userName = signal('');
+
+  ngOnInit() {
+    this.userName.set(this.userDetails.getUserDetails().fullName);
+  }
+}

@@ -1,0 +1,13 @@
+<app-task-comment
+  (commentEvent)="handleCommentFromChild($event)"
+></app-task-comment>
+
+<div class="grid gap-5 justify-center items-center">
+  @for(comment of dummyComments;track $index){
+  <app-display-comments
+    [comment]="comment.comment"
+    [name]="comment.name"
+  ></app-display-comments>
+
+  }
+</div>
