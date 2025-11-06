@@ -162,11 +162,11 @@ export class ProjectDetails implements OnInit, OnDestroy {
   protected onDeleteProject() {
     this.projectService.deleteProject(this.projectId()).subscribe({
       next: (res) => {
-        toast.success('Task deleted successfully');
+        toast.success('Project deleted successfully');
         this.router.navigate(['/dashboard/projects']);
       },
       error: (err) => {
-        toast.success('Task deleted successfully');
+        toast.error("Couldn't deleted this project");
       },
     });
   }
