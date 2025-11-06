@@ -85,7 +85,7 @@ export class Tasks {
     const files = Array.from(input.files);
     const newFileData = files.map((file) => ({
       name: file.name,
-      size: `${(file.size / 1024).toFixed(2)} KB`,
+      size: `${(file.size / 1024).toFixed(2)}`,
     }));
 
     this.attachments.update((prev) => [...prev, ...newFileData]);
@@ -123,7 +123,7 @@ export class Tasks {
             this.isLoading.set(false);
             console.log(res);
             toast.success('Created successfully');
-            this.router.navigate(['/dashboard/projects', this.projectId()])
+            this.router.navigate(['/dashboard/projects', this.projectId()]);
           },
           error: (err) => {
             this.isLoading.set(false);
@@ -131,6 +131,33 @@ export class Tasks {
             toast.error(err?.error?.error || err?.message || 'Unknown error');
           },
         });
+      }
+
+      const attachmentFormdata = new FormData();
+      attachmentFormdata.append(
+        'file',
+        this.taskForm.get('attachments')!.value
+      );
+      attachmentFormdata.append('taskId', this.taskId());
+
+      console.log(this.taskId());
+
+      if (attachmentFormdata.get('file')) {
+        this.taskService
+          .uploadFile(attachmentFormdata, this.taskId())
+          .subscribe({
+            next: (res) => {
+              this.isLoading.set(false);
+              console.log(res);
+              toast.success('Upload successfully');
+              this.router.navigate(['/dashboard/projects', this.projectId()]);
+            },
+            error: (err) => {
+              this.isLoading.set(false);
+              console.log(err);
+              toast.error(err?.error?.error || err?.message || 'Unknown error');
+            },
+          });
       }
     } else {
       console.log('Form invalid');

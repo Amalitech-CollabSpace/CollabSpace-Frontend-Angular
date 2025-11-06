@@ -32,9 +32,10 @@ export class AuthServices {
       'token_expiration',
       JSON.stringify(expiresAt.valueOf())
     );
+    localStorage.setItem('userDetails', JSON.stringify(authResponse.user));
   }
 
-  public getRefreshToken(): Observable<any> {
+  public getRefreshToken() {
     return this.http.get(`${this.baseUrl}/refresh`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('refresh_token')}`,
