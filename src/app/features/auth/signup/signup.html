@@ -57,17 +57,19 @@
           [label]="'Confirm Password'"
           [type]="'password'"
         ></app-input-component>
-        @if((signUpForm.errors?.['passwordMismatch']==true)){
-        <p class="text-red-700 text-sm italic">Passwords do not match</p>
-        }
+        <div class="h-4">
+          @if((signUpForm.errors?.['passwordMismatch']==true)&&(signUpForm.get('confirmPassword')?.touched)){
+          <p class="text-red-700 text-sm italic mt-0">Passwords do not match</p>
+          }
+        </div>
 
         <button
           type="submit"
           [disabled]="signUpForm.invalid || isLoading()"
           [class]="
             signUpForm.invalid
-              ? 'w-full bg-blue-600/[40%] rounded-md p-2 mt-0 mt-2 text-black/[30%]'
-              : 'active:border-1 active:border-blue-800 text-white  font-semibold bg-blue-600/[85%] rounded-md p-2 mt-0 w-full mt-2'
+              ? 'w-full bg-blue-600/[40%] rounded-md p-2 mt-0 text-black/[30%]'
+              : 'active:border-1 active:border-blue-800 text-white  font-semibold bg-blue-600/[85%] rounded-md p-2 mt-0 w-full'
           "
         >
           @if(isLoading()){
