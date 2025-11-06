@@ -1,19 +1,24 @@
 import { CommonModule, SlicePipe } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterLink,
+} from '@angular/router';
 import { bootstrapPersonAdd } from '@ng-icons/bootstrap-icons';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { DadTable } from '../../../../components/dad-table/dad-table';
 import { InvitePopup } from '../../../../components/invite-popup/invite-popup';
 import { Board } from '../../../../components/board/board';
-import { Subject, takeUntil } from 'rxjs';
+import { filter, Subject, Subscription, takeUntil } from 'rxjs';
 import { Task } from '../../../../models/task';
 import { toast } from 'ngx-sonner';
 import { TaskService } from '../../../../core/services/taskService/task-service';
 import { Project } from '../../../../models/project.d';
 import { ProjectService } from '../../../../core/services/projectService/project-service';
-import { ProjectDetailComponent } from "../../../../components/project-detail/project-detail";
+import { ButtonComponent } from '../../../../components/button/button';
 
 @Component({
   selector: 'app-project-details',
@@ -26,37 +31,26 @@ import { ProjectDetailComponent } from "../../../../components/project-detail/pr
     InvitePopup,
     Board,
     CommonModule,
-    ProjectDetailComponent
-],
+    ButtonComponent,
+  ],
   templateUrl: './project-details.html',
   styleUrl: './project-details.scss',
   viewProviders: provideIcons({ bootstrapPersonAdd }),
 })
-export class ProjectDetails {
-  route = inject(ActivatedRoute);
-  taskService = inject(TaskService);
-  projectId: any = this.route.snapshot.paramMap.get('id');
-  isEditMode = false;
-  taskId: string | null = null;
-  isLoading = signal(false);
-  project: Project | null = null;
-  error: string | null = null;
+export class ProjectDetails implements OnInit, OnDestroy {
+  private routeSub!: Subscription;
+  private readonly route = inject(ActivatedRoute);
+  private readonly taskService = inject(TaskService);
+  protected projectId: any = this.route.snapshot.paramMap.get('id');
+  protected isEditMode = false;
+  protected taskId: string | null = null;
+  protected isLoading = signal(false);
+  protected project: Project | null = null;
+  protected error: string | null = null;
   private destroy$ = new Subject<void>();
-  tasksdummy: Task[] = [];
-  tasks = [
-    {
-      id: 'ESD-1',
-      title: 'User Authentication',
-      status: 'DONE',
-      dueDate: '10 Oct',
-      overdue: false,
-      assignee_id: 'D1',
-      project_id: 'PRJ-001',
-      priority: 'High',
-    }
-  ];
+  protected tasks = signal<Task[]>([]);
 
-  members = [
+  protected members = [
     'https://i.pravatar.cc/30?img=1',
     'https://i.pravatar.cc/30?img=2',
     'https://i.pravatar.cc/30?img=3',
@@ -69,16 +63,28 @@ export class ProjectDetails {
     router.events.subscribe(() => {
       this.projectId = this.route.snapshot.paramMap.get('id');
     });
-    this.loadTasks();
+    if (this.projectId) {
+      this.loadTasks();
+      this.loadProject();
+    }
   }
 
-  onEditProject(): void {
+  ngOnInit(): void {
+    this.routeSub = this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.loadTasks();
+        this.loadProject();
+      });
+  }
+
+  protected onEditProject(): void {
     if (this.projectId) {
       this.router.navigate(['/dashboard/projects/edit', this.projectId]);
     }
   }
 
-  loadTasks(): void {
+  protected loadTasks(): void {
     if (!this.projectId) return;
 
     this.isLoading.set(true);
@@ -88,8 +94,8 @@ export class ProjectDetails {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (tasks: any) => {
-          this.tasksdummy = tasks;
-          console.log(this.tasksdummy);
+          this.tasks.set(tasks);
+          console.log('Tasks', tasks);
           this.isLoading.set(false);
         },
         error: (err) => {
@@ -103,7 +109,7 @@ export class ProjectDetails {
       });
   }
 
-  loadProject(): void {
+  protected loadProject(): void {
     if (!this.projectId) return;
 
     this.isLoading.set(true);
@@ -129,15 +135,43 @@ export class ProjectDetails {
       });
   }
 
-  handleView(task: Task) {
+  protected createTask() {
+    this.router.navigate(['/dashboard/projects/task/create', this.projectId]);
+  }
+
+  protected handleView(task: Task) {
     this.router.navigate([`/dashboard/projects/task/${task.id}`]);
   }
 
-  handleEdit(task: Task) {
+  protected handleEdit(task: Task) {
     this.router.navigate([`/dashboard/projects/task/edit/${task.id}`]);
   }
 
-  handleDelete(task: Task) {
-    return;
+  protected handleDelete(task: Task) {
+    this.taskService.deleteTask(task.id).subscribe({
+      next: (res) => {
+        toast.success('Task deleted successfully');
+        window.location.reload();
+      },
+      error: (err) => {
+        toast.success('Task deleted successfully');
+      },
+    });
+  }
+
+  protected onDeleteProject() {
+    this.projectService.deleteProject(this.projectId).subscribe({
+      next: (res) => {
+        toast.success('Task deleted successfully');
+        this.router.navigate(['/dashboard/projects']);
+      },
+      error: (err) => {
+        toast.success('Task deleted successfully');
+      },
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.routeSub.unsubscribe();
   }
 }

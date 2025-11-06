@@ -1,5 +1,5 @@
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   ReactiveFormsModule,
   FormGroup,
@@ -9,8 +9,13 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { ionSave } from '@ng-icons/ionicons';
+import { Task } from '../../../../models/task';
+import { TaskService } from '../../../../core/services/taskService/task-service';
+import { toast } from 'ngx-sonner';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tasks',
@@ -28,10 +33,29 @@ import { ionSave } from '@ng-icons/ionicons';
   viewProviders: provideIcons({ ionSave }),
 })
 export class Tasks {
+  private taskService = inject(TaskService);
+  private router = inject(Router);
   protected taskForm: FormGroup;
   protected attachments = signal<{ name: string; size: string }[]>([]);
+  protected projectId = signal<string>('');
+  protected taskId = signal<string>('');
+  protected isLoading = signal(false);
+  protected isEditMode = signal(false);
 
-  constructor(private readonly fb: FormBuilder) {
+  private destroy$ = new Subject<void>();
+
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly route: ActivatedRoute
+  ) {
+    if (this.router.url.includes('edit/')) {
+      this.taskId.set(this.route.snapshot.paramMap.get('id')!);
+      if (this.taskId()) {
+        this.isEditMode.set(true);
+        this.loadTask();
+      }
+    }
+    this.projectId.set(this.route.snapshot.paramMap.get('id')!);
     this.taskForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       description: [''],
@@ -39,7 +63,7 @@ export class Tasks {
       dueDate: [''],
       overdue: [false],
       assigneeId: [''],
-      projectId: ['', [Validators.required]],
+      projectId: [this.projectId(), [Validators.required]],
       priority: [''],
       attachments: this.fb.control<File[]>([]),
     });
@@ -49,7 +73,6 @@ export class Tasks {
     const updatedAttachments = this.attachments().filter((_, i) => i !== index);
     this.attachments.set(updatedAttachments);
 
-  
     const currentFiles = this.taskForm.get('attachments')?.value || [];
     const newFiles = currentFiles.filter((_: any, i: number) => i !== index);
     this.taskForm.patchValue({ attachments: newFiles });
@@ -60,12 +83,12 @@ export class Tasks {
     if (!input.files?.length) return;
 
     const files = Array.from(input.files);
-    const newFileData = files.map(file => ({
+    const newFileData = files.map((file) => ({
       name: file.name,
       size: `${(file.size / 1024).toFixed(2)} KB`,
     }));
 
-    this.attachments.update(prev => [...prev, ...newFileData]);
+    this.attachments.update((prev) => [...prev, ...newFileData]);
 
     const currentFiles = this.taskForm.get('attachments')?.value || [];
     this.taskForm.patchValue({
@@ -75,12 +98,72 @@ export class Tasks {
     input.value = '';
   }
 
- protected  onSubmit() {
+  protected onSubmit() {
+    this.taskForm.patchValue({ projectId: this.projectId() });
     if (this.taskForm.valid) {
-      console.log('Form submitted:', this.taskForm.value);
+      this.isLoading.set(true);
+      if (this.isEditMode()) {
+        this.taskService
+          .editTask(this.taskForm.value as Task, this.taskId())
+          .subscribe({
+            next: (res) => {
+              this.isLoading.set(false);
+              console.log(res);
+              toast.success('Edited successfully');
+            },
+            error: (err) => {
+              this.isLoading.set(false);
+              toast.error(err?.error?.error || err?.message || 'Unknown error');
+            },
+          });
+      } else {
+        this.taskForm.patchValue({ projectId: this.projectId() });
+        this.taskService.createTask(this.taskForm.value as Task).subscribe({
+          next: (res) => {
+            this.isLoading.set(false);
+            console.log(res);
+            toast.success('Created successfully');
+            this.router.navigate(['/dashboard/projects', this.projectId()])
+          },
+          error: (err) => {
+            this.isLoading.set(false);
+            console.log(err);
+            toast.error(err?.error?.error || err?.message || 'Unknown error');
+          },
+        });
+      }
     } else {
       console.log('Form invalid');
       this.taskForm.markAllAsTouched();
     }
+  }
+
+  loadTask(): void {
+    if (!this.taskId) return;
+
+    this.isLoading.set(true);
+
+    this.taskService
+      .getTask(this.taskId())
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (task: any) => {
+          this.taskForm.patchValue({
+            title: task.title ?? '',
+            description: task.description ?? '',
+            dueDate: task.dueDate ?? '',
+            priority: task.priority ?? '',
+          });
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          toast.error('Failed to load task', {
+            description:
+              err?.error?.message ||
+              'An error occurred while loading the task.',
+          });
+          this.isLoading.set(false);
+        },
+      });
   }
 }

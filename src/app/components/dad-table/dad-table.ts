@@ -7,7 +7,7 @@ import {
   effect,
   output,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   MatTable,
@@ -46,6 +46,7 @@ import { Task } from '../../models/task';
     MatButtonModule,
     DragDropModule,
     NgIcon,
+    DatePipe,
   ],
   viewProviders: provideIcons({ bootstrapSearch }),
 })
@@ -69,7 +70,7 @@ export class DadTable implements AfterViewInit {
   protected showStatusMenu = signal<boolean>(false);
 
   protected searchTerm = signal('');
- protected  dataSource = new MatTableDataSource<Task>([]);
+  protected dataSource = new MatTableDataSource<Task>([]);
 
   constructor() {
     effect(() => {
@@ -98,15 +99,15 @@ export class DadTable implements AfterViewInit {
     this.applyFilter();
   }
 
- protected  onView(item: Task) {
+  protected onView(item: Task) {
     this.viewItem.emit(item);
   }
 
- protected  onEdit(item: Task) {
+  protected onEdit(item: Task) {
     this.editItem.emit(item);
   }
 
- protected  onDelete(item: Task) {
+  protected onDelete(item: Task) {
     this.deleteItem.emit(item);
   }
 }

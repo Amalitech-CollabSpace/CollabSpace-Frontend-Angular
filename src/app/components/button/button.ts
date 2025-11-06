@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -7,43 +7,44 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
-    @if (routerLink) {
+    @if (routerLink()) {
       <a
-        [routerLink]="routerLink"
+        [routerLink]="routerLink()"
         [class]="getButtonClasses()">
         <ng-content></ng-content>
-        @if (label) {
-          {{ label }}
+        @if (label()) {
+          {{ label() }}
         }
       </a>
     } @else {
       <button
-        [type]="type"
-        [disabled]="disabled"
+        [type]="type()"
+        [disabled]="disabled()"
         [class]="getButtonClasses()"
         (click)="handleClick()">
         <ng-content></ng-content>
-        @if (label) {
-          {{ label }}
+        @if (label()) {
+          {{ label() }}
         }
       </button>
     }
   `,
-  styles: []
 })
 export class ButtonComponent {
-  @Input() label: string = '';
-  @Input() type: 'button' | 'submit' | 'reset' = 'button';
-  @Input() disabled: boolean = false;
-  @Input() variant: 'primary' | 'secondary' | 'danger' = 'primary';
-  @Input() routerLink?: string | any[];
+  label = input<string>('');
+  type = input<'button' | 'submit' | 'reset'>('button');
+  disabled = input<boolean>(false);
+  variant = input<'primary' | 'secondary' | 'danger'>('primary');
+  routerLink = input<string | any[] | undefined>(undefined);
 
-  @Output() clicked = new EventEmitter<void>();
+
+  clicked = output<void>();
 
   getButtonClasses(): string {
-    const baseClasses = 'px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed';
+    const baseClasses =
+      'px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed';
     
-    switch (this.variant) {
+    switch (this.variant()) {
       case 'primary':
         return `${baseClasses} bg-blue-500 text-white hover:bg-blue-600`;
       case 'secondary':
@@ -56,7 +57,7 @@ export class ButtonComponent {
   }
 
   handleClick(): void {
-    if (!this.disabled && !this.routerLink) {
+    if (!this.disabled() && !this.routerLink()) {
       this.clicked.emit();
     }
   }
