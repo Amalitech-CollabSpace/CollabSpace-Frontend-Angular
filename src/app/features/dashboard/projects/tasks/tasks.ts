@@ -108,7 +108,6 @@ export class Tasks {
           .subscribe({
             next: (res) => {
               this.isLoading.set(false);
-              console.log(res);
               toast.success('Edited successfully');
             },
             error: (err) => {
@@ -121,13 +120,11 @@ export class Tasks {
         this.taskService.createTask(this.taskForm.value as Task).subscribe({
           next: (res) => {
             this.isLoading.set(false);
-            console.log(res);
             toast.success('Created successfully');
             this.router.navigate(['/dashboard/projects', this.projectId()]);
           },
           error: (err) => {
             this.isLoading.set(false);
-            console.log(err);
             toast.error(err?.error?.error || err?.message || 'Unknown error');
           },
         });
@@ -160,7 +157,6 @@ export class Tasks {
           });
       }
     } else {
-      console.log('Form invalid');
       this.taskForm.markAllAsTouched();
     }
   }

@@ -11,22 +11,19 @@ import { Observable } from 'rxjs';
 export class SocketService {
   private socket!: Socket;
   private readonly socketUrl = import.meta.env.NG_APP_API_GATEWAY;
+
   private readonly httpSocket = inject(HttpClient);
   private readonly authService = inject(AuthServices);
   public connect() {
     const token = localStorage.getItem('user_token')!;
-    console.log('USER TOKEN', token);
+
     this.socket = io(this.socketUrl, {
       path: '/socket.io',
       transports: ['websocket', 'polling'],
     });
-    this.socket.on('connect', () => {
-      console.log('Connected to socket server ✅', this.socket?.id);
-    });
+    this.socket.on('connect', () => {});
 
-    this.socket.on('connect_error', (error: any) => {
-      console.error('Socket connection error ❌:', error.message);
-    });
+    this.socket.on('connect_error', (error: any) => {});
   }
 
   public disconnect() {

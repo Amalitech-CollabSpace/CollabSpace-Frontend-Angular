@@ -72,7 +72,6 @@ export class ShowTask implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.ConnectToSocket();
-    console.log('TASK ID', this.taskId());
   }
 
   public postComment(comm: string) {
@@ -91,7 +90,6 @@ export class ShowTask implements OnInit, OnDestroy {
         this.isLoadingComment.set(false);
         takeUntil(this._destroy$);
         toast.success('Message created successfully');
-        console.log('NEW COMMENT CREATED ', res);
       },
       error: (err) => {
         toast.error(
@@ -99,7 +97,6 @@ export class ShowTask implements OnInit, OnDestroy {
             err?.error.message ||
             'Could not create comment, try again!'
         );
-        console.log('COULD NOT CREATE NEW COMMENT', err);
 
         this.isLoadingComment.set(false);
       },
