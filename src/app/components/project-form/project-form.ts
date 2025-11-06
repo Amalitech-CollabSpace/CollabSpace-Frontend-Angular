@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import {
@@ -28,18 +28,18 @@ import { toast } from 'ngx-sonner';
 })
 export class ProjectFormComponent implements OnInit, OnDestroy {
   protected projectForm!: FormGroup;
-  protected isEditMode = false;
-  protected projectId: string | null = null;
-  protected isLoading = false;
-  protected error: string | null = null;
-  protected isSubmitting = false;
+  protected isEditMode = signal(false);
+  protected projectId = signal<string>('');
+  protected isLoading = signal(false);
+  protected error = signal<string | null>(null);
+  protected isSubmitting = signal(false);
   private destroy$ = new Subject<void>();
 
   constructor(
-    private fb: FormBuilder,
-    private projectService: ProjectService,
-    private route: ActivatedRoute,
-    private router: Router
+    private readonly fb: FormBuilder,
+    private readonly projectService: ProjectService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
@@ -50,9 +50,9 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       end_date: ['', [Validators.required]],
     });
 
-    this.projectId = this.route.snapshot.paramMap.get('id');
-    if (this.projectId) {
-      this.isEditMode = true;
+    this.projectId.set(this.route.snapshot.paramMap.get('id')!);
+    if (this.projectId()) {
+      this.isEditMode.set(true);
       this.loadProject();
     }
   }
@@ -63,13 +63,13 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   }
 
   protected loadProject(): void {
-    if (!this.projectId) return;
+    if (!this.projectId()) return;
 
-    this.isLoading = true;
-    this.error = null;
+    this.isLoading.set(true);
+    this.error.set(null);
 
     this.projectService
-      .getProjectById(this.projectId)
+      .getProjectById(this.projectId())
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (project) => {
@@ -79,16 +79,16 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
             start_date: this.formatDateForInput(project.startDate),
             end_date: this.formatDateForInput(project.endDate),
           });
-          this.isLoading = false;
+          this.isLoading.set(false);
         },
         error: (err) => {
-          this.error = 'Failed to load project. Please try again.';
+          this.error.set('Failed to load project. Please try again.');
           toast.error('Failed to load project', {
             description:
               err?.error?.message ||
               'An error occurred while loading the project.',
           });
-          this.isLoading = false;
+          this.isLoading.set(false);
         },
       });
   }
@@ -99,12 +99,12 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   }
 
   protected onSubmit(): void {
-    if (this.projectForm.invalid || this.isSubmitting) {
+    if (this.projectForm.invalid || this.isSubmitting()) {
       return;
     }
 
-    this.isSubmitting = true;
-    this.error = null;
+    this.isSubmitting.set(true);
+    this.error.set(null);
 
     const projectData: ProjectRequest = {
       name: this.projectForm.value.name,
@@ -113,26 +113,25 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       end_date: new Date(this.projectForm.value.end_date).toISOString(),
     };
 
-    const userId = this.getUserId();
 
-    if (this.isEditMode && this.projectId) {
+    if (this.isEditMode() && this.projectId()) {
       this.projectService
-        .updateProject(this.projectId, projectData)
+        .updateProject(this.projectId(), projectData)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {
-            this.isSubmitting = false;
+            this.isSubmitting.set(false);
             toast.success('Project updated successfully');
             this.router.navigate(['/dashboard/projects']);
           },
           error: (err) => {
-            this.error = 'Failed to update project. Please try again.';
+            this.error.set('Failed to update project. Please try again.');
             toast.error('Failed to update project', {
               description:
                 err?.error?.message ||
                 'An error occurred while updating the project.',
             });
-            this.isSubmitting = false;
+            this.isSubmitting.set(false);
           },
         });
     } else {
@@ -141,18 +140,18 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {
-            this.isSubmitting = false;
+            this.isSubmitting.set(false);
             toast.success('Project created successfully');
             this.router.navigate(['/dashboard/projects']);
           },
           error: (err) => {
-            this.error = 'Failed to create project. Please try again.';
+            this.error.set('Failed to create project. Please try again.');
             toast.error('Failed to create project', {
               description:
                 err?.error?.message ||
                 'An error occurred while creating the project.',
             });
-            this.isSubmitting = false;
+            this.isSubmitting.set(false);
           },
         });
     }
@@ -162,11 +161,4 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     this.router.navigate(['/dashboard/projects']);
   }
 
-  private getUserId(): string {
-    const token = localStorage.getItem('user_token');
-    if (token) {
-      return 'user-id-placeholder';
-    }
-    return 'user-id-placeholder';
-  }
 }
