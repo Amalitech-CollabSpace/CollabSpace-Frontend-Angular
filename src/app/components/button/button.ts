@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -29,6 +29,7 @@ import { RouterModule } from '@angular/router';
       </button>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ButtonComponent {
   label = input<string>('');
