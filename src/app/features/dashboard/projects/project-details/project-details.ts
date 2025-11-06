@@ -166,7 +166,7 @@ export class ProjectDetails implements OnInit, OnDestroy {
         this.router.navigate(['/dashboard/projects']);
       },
       error: (err) => {
-        toast.error("Couldn't deleted this project");
+        toast.error("Couldn't delete this project");
       },
     });
   }
