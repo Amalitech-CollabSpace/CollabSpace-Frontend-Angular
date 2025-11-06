@@ -108,7 +108,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
     const projectData: ProjectRequest = {
       name: this.projectForm.value.name,
-      description: this.projectForm.value.description || '',
+      description: this.projectForm.value.description,
       start_date: new Date(this.projectForm.value.start_date).toISOString(),
       end_date: new Date(this.projectForm.value.end_date).toISOString(),
     };

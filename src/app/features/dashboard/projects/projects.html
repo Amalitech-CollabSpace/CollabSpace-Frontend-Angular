@@ -12,43 +12,43 @@
   <div class="flex gap-2 mb-6">
     <button
       (click)="filterProjects('all')"
-      [class.bg-blue-600]="activeFilter === 'all'"
-      [class.text-white]="activeFilter === 'all'"
-      [class.bg-gray-200]="activeFilter !== 'all'"
-      [class.text-gray-700]="activeFilter !== 'all'"
-      [class.hover:bg-blue-700]="activeFilter === 'all'"
-      [class.hover:bg-gray-300]="activeFilter !== 'all'"
+      [class.bg-blue-600]="activeFilter() === 'all'"
+      [class.text-white]="activeFilter() === 'all'"
+      [class.bg-gray-200]="activeFilter() !== 'all'"
+      [class.text-gray-700]="activeFilter() !== 'all'"
+      [class.hover:bg-blue-700]="activeFilter() === 'all'"
+      [class.hover:bg-gray-300]="activeFilter() !== 'all'"
       class="px-4 py-2 rounded-lg font-medium transition-colors"
     >
       All Projects
     </button>
     <button
       (click)="filterProjects('owned')"
-      [class.bg-blue-600]="activeFilter === 'owned'"
-      [class.text-white]="activeFilter === 'owned'"
-      [class.bg-gray-200]="activeFilter !== 'owned'"
-      [class.text-gray-700]="activeFilter !== 'owned'"
-      [class.hover:bg-blue-700]="activeFilter === 'owned'"
-      [class.hover:bg-gray-300]="activeFilter !== 'owned'"
+      [class.bg-blue-600]="activeFilter() === 'owned'"
+      [class.text-white]="activeFilter() === 'owned'"
+      [class.bg-gray-200]="activeFilter() !== 'owned'"
+      [class.text-gray-700]="activeFilter() !== 'owned'"
+      [class.hover:bg-blue-700]="activeFilter() === 'owned'"
+      [class.hover:bg-gray-300]="activeFilter() !== 'owned'"
       class="px-4 py-2 rounded-lg font-medium transition-colors"
     >
       Owned by Me
     </button>
   </div>
 
-  @if (isLoading) {
+  @if (isLoading()) {
   <div class="flex justify-center items-center py-12">
     <div class="text-gray-500">Loading projects...</div>
   </div>
-  } @if (error && !isLoading) {
+  } @if (error() && !isLoading()) {
   <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
-    <p class="text-red-800">{{ error }}</p>
+    <p class="text-red-800">{{ error() }}</p>
     <app-button label="Retry" variant="secondary" (clicked)="loadProjects()">
     </app-button>
   </div>
-  } @if (!isLoading && !error) {
+  } @if (!isLoading() && !error()) {
   <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-    @for (project of filteredProjects; track project.id) {
+    @for (project of filteredProjects(); track project.id) {
     <div
       class="bg-white rounded-lg shadow-md p-6 border border-gray-200 hover:shadow-lg transition-shadow cursor-pointer"
       [routerLink]="['/dashboard/projects', project.id]"
@@ -77,11 +77,8 @@
     }
   </div>
 
-  <!-- <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-    @for (project of filteredProjects; track project.id) {
-    <app-project-card [company]="project.description" [title]="project.name" [link]="`/dashboard/projects/${project.id}`"></app-project-card>}
-  </div> -->
-  } @if (!isLoading && !error && filteredProjects.length === 0) {
+
+  } @if (!isLoading() && !error() && filteredProjects().length === 0) {
   <div class="text-center py-12">
     <div class="bg-gray-50 rounded-lg p-8 border border-gray-200">
       <p class="text-gray-500 text-lg mb-2">No projects found</p>

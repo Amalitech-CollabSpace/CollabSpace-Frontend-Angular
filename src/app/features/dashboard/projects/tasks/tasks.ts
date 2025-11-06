@@ -33,8 +33,8 @@ import { Subject, takeUntil } from 'rxjs';
   viewProviders: provideIcons({ ionSave }),
 })
 export class Tasks {
-  private taskService = inject(TaskService);
-  private router = inject(Router);
+  private readonly taskService = inject(TaskService);
+  private readonly router = inject(Router);
   protected taskForm: FormGroup;
   protected attachments = signal<{ name: string; size: string }[]>([]);
   protected projectId = signal<string>('');
@@ -42,7 +42,7 @@ export class Tasks {
   protected isLoading = signal(false);
   protected isEditMode = signal(false);
 
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
 
   constructor(
     private readonly fb: FormBuilder,

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
@@ -15,17 +15,18 @@ import { ButtonComponent } from '../../../components/button/button';
   styleUrl: './projects.scss',
 })
 export class Projects implements OnInit, OnDestroy {
-  protected allProjects: Project[] = [];
-  protected filteredProjects: Project[] = [];
-  protected isLoading = false;
-  protected error: string | null = null;
-  protected activeFilter: 'all' | 'owned' = 'all';
-  protected userId: string;
-  private destroy$ = new Subject<void>();
+  protected allProjects = signal<Project[]>([]);
+  protected filteredProjects = signal<Project[]>([]);
+  protected isLoading = signal(false);
+  protected error = signal<string | null>(null);
+  protected activeFilter = signal<'all' | 'owned'>('all');
+  protected userId = signal<string>('');
+  private readonly destroy$ = new Subject<void>();
 
-  constructor(private projectService: ProjectService) {
-    this.userId =
-      JSON.parse(localStorage.getItem('userDetails')!).id || 'mock-user-id';
+  constructor(private readonly projectService: ProjectService) {
+    this.userId.set(
+      JSON.parse(localStorage.getItem('userDetails')!).id
+    );
   }
 
   ngOnInit(): void {
@@ -38,39 +39,41 @@ export class Projects implements OnInit, OnDestroy {
   }
 
   protected loadProjects(): void {
-    this.isLoading = true;
-    this.error = null;
+    this.isLoading.set(true);
+    this.error.set(null);
 
     this.projectService
-      .getProjects(this.userId)
+      .getProjects(this.userId())
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (data: any) => {
-          this.allProjects = data;
-          console.log('All projects..', this.allProjects);
-          this.filterProjects(this.activeFilter);
-          this.isLoading = false;
+        next: (data) => {
+          this.allProjects.set(data);
+          this.filterProjects(this.activeFilter());
+          this.isLoading.set(false);
         },
         error: (err) => {
-          this.error = 'Failed to load projects. Please try again later.';
+          this.error.set('Failed to load projects. Please try again later.');
+          console.log(err);
           toast.error('Failed to load projects', {
             description:
               err?.error?.message ||
               'An error occurred while loading projects.',
           });
-          this.isLoading = false;
+          this.isLoading.set(false);
         },
       });
   }
 
   protected filterProjects(filter: 'all' | 'owned'): void {
-    this.activeFilter = filter;
+    this.activeFilter.set(filter);
 
     if (filter === 'all') {
-      this.filteredProjects = [...this.allProjects];
+      this.filteredProjects.set([...this.allProjects()]);
     } else if (filter === 'owned') {
-      this.filteredProjects = this.allProjects.filter(
-        (project) => project.createdBy === this.userId
+      this.filteredProjects.set(
+        this.allProjects().filter(
+          (project) => project.createdBy === this.userId()
+        )
       );
     }
   }

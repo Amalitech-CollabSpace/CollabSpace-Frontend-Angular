@@ -41,13 +41,13 @@ export class ProjectDetails implements OnInit, OnDestroy {
   private routeSub!: Subscription;
   private readonly route = inject(ActivatedRoute);
   private readonly taskService = inject(TaskService);
-  protected projectId: any = this.route.snapshot.paramMap.get('id');
-  protected isEditMode = false;
-  protected taskId: string | null = null;
+  protected projectId =  signal<string>(this.route.snapshot.paramMap.get('id')!);
+  protected isEditMode = signal(false);
+  protected taskId =  signal<string>('');
   protected isLoading = signal(false);
-  protected project: Project | null = null;
-  protected error: string | null = null;
-  private destroy$ = new Subject<void>();
+  protected project = signal<Project | null >(null);
+  protected error = signal<string | null>(null);
+  private  readonly destroy$ = new Subject<void>();
   protected tasks = signal<Task[]>([]);
 
   protected members = [
@@ -59,11 +59,11 @@ export class ProjectDetails implements OnInit, OnDestroy {
     'https://i.pravatar.cc/30?img=6',
   ];
 
-  constructor(private projectService: ProjectService, private router: Router) {
+  constructor(private readonly projectService: ProjectService, private readonly router: Router) {
     router.events.subscribe(() => {
-      this.projectId = this.route.snapshot.paramMap.get('id');
+      this.projectId.set(this.route.snapshot.paramMap.get('id')!);
     });
-    if (this.projectId) {
+    if (this.projectId()) {
       this.loadTasks();
       this.loadProject();
     }
@@ -79,21 +79,21 @@ export class ProjectDetails implements OnInit, OnDestroy {
   }
 
   protected onEditProject(): void {
-    if (this.projectId) {
-      this.router.navigate(['/dashboard/projects/edit', this.projectId]);
+    if (this.projectId()) {
+      this.router.navigate(['/dashboard/projects/edit', this.projectId()]);
     }
   }
 
   protected loadTasks(): void {
-    if (!this.projectId) return;
+    if (!this.projectId()) return;
 
     this.isLoading.set(true);
 
     this.taskService
-      .getAllTasksByProject(this.projectId)
+      .getAllTasksByProject(this.projectId())
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (tasks: any) => {
+        next: (tasks: Task[]) => {
           this.tasks.set(tasks);
           console.log('Tasks', tasks);
           this.isLoading.set(false);
@@ -110,21 +110,21 @@ export class ProjectDetails implements OnInit, OnDestroy {
   }
 
   protected loadProject(): void {
-    if (!this.projectId) return;
+    if (!this.projectId()) return;
 
     this.isLoading.set(true);
-    this.error = null;
+    this.error.set(null);
 
     this.projectService
-      .getProjectById(this.projectId)
+      .getProjectById(this.projectId())
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => {
-          this.project = data;
+          this.project.set(data);
           this.isLoading.set(false);
         },
         error: (err) => {
-          this.error = 'Failed to load project. Please try again.';
+          this.error.set('Failed to load project. Please try again.');
           toast.error('Failed to load project', {
             description:
               err?.error?.message ||
@@ -136,7 +136,7 @@ export class ProjectDetails implements OnInit, OnDestroy {
   }
 
   protected createTask() {
-    this.router.navigate(['/dashboard/projects/task/create', this.projectId]);
+    this.router.navigate(['/dashboard/projects/task/create', this.projectId()]);
   }
 
   protected handleView(task: Task) {
@@ -160,7 +160,7 @@ export class ProjectDetails implements OnInit, OnDestroy {
   }
 
   protected onDeleteProject() {
-    this.projectService.deleteProject(this.projectId).subscribe({
+    this.projectService.deleteProject(this.projectId()).subscribe({
       next: (res) => {
         toast.success('Task deleted successfully');
         this.router.navigate(['/dashboard/projects']);

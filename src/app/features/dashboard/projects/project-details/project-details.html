@@ -8,11 +8,11 @@
     </button>
   </div>
   <div class="flex justify-between items-center">
-    @if(project){
+    @if(project()){
     <h1
       class="text-2xl font-semibold text-gray-800 capitalize group flex items-center"
     >
-      Project {{ project.name }}
+      Project {{ project()!.name }}
     </h1>
     }@else {
     <div class="w-32 h-8 bg-slate-100 animate-pulse"></div>
@@ -55,10 +55,10 @@
         <div class="flex justify-center items-center py-12">
           <div class="text-gray-500">Loading project details...</div>
         </div>
-        } @if (error && !isLoading) {
+        } @if (error() && !isLoading()) {
         <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
-          <p class="text-red-800">{{ error }}</p>
-          @if (projectId) {
+          <p class="text-red-800">{{ error() }}</p>
+          @if (projectId()) {
           <app-button
             label="Retry"
             variant="secondary"
@@ -68,7 +68,7 @@
 
           }
         </div>
-        } @if (project && !isLoading()) {
+        } @if (project() && !isLoading()) {
         <div class="bg-white rounded-lg shadow-md p-6">
           <div class="space-y-6">
             <div
@@ -76,21 +76,21 @@
             >
               <div>
                 <h2 class="text-2xl font-semibold text-gray-900 mb-2">
-                  {{ project.name }}
+                  {{ project()!.name }}
                 </h2>
                 <span
                   class="px-3 py-1 text-sm rounded-full inline-block"
                   [class]="
-                    project.status === 'ACTIVE'
+                    project()!.status === 'ACTIVE'
                       ? 'bg-green-100 text-green-800'
-                      : project.status === 'COMPLETED'
+                      : project()!.status === 'COMPLETED'
                       ? 'bg-gray-100 text-gray-800'
-                      : project.status === 'ARCHIVED'
+                      : project()!.status === 'ARCHIVED'
                       ? 'bg-yellow-100 text-yellow-800'
                       : ''
                   "
                 >
-                  {{ project.status }}
+                  {{ project()!.status }}
                 </span>
               </div>
               <div class="flex items-center gap-2">
@@ -115,7 +115,7 @@
                 Description
               </h3>
               <p class="text-gray-600">
-                {{ project.description || "No description provided" }}
+                {{ project()!.description || "No description provided" }}
               </p>
             </div>
 
@@ -125,19 +125,19 @@
                   Start Date
                 </h3>
                 <p class="text-gray-900">
-                  {{ project.startDate | date : "medium" }}
+                  {{ project()!.startDate | date : "medium" }}
                 </p>
               </div>
               <div>
                 <h3 class="text-sm font-medium text-gray-500 mb-1">End Date</h3>
                 <p class="text-gray-900">
-                  {{ project.endDate | date : "medium" }}
+                  {{ project()!.endDate | date : "medium" }}
                 </p>
               </div>
               <div>
                 <h3 class="text-sm font-medium text-gray-500 mb-1">Team</h3>
                 <p class="text-gray-900 font-mono text-sm">
-                  {{ project.teamId || "Not assigned" }}
+                  {{ project()!.teamId || "Not assigned" }}
                 </p>
               </div>
             </div>

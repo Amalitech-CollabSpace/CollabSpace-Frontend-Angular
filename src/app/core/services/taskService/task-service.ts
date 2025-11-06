@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Task } from '../../../models/task';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,12 +14,12 @@ export class TaskService {
     return this.http.post(`${this.baseUrl}/tasks`, task);
   }
 
-  public getTask(id: string) {
-    return this.http.get(`${this.baseUrl}/tasks/${id}`);
+  public getTask(id: string): Observable<Task> {
+    return this.http.get<Task>(`${this.baseUrl}/tasks/${id}`);
   }
 
-  public getAllTasksByProject(id: string) {
-    return this.http.get(`${this.baseUrl}/tasks/project/${id}`);
+  public getAllTasksByProject(id: string): Observable<Task[]> {
+    return this.http.get<Task[]>(`${this.baseUrl}/tasks/project/${id}`);
   }
 
   public getAllTasksByAssignee(id: string) {

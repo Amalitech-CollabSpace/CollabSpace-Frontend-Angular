@@ -22,7 +22,7 @@ export class ProjectService {
     'Content-Type': 'application/json',
   });
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   getProjects(id: string): Observable<Project[]> {
     return this.http

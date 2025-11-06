@@ -59,8 +59,8 @@ interface ProjectsLinks {
   ],
 })
 export class SideBar implements OnInit {
-  private breakpointObserver = inject(BreakpointObserver);
-  private destroy$ = new Subject<void>();
+  private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly destroy$ = new Subject<void>();
   protected readonly projectService = inject(ProjectService);
   protected isSidebarOpen = signal<boolean>(true);
   protected isProjectsOpen = signal<boolean>(true);

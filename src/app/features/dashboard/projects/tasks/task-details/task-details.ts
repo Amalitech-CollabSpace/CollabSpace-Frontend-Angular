@@ -27,7 +27,7 @@ export class TaskDetails implements OnInit {
 
   protected taskId = signal<string>('');
   protected isLoading = signal(false);
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
 
   protected task = signal<Task>({
     id: '',
@@ -75,7 +75,7 @@ export class TaskDetails implements OnInit {
       .getTask(this.taskId())
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (task: any) => {
+        next: (task: Task) => {
           this.task.set(task);
           this.isLoading.set(false);
         },
