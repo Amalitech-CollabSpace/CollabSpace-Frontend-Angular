@@ -35,7 +35,7 @@ export class ButtonComponent {
   type = input<'button' | 'submit' | 'reset'>('button');
   disabled = input<boolean>(false);
   variant = input<'primary' | 'secondary' | 'danger'>('primary');
-  routerLink = input<string | any[] | undefined>(undefined);
+  routerLink = input<string>('');
 
 
   clicked = output<void>();
