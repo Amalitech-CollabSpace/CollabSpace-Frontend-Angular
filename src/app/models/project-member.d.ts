@@ -8,6 +8,7 @@ export enum ProjectMemberRole {
 export interface ProjectMemberRequest {
   projectId: string; 
   userId: string; 
+  inviteeEmails?: string[];
   role?: ProjectMemberRole;
 }
 

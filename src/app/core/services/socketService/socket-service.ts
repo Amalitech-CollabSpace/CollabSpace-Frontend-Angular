@@ -4,28 +4,23 @@ import { Comment } from '../../../models/comments-model/comments.model';
 import { HttpClient } from '@angular/common/http';
 import { AuthServices } from '../authService/auth-service';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SocketService {
   private socket!: Socket;
-  private socketUrl = environment.socketUrl;
+  private readonly socketUrl = 'https://qtzbtx6k-3000.uks1.devtunnels.ms';
+  // private readonly socketUrl = import.meta.env.NG_APP_API_GATEWAY;
   private readonly httpSocket = inject(HttpClient);
   private readonly authService = inject(AuthServices);
   public connect() {
-    // if (!this.authService.isLoggedOut) {
-    const token = localStorage.getItem('user_token') || '';
+    const token = localStorage.getItem('user_token')!;
     console.log('USER TOKEN', token);
     this.socket = io(this.socketUrl, {
       path: '/socket.io',
-      transports: ['websocket'],
+      transports: ['websocket', 'polling'],
     });
-    // this.socket = io(this.socketUrl, {
-    //   auth: { accessToken: token },
-    //   transports: ['websocket', 'polling'],
-    // });
     this.socket.on('connect', () => {
       console.log('Connected to socket server ✅', this.socket?.id);
     });

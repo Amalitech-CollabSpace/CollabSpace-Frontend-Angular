@@ -3,15 +3,13 @@ import moment from 'moment';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { User, LoggedInUser } from '../../../models/auth-models/user.model';
-import { environment } from '../../../../environments/environment.development';
 import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthServices {
-  // private readonly baseUrl = import.meta.env.NG_APP_API_GATEWAY;
-  private readonly baseUrl = environment.nodeApiURL;
+  private readonly baseUrl = import.meta.env.NG_APP_API_GATEWAY;
   private readonly http = inject(HttpClient);
   private userDetails: any;
   private route = inject(Router);
@@ -44,7 +42,7 @@ export class AuthServices {
   }
 
   public getRefreshToken(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/refresh`, {
+    return this.http.get(`${this.baseUrl}/authentication/refresh`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('refresh_token')}`,
       },
