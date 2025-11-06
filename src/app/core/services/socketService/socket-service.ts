@@ -10,8 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class SocketService {
   private socket!: Socket;
-  private readonly socketUrl = 'https://qtzbtx6k-3000.uks1.devtunnels.ms';
-  // private readonly socketUrl = import.meta.env.NG_APP_API_GATEWAY;
+  private readonly socketUrl = import.meta.env.NG_APP_API_GATEWAY;
   private readonly httpSocket = inject(HttpClient);
   private readonly authService = inject(AuthServices);
   public connect() {
