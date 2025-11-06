@@ -5,18 +5,13 @@ import { SocketService } from '../../../core/services/socketService/socket-servi
 import { Comment } from '../../../models/comments-model/comments.model';
 
 import { Subject, takeUntil } from 'rxjs';
-import { toast, NgxSonnerToaster } from 'ngx-sonner';
+import { toast } from 'ngx-sonner';
 import { AuthServices } from '../../../core/services/authService/auth-service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-show-task',
-  imports: [
-    TaskComment,
-    DisplayComments,
-    NgxSonnerToaster,
-    MatProgressSpinnerModule,
-  ],
+  imports: [TaskComment, DisplayComments, MatProgressSpinnerModule],
   templateUrl: './show-task.html',
   styleUrl: './show-task.scss',
 })
@@ -29,7 +24,10 @@ export class ShowTask implements OnInit, OnDestroy {
 
   public isLoading = signal(false);
   public isLoadingComment = signal(false);
-
+  public isHidden = signal(true);
+  public changeIsHidden() {
+    this.isHidden.set(false);
+  }
   public ConnectToSocket() {
     this.isLoading.set(true);
     if (!this.taskId) return;
@@ -45,16 +43,23 @@ export class ShowTask implements OnInit, OnDestroy {
         this.isLoading.set(false);
       },
       error: (err) => {
-        toast.error(err?.error?.error || err?.error.message || 'Unknown error');
+        toast.error(
+          err?.error?.error ||
+            err?.error.message ||
+            'Could not load all comments'
+        );
         this.isLoading.set(false);
       },
     });
     try {
       this.socketService.onNewComment((newComment) => {
         this.isLoadingComment.set(false);
+        this.comments.push(newComment.message);
+        toast.success('New comment added');
       });
     } catch (err) {
       this.isLoadingComment.set(false);
+      toast.error('Could not load new comment');
     }
   }
 
@@ -77,9 +82,17 @@ export class ShowTask implements OnInit, OnDestroy {
       next: (res) => {
         this.isLoadingComment.set(false);
         takeUntil(this._destroy$);
+        toast.success('Message created successfully');
+        console.log('NEW COMMENT CREATED ', res);
       },
       error: (err) => {
-        toast.error(err?.error?.error || err?.error.message || 'Unknown error');
+        toast.error(
+          err?.error?.error ||
+            err?.error.message ||
+            'Could not create comment, try again!'
+        );
+        console.log('COULD NOT CREATE NEW COMMENT', err);
+
         this.isLoadingComment.set(false);
       },
     });

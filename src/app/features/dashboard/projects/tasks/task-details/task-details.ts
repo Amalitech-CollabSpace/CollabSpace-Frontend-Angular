@@ -6,10 +6,11 @@ import { toast } from 'ngx-sonner';
 import { Subject, takeUntil } from 'rxjs';
 import { ButtonComponent } from '../../../../../components/button/button';
 import { DatePipe, Location } from '@angular/common';
+import { ShowTask } from '../../../../task-comment/show-task/show-task';
 
 @Component({
   selector: 'app-task-details',
-  imports: [ButtonComponent, DatePipe],
+  imports: [ButtonComponent, DatePipe, ShowTask],
   templateUrl: './task-details.html',
   styleUrl: './task-details.scss',
 })

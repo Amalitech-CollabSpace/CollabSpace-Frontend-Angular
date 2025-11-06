@@ -123,7 +123,7 @@ export class Tasks {
             this.isLoading.set(false);
             console.log(res);
             toast.success('Created successfully');
-            this.router.navigate(['/dashboard/projects', this.projectId()])
+            this.router.navigate(['/dashboard/projects', this.projectId()]);
           },
           error: (err) => {
             this.isLoading.set(false);
