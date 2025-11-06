@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { bootstrapBell, bootstrapPersonFill, bootstrapSearch } from '@ng-icons/bootstrap-icons';
 import { provideIcons, NgIcon } from '@ng-icons/core';
+import { User } from '../../models/auth-models/user.model';
 
 @Component({
   selector: 'app-search-bar',
@@ -13,6 +14,9 @@ import { provideIcons, NgIcon } from '@ng-icons/core';
     }),
   ],
 })
-export class SearchBar {
-
+export class SearchBar implements OnInit {
+  protected userDetails = signal<User>({ fullName: '', email: '', role: '', password: ''});
+  ngOnInit(): void {
+    this.userDetails.set(JSON.parse(localStorage.getItem('userDetails')!));
+  }
 }

@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { Dashboard } from './dashboard';
 
+
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   {
@@ -28,6 +29,16 @@ export const routes: Routes = [
               import('./projects/projects').then((m) => m.Projects),
           },
           {
+            path: 'create',
+            loadComponent: () =>
+              import('../../components/project-form/project-form').then((m) => m.ProjectFormComponent),
+          },
+          {
+            path: 'edit/:id',
+            loadComponent: () =>
+              import('../../components/project-form/project-form').then((m) => m.ProjectFormComponent),
+          },
+          {
             path: ':id',
             loadComponent: () =>
               import('./projects/project-details/project-details').then(
@@ -35,7 +46,7 @@ export const routes: Routes = [
               ),
           },
           {
-            path: 'task/create',
+            path: 'task/create/:id',
             loadComponent: () =>
               import('./projects/tasks/tasks').then((m) => m.Tasks),
           },
