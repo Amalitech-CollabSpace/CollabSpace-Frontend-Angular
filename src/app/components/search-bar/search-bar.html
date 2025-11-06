@@ -23,8 +23,16 @@
         <ng-icon name="bootstrapPersonFill" />
       </div>
       <div class="flex flex-col leading-4">
-        <h1>{{userDetails().fullName}}</h1>
-        <p class="text-slate-500 text-[13px]">{{userDetails().role}}</p>
+        <h1>{{ userDetails().fullName }}</h1>
+        <p class="text-slate-500 text-[13px]">
+          {{ userDetails().role | titlecase }}
+        </p>
+      </div>
+      <div
+        (click)="logUserOut()"
+        class="flex items-center justify-center rounded-md p-1"
+      >
+        <ng-icon name="bootstrapBoxArrowLeft" />
       </div>
     </div>
   </div>

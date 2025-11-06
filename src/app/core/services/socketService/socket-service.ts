@@ -18,9 +18,14 @@ export class SocketService {
     // if (!this.authService.isLoggedOut) {
     const token = localStorage.getItem('user_token') || '';
     console.log('USER TOKEN', token);
-    // const accesstoken =
-    //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgzZWFlNGZmLWU0MTUtNGY2My05ZWQ0LWIwNTc0NTFhMzQzNiIsInJvbGUiOiJNRU1CRVIiLCJpYXQiOjE3NjIzNTIzNzIsImV4cCI6MTc2MjM1NTk3Mn0.RlQ-hl54blgrBQt4w4EZK9unNNr9yteCJXFCCIjHe30';
-    this.socket = io(this.socketUrl, { auth: { accessToken: token } });
+    this.socket = io(this.socketUrl, {
+      path: '/socket.io',
+      transports: ['websocket'],
+    });
+    // this.socket = io(this.socketUrl, {
+    //   auth: { accessToken: token },
+    //   transports: ['websocket', 'polling'],
+    // });
     this.socket.on('connect', () => {
       console.log('Connected to socket server ✅', this.socket?.id);
     });

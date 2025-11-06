@@ -7,7 +7,7 @@
     class="flex items-center justify-between group"
   >
     <div
-     [class]="!isSidebarOpen() ? 'group-hover:hidden' : ''"
+      [class]="!isSidebarOpen() ? 'group-hover:hidden' : ''"
       class="flex items-center gap-2 text-blue-500 text-lg"
     >
       <ng-icon name="bootstrapAmd" />
@@ -16,7 +16,7 @@
       }
     </div>
     <div
-    [class]="!isSidebarOpen() ? 'hidden group-hover:flex' : ''"
+      [class]="!isSidebarOpen() ? 'hidden group-hover:flex' : ''"
       class="cursor-pointer text-slate-600"
       (click)="toggleSidebar()"
       [title]="isSidebarOpen() ? 'Collapse sidebar' : 'Expand sidebar'"
@@ -38,7 +38,7 @@
       aria-label="Button that displays a tooltip when focused or hovered over"
       routerLinkActive="bg-blue-500 text-white hover:text-slate-600"
       [routerLink]="item.path"
-       [class.justify-center]="!isSidebarOpen()"
+      [class.justify-center]="!isSidebarOpen()"
       class="text-slate-600 flex items-center gap-2 transition-all hover:bg-slate-100 rounded-md p-2 cursor-pointer"
     >
       <ng-icon [name]="item.icon" />
@@ -82,13 +82,13 @@
 
       @if (isProjectsOpen() && isSidebarOpen()) {
       <div class="pl-6">
-       @if(isLoading()){
+        @if(isLoading()){
         <li class="animate-pulse p-2 w-full h-full bg-slate-100">Loading...</li>
-       }@else{ @for (item of projectTreeData() | slice:0:3; track $index) {
+        }@else{ @for (item of projectTreeData() | slice:0:3; track $index) {
         <li
           routerLinkActive="bg-blue-500 text-white hover:text-slate-600"
           [routerLink]="item.route"
-           [class.justify-center]="!isSidebarOpen()"
+          [class.justify-center]="!isSidebarOpen()"
           class="text-slate-600 flex items-center gap-2 transition-all hover:bg-slate-100 rounded-md p-2 cursor-pointer"
         >
           @if (isSidebarOpen()) {
@@ -99,13 +99,14 @@
 
         <li
           routerLink="projects"
-           [class.justify-center]="!isSidebarOpen()"
+          [class.justify-center]="!isSidebarOpen()"
           class="text-blue-500 flex items-right transition-all hover:underline rounded-md cursor-pointer"
         >
           @if (isSidebarOpen() && projectTreeData().length > 3) {
-          <p >...view all</p>
+          <p>...view all</p>
           }
-        </li>}
+        </li>
+        }
       </div>
       }
     </li>

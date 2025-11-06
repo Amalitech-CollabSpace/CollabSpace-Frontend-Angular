@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal, inject } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
@@ -6,6 +6,7 @@ import { ProjectService } from '../../../core/services/projectService/project-se
 import { Project } from '../../../models/project.d';
 import { toast } from 'ngx-sonner';
 import { ButtonComponent } from '../../../components/button/button';
+import { AuthServices } from '../../../core/services/authService/auth-service';
 
 @Component({
   selector: 'app-project-list',
@@ -22,9 +23,10 @@ export class Projects implements OnInit, OnDestroy {
   protected activeFilter = signal<'all' | 'owned'>('all');
   protected userId = signal<string>('');
   private readonly destroy$ = new Subject<void>();
+  private readonly authService = inject(AuthServices);
 
   constructor(private readonly projectService: ProjectService) {
-    this.userId.set(JSON.parse(localStorage.getItem('userDetails')!).id);
+    this.userId.set(this.authService.getUserDetails().id);
   }
 
   ngOnInit(): void {

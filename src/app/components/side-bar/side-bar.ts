@@ -24,6 +24,7 @@ import { ProjectService } from '../../core/services/projectService/project-servi
 import { Subject, takeUntil } from 'rxjs';
 import { toast } from 'ngx-sonner';
 import { SlicePipe } from '@angular/common';
+import { AuthServices } from '../../core/services/authService/auth-service';
 
 interface ProjectsLinks {
   name: string;
@@ -38,7 +39,7 @@ interface ProjectsLinks {
     RouterLinkActive,
     MatIconModule,
     MatTooltipModule,
-    SlicePipe
+    SlicePipe,
   ],
   templateUrl: './side-bar.html',
   styleUrl: './side-bar.scss',
@@ -69,9 +70,10 @@ export class SideBar implements OnInit {
   protected allProjectsLinks = signal<ProjectsLinks[]>([]);
   protected isLoading = signal(false);
   protected userId = signal<string>('');
+  private readonly authService = inject(AuthServices);
 
   constructor() {
-    this.userId.set(JSON.parse(localStorage.getItem('userDetails')!).id);
+    this.userId.set(this.authService.getUserDetails().id);
   }
 
   ngOnInit() {
@@ -120,8 +122,8 @@ export class SideBar implements OnInit {
     },
   ];
 
- protected loadProjects(): void {
-     this.isLoading.set(true);
+  protected loadProjects(): void {
+    this.isLoading.set(true);
     this.projectService
       .getProjects(this.userId())
       .pipe(takeUntil(this.destroy$))

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { User, LoggedInUser } from '../../../models/auth-models/user.model';
 import { environment } from '../../../../environments/environment.development';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,7 @@ export class AuthServices {
   private readonly baseUrl = environment.nodeApiURL;
   private readonly http = inject(HttpClient);
   private userDetails: any;
+  private route = inject(Router);
 
   public login(user: LoggedInUser): Observable<User> {
     return this.http
@@ -35,10 +37,10 @@ export class AuthServices {
       'token_expiration',
       JSON.stringify(expiresAt.valueOf())
     );
-    localStorage.setItem('userDetails', JSON.stringify(authResponse.user));
+    localStorage.setItem('user_details', JSON.stringify(authResponse.user));
   }
   public getUserDetails() {
-    return JSON.parse(localStorage.getItem('userDetails') || '');
+    return JSON.parse(localStorage.getItem('user_details') || '');
   }
 
   public getRefreshToken(): Observable<any> {
@@ -52,6 +54,9 @@ export class AuthServices {
   public logout() {
     localStorage.removeItem('user_token');
     localStorage.removeItem('token_expiration');
+    localStorage.removeItem('user_details');
+    localStorage.removeItem('refresh_token');
+    this.route.navigate(['/auth/login']);
   }
 
   public isLoggedIn() {

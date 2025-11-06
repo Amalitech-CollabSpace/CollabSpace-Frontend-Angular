@@ -1,4 +1,11 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+  input,
+} from '@angular/core';
 import { TaskComment } from '../task-comment';
 import { DisplayComments } from '../task-show-comments/display-comments/display-comments';
 import { SocketService } from '../../../core/services/socketService/socket-service';
@@ -16,7 +23,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './show-task.scss',
 })
 export class ShowTask implements OnInit, OnDestroy {
-  public taskId: string = '678jkkiur';
+  public taskId = input<string>('');
   public comments: Comment[] = [];
   private readonly socketService = inject(SocketService);
   private readonly authService = inject(AuthServices);
@@ -34,9 +41,9 @@ export class ShowTask implements OnInit, OnDestroy {
 
     this.socketService.connect();
     try {
-      this.socketService.joinRoom(this.taskId);
+      this.socketService.joinRoom(this.taskId());
     } catch (err) {}
-    this.socketService.getAllComments(this.taskId).subscribe({
+    this.socketService.getAllComments(this.taskId()).subscribe({
       next: (allComments: any) => {
         this.comments = allComments!.comments;
         takeUntil(this._destroy$);
@@ -65,20 +72,21 @@ export class ShowTask implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.ConnectToSocket();
+    console.log('TASK ID', this.taskId());
   }
 
   public postComment(comm: string) {
     this.isLoadingComment.set(true);
 
     const comment: Comment = {
-      taskId: this.taskId,
+      taskId: this.taskId(),
       authorId: this.authService.getUserDetails().id,
       content: comm,
       authorName: this.authService.getUserDetails().fullName,
       createdAt: new Date(),
     };
 
-    this.socketService.sendComment(comment, this.taskId).subscribe({
+    this.socketService.sendComment(comment, this.taskId()).subscribe({
       next: (res) => {
         this.isLoadingComment.set(false);
         takeUntil(this._destroy$);
@@ -99,9 +107,9 @@ export class ShowTask implements OnInit, OnDestroy {
   }
 
   public leaveRoom() {
-    this.socketService.leaveRoom(this.taskId);
+    this.socketService.leaveRoom(this.taskId());
     this.comments = [];
-    this.taskId = '';
+    // this.taskId = '';
   }
   ngOnDestroy() {
     this.socketService.disconnect();
