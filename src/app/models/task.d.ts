@@ -5,7 +5,7 @@ export interface Task {
   status: string;
   dueDate: string;
   overdue: boolean;
-  assignee_id: string;
+  assigneeId: string;
   project_id: string;
   priority: string;
 }

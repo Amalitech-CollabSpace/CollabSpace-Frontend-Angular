@@ -3,15 +3,14 @@ import moment from 'moment';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { User, LoggedInUser } from '../../../models/auth-models/user.model';
-import { environment } from '../../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthServices {
   // private baseUrl = environment.nodeApiURL;
-  private baseUrl = environment.nodeApiURL;
-  private http = inject(HttpClient);
+  private readonly baseUrl = import.meta.env.NG_APP_API_GATEWAY;
+  private readonly http = inject(HttpClient);
   private userDetails: any;
 
   public login(user: LoggedInUser): Observable<User> {

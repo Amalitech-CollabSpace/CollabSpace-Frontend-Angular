@@ -1,7 +1,22 @@
 <div class="p-6 text-gray-800 h-[90vh] overflow-y-auto">
   <div class="max-w-5xl mx-auto space-y-6">
-    <div>
+    <div class="flex items-center justify-between">
+      @if(!isLoading()){
+
       <h1 class="text-2xl font-semibold mt-2">{{ task().title }}</h1>
+      }@else {
+      <div class="w-32 h-8 bg-slate-100 animate-pulse"></div>
+      }
+      <div class="flex gap-2 items-center">
+        <app-button label="Edit" variant="primary" (clicked)="handleEdit()">
+        </app-button>
+        <app-button
+          label="Delete"
+          variant="secondary"
+          (clicked)="handleDelete()"
+        >
+        </app-button>
+      </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -10,29 +25,42 @@
           <h2 class="text-lg font-semibold mb-2">Description</h2>
           <div class="">{{ task().description }}</div>
         </div>
-        <div class="bg-white rounded-xl shadow-sm p-4">
+        <div
+          class="bg-white rounded-xl shadow-sm p-4 h-[450px] overflow-hidden"
+        >
           <h2 class="text-lg font-semibold mb-2">Attachments</h2>
+<<<<<<< HEAD
           <img src="assets\images\fileupload.webp" alt="" />
         </div>
         <div class="bg-white rounded-xl shadow-sm p-4">
           <app-show-task></app-show-task>
+=======
+          <img src="assets\images\no-file.jpg" alt="" class="w-full h-full" />
+>>>>>>> dev
         </div>
       </div>
 
       <div class="bg-white rounded-xl shadow-sm p-4 space-y-2 text-sm h-fit">
         <div class="flex flex-col border-b border-slate-200 py-2">
           <span class="text-gray-500">Assignee</span>
+          @if(task().assigneeId) {
           <span class="font-medium flex items-center gap-2">
             <img
               class="w-8 h-8 rounded-full border-2 border-white"
               src=" https://i.pravatar.cc/30?img=1"
               alt="member"
-            />{{ task().assignee_id }}</span
-          >
+            />{{ task().assigneeId }}</span
+          >}@else {
+          <p>Nobody</p>
+          }
         </div>
         <div class="flex flex-col border-b border-slate-200 py-2">
           <span class="text-gray-500">Due Date</span>
-          <span>{{ task().dueDate }}</span>
+          @if(task().dueDate) {
+          <span>{{ task().dueDate | date }}</span
+          >}@else {
+          <p>--.--</p>
+          }
         </div>
         <div class="flex flex-col border-b border-slate-200 py-2">
           <span class="text-gray-500">Priority</span>
