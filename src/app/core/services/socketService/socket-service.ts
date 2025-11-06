@@ -17,12 +17,17 @@ export class SocketService {
   public connect() {
     // if (!this.authService.isLoggedOut) {
     const token = localStorage.getItem('user_token') || '';
-    const accesstoken =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgzZWFlNGZmLWU0MTUtNGY2My05ZWQ0LWIwNTc0NTFhMzQzNiIsInJvbGUiOiJNRU1CRVIiLCJpYXQiOjE3NjIzNTIzNzIsImV4cCI6MTc2MjM1NTk3Mn0.RlQ-hl54blgrBQt4w4EZK9unNNr9yteCJXFCCIjHe30';
-    this.socket = io(this.socketUrl);
-    this.socket.on('connect', () => {});
+    console.log('USER TOKEN', token);
+    // const accesstoken =
+    //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgzZWFlNGZmLWU0MTUtNGY2My05ZWQ0LWIwNTc0NTFhMzQzNiIsInJvbGUiOiJNRU1CRVIiLCJpYXQiOjE3NjIzNTIzNzIsImV4cCI6MTc2MjM1NTk3Mn0.RlQ-hl54blgrBQt4w4EZK9unNNr9yteCJXFCCIjHe30';
+    this.socket = io(this.socketUrl, { auth: { accessToken: token } });
+    this.socket.on('connect', () => {
+      console.log('Connected to socket server ✅', this.socket?.id);
+    });
 
-    this.socket.on('connect_error', (error: any) => {});
+    this.socket.on('connect_error', (error: any) => {
+      console.error('Socket connection error ❌:', error.message);
+    });
   }
 
   public disconnect() {
