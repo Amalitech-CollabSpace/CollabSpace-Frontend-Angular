@@ -41,13 +41,13 @@ export class ProjectDetails implements OnInit, OnDestroy {
   private routeSub!: Subscription;
   private readonly route = inject(ActivatedRoute);
   private readonly taskService = inject(TaskService);
-  protected projectId =  signal<string>(this.route.snapshot.paramMap.get('id')!);
+  protected projectId = signal<string>(this.route.snapshot.paramMap.get('id')!);
   protected isEditMode = signal(false);
-  protected taskId =  signal<string>('');
+  protected taskId = signal<string>('');
   protected isLoading = signal(false);
-  protected project = signal<Project | null >(null);
+  protected project = signal<Project | null>(null);
   protected error = signal<string | null>(null);
-  private  readonly destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
   protected tasks = signal<Task[]>([]);
 
   protected members = [
@@ -59,7 +59,10 @@ export class ProjectDetails implements OnInit, OnDestroy {
     'https://i.pravatar.cc/30?img=6',
   ];
 
-  constructor(private readonly projectService: ProjectService, private readonly router: Router) {
+  constructor(
+    private readonly projectService: ProjectService,
+    private readonly router: Router
+  ) {
     router.events.subscribe(() => {
       this.projectId.set(this.route.snapshot.paramMap.get('id')!);
     });
@@ -95,7 +98,6 @@ export class ProjectDetails implements OnInit, OnDestroy {
       .subscribe({
         next: (tasks: Task[]) => {
           this.tasks.set(tasks);
-          console.log('Tasks', tasks);
           this.isLoading.set(false);
         },
         error: (err) => {

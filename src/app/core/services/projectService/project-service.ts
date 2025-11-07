@@ -82,24 +82,26 @@ export class ProjectService {
 
   inviteMember(invitation: {
     projectId: string;
+    projectName: string;
     userId: string;
+    inviteeEmails: string[];
     role?: string;
   }): Observable<ProjectMember> {
-    const memberRequest: ProjectMemberRequest = {
+    const memberRequest = {
       projectId: invitation.projectId,
-      userId: invitation.userId,
-      role: invitation.role as any,
+      projectName: invitation.projectName,
+      inviterId: invitation.userId,
+      inviteeEmails: invitation.inviteeEmails as string[],
     };
 
     return this.http
-      .post<ProjectMember>(`${this.baseUrl}/project_members`, memberRequest, {
+      .post<ProjectMember>(`${this.baseUrl}/invites`, memberRequest, {
         headers: this.headers,
       })
       .pipe(catchError(this.handleError));
   }
 
   lookupUserByEmail(email: string): Observable<string> {
-  
     return this.http
       .get<{ id: string; email: string }>(
         `${this.baseUrl}/users/email/${encodeURIComponent(email)}`,

@@ -87,7 +87,9 @@ export class Signup implements OnInit, OnDestroy {
         },
         error: (err) => {
           this.isLoading.set(false);
-          toast.error(err?.error?.error || err?.message || 'Unknown error');
+          toast.error(
+            err?.error?.error || err?.error.message || 'Unknown error'
+          );
         },
       });
     } else {

@@ -1,11 +1,10 @@
 import { Routes } from '@angular/router';
-import {authRoutes} from './features/auth/auth.routes'
-import {authGuard} from './core/guards/auth-guard'
+import { authRoutes } from './features/auth/auth.routes';
+import { authGuard } from './core/guards/auth-guard';
 export const routes: Routes = [
   {
-    path:'',
-    children:authRoutes
-
+    path: '',
+    children: authRoutes,
   },
   {
     path: 'dashboard',
@@ -13,6 +12,13 @@ export const routes: Routes = [
       import('../app/features/dashboard/dashboard.routes').then(
         (m) => m.routes
       ),
-        canActivate:[authGuard]
+    canActivate: [authGuard],
+  },
+  {
+    path: 'comment',
+    loadComponent: () =>
+      import('../app/features/task-comment/show-task/show-task').then(
+        (m) => m.ShowTask
+      ),
   },
 ];

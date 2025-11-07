@@ -35,12 +35,18 @@
         <option>Member</option>
       </select>
 
-      <button
-        (click)="invite()"
-        class="bg-blue-500 hover:bg-blue-600 text-white px-4 rounded-lg"
-      >
-        Invite
-      </button>
+        <button
+          (click)="addMember()"
+          class="bg-blue-500 hover:bg-blue-600 text-white px-4 rounded-lg"
+        >
+          Add
+        </button>
+        <button
+          (click)="invite()"
+          class="bg-blue-500 hover:bg-blue-600 text-white px-4 rounded-lg"
+        >
+          invite
+        </button>
     </div>
 
     <div>
@@ -51,16 +57,8 @@
           class="flex justify-between items-center border border-gray-100 rounded-lg p-2 hover:bg-gray-50"
         >
           <div class="flex items-center gap-2">
-            <img
-              [src]="
-                member.avatar || 'https://i.pravatar.cc/40?u=' + member.name
-              "
-              alt="avatar"
-              class="w-8 h-8 rounded-full"
-            />
             <div>
-              <p class="text-gray-800 font-medium">{{ member.name }}</p>
-              <p class="text-xs text-gray-500">{{ member.role }}</p>
+              <p class="text-gray-800 font-medium">{{ member }}</p>
             </div>
           </div>
           <button
